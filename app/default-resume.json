@@ -1,0 +1,64 @@
+{
+  "resumeName": "My Resume",
+  "resumeId": "al50d4das9kd5sjfavie",
+  "contactInformation": {
+    "myName": "John Carmack",
+    "city": "Anytown",
+    "state": "MD",
+    "country": "USA",
+    "email": "email@example.com",
+    "phone": "+12345678901",
+    "linkedin": "john-carmack-glendale",
+    "github": "johncarmack1984"
+  },
+  "sections": [
+    {
+      "title": "Summary",
+      "type": "block",
+      "fields": {
+        "summary": "Enthusiastic software engineer with a passion for learning new technologies."
+      }
+    },
+    {
+      "title": "Work Experience",
+      "type": "list",
+      "fields": {
+        "title": "Software Engineer",
+        "entity": "Big Faang, Inc",
+        "startDate": "2023-10-21T09:57:21.839Z",
+        "endDate": "2023-10-21T09:57:21.839Z",
+        "details": [
+          "Action Task for Situation causing Result",
+          "I built a thing",
+          "We showed it to other people",
+          "It sold a lot of things"
+        ]
+      }
+    },
+    {
+      "title": "Education",
+      "type": "list",
+      "fields": {
+        "title": "Bachelor of Arts",
+        "entity": "Howard University",
+        "startDate": "2023-10-21T09:57:21.839Z",
+        "endDate": "2023-10-21T09:57:21.839Z"
+      }
+    },
+    {
+      "title": "Skills",
+      "type": "grid",
+      "fields": {
+        "JavaScript": {
+          "startDate": "2023-10-21T09:57:21.839Z"
+        },
+        "AWS": {
+          "startDate": "2023-10-21T09:57:21.839Z"
+        },
+        "TailwindCSS": {
+          "startDate": "2023-10-21T09:57:21.839Z"
+        }
+      }
+    }
+  ]
+}
