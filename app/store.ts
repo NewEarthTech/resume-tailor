@@ -15,8 +15,9 @@ const contactInformation = z.object({
   github: z.string().optional(),
 });
 
-const resumeSectionContentEntry = z.object({
+const resumeSectionEntryFields = z.object({
   title: z.string().optional(),
+  include: z.boolean().default(true),
   entity: z.string().optional(),
   summary: z.string().optional(),
   startDate: z.string().optional(),
@@ -24,10 +25,12 @@ const resumeSectionContentEntry = z.object({
   details: z.string().array().optional(),
 });
 
+export type ResumeSectionEntry = z.infer<typeof resumeSectionEntryFields>;
+
 const resumeSection = z.object({
   title: z.string(),
   type: z.enum(["row", "list", "grid", "block"]),
-  fields: resumeSectionContentEntry,
+  entries: z.array(resumeSectionEntryFields).optional(),
 });
 
 export type ResumeSection = z.infer<typeof resumeSection>;
@@ -41,11 +44,20 @@ export const resumeState = z.object({
 
 export type ResumeState = z.infer<typeof resumeState>;
 
+const fieldValueDataTypes = z.union([
+  z.string(),
+  z.array(z.string()),
+  z.boolean(),
+]);
+
+type FieldValueDataTypes = z.infer<typeof fieldValueDataTypes>;
+
 const ResumeActions = z.object({
-  update: z.function().args(z.string(), z.string()),
-  updateSection: z
-    .function()
-    .args(z.number(), z.string(), z.string().or(z.array(z.string()))),
+  update: z.function().args(z.string(), z.string().or(z.boolean())),
+  updateSection: z.function().args(z.number(), z.string(), fieldValueDataTypes),
+  // updateEntry: z
+  //   .function()
+  //   .args(z.number(), z.number(), z.string(), fieldValueDataTypes),
 });
 
 type ResumeActions = z.infer<typeof ResumeActions>;
@@ -56,12 +68,28 @@ const useStore = create<ResumeState & ResumeActions>()(
   persist(
     (set, get) => ({
       ...DefaultResume,
-      update: (path: string, value: string) =>
+      update: (path: string, value: FieldValueDataTypes) =>
         set(O.set(O.optic<ResumeState>().path(path))(value)),
-      updateSection: (i: number, path: string, value: string | string[]) =>
+      updateSection: (i: number, path: string, value: FieldValueDataTypes) =>
         set(
           O.set(O.optic<ResumeState>().prop("sections").at(i).path(path))(value)
         ),
+      // updateEntry: (
+      // sectionIndex: number,
+      // entryIndex: number,
+      // path: string,
+      // value: FieldValueDataTypes
+      // ) =>
+      // set(
+      // O.set(
+      // O.optic<ResumeState>()
+      //   .prop("sections")
+      //   .at(sectionIndex)
+      //   .path("entries")
+      //   .at(entryIndex)
+      //   .path(path)
+      // )(value)
+      // ),
     }),
     {
       name: "resume-tailor-storage",

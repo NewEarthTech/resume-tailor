@@ -12,7 +12,11 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 function SectionContentEntryTitle({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-[1.1em] font-semibold">{children}</h3>;
+  return (
+    <h3 className="flex text-[1.1em] justify-between font-semibold">
+      {children}
+    </h3>
+  );
 }
 
 function SectionContentEntrySubTitle({
@@ -93,7 +97,7 @@ const sectionContentVariants = cva("", {
     type: {
       row: "",
       list: "",
-      grid: "grid grid-cols-3 gap-4",
+      grid: "grid grid-cols-3 gap-4 place-content-between",
       block: "",
     },
   },

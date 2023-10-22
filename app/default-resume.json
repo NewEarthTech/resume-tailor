@@ -15,50 +15,65 @@
     {
       "title": "Summary",
       "type": "block",
-      "fields": {
-        "summary": "Enthusiastic software engineer with a passion for learning new technologies."
-      }
+      "entries": [
+        {
+          "summary": "Enthusiastic software engineer with a passion for learning new technologies.",
+          "include": true
+        }
+      ]
     },
     {
       "title": "Work Experience",
       "type": "list",
-      "fields": {
-        "title": "Software Engineer",
-        "entity": "Big Faang, Inc",
-        "startDate": "2023-10-21T09:57:21.839Z",
-        "endDate": "2023-10-21T09:57:21.839Z",
-        "details": [
-          "Action Task for Situation causing Result",
-          "I built a thing",
-          "We showed it to other people",
-          "It sold a lot of things"
-        ]
-      }
+      "entries": [
+        {
+          "title": "Software Engineer",
+          "entity": "Big Faang, Inc",
+          "startDate": "2023-10-21T09:57:21.839Z",
+          "endDate": "2023-10-21T09:57:21.839Z",
+          "details": [
+            "Action Task for Situation causing Result",
+            "I built a thing",
+            "We showed it to other people",
+            "It sold a lot of things"
+          ],
+          "include": true
+        }
+      ]
     },
     {
       "title": "Education",
       "type": "list",
-      "fields": {
-        "title": "Bachelor of Arts",
-        "entity": "Howard University",
-        "startDate": "2023-10-21T09:57:21.839Z",
-        "endDate": "2023-10-21T09:57:21.839Z"
-      }
+      "entries": [
+        {
+          "title": "Bachelor of Arts",
+          "entity": "Howard University",
+          "startDate": "2023-10-21T09:57:21.839Z",
+          "endDate": "2023-10-21T09:57:21.839Z",
+          "include": true
+        }
+      ]
     },
     {
       "title": "Skills",
       "type": "grid",
-      "fields": {
-        "JavaScript": {
-          "startDate": "2023-10-21T09:57:21.839Z"
+      "entries": [
+        {
+          "title": "JavaScript",
+          "startDate": "2023-10-21T09:57:21.839Z",
+          "include": true
         },
-        "AWS": {
-          "startDate": "2023-10-21T09:57:21.839Z"
+        {
+          "title": "AWS",
+          "startDate": "2023-10-21T09:57:21.839Z",
+          "include": true
         },
-        "TailwindCSS": {
-          "startDate": "2023-10-21T09:57:21.839Z"
+        {
+          "title": "TailwindCSS",
+          "startDate": "2023-10-21T09:57:21.839Z",
+          "include": true
         }
-      }
+      ]
     }
   ]
 }

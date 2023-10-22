@@ -1,6 +1,14 @@
 "use client";
 
-import { Ref } from "react";
+import React, {
+  Component,
+  ElementType,
+  Fragment,
+  FunctionComponent,
+  JSXElementConstructor,
+  ReactElement,
+  Ref,
+} from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useMeasure } from "@uidotdev/usehooks";
 import {
@@ -15,19 +23,120 @@ import {
   SectionContent,
   Section,
 } from "./section";
-import { useStore } from "@/app/store";
+import { ResumeSection, ResumeSectionEntry, useStore } from "@/app/store";
 
 import { ContactInfo } from "./section/contact-info";
 
 const PPI = 96;
 const PRINT_WIDTH = 8.5 * PPI;
 
+function NullCheck({
+  As,
+  variable,
+  children,
+  ...attrs
+}: {
+  As: FunctionComponent | JSXElementConstructor<any> | ElementType<any>;
+  variable: unknown | null;
+  children: React.ReactNode;
+}) {
+  return !!variable ? <As {...attrs}>{children}</As> : null;
+}
+
+function PreviewPaneSectionEntry({
+  sectionType,
+  entryIndex,
+  title: entryTitle,
+  entity,
+  summary,
+  details,
+  startDate,
+  endDate,
+  include,
+  ...fields
+}: ResumeSectionEntry & {
+  entryIndex: number;
+  sectionType: string;
+}) {
+  return (
+    <NullCheck As={SectionContentEntry} variable={include} key={entryIndex}>
+      <NullCheck As={SectionContentEntryTitle} variable={entryTitle}>
+        {entryTitle}
+
+        {(startDate || endDate) && sectionType === "list" ? (
+          <SectionContentEntryDateSpan
+            startDate={startDate}
+            endDate={endDate}
+          />
+        ) : null}
+      </NullCheck>
+      <NullCheck
+        As={SectionContentEntrySubTitle}
+        variable={entity}
+        children={entity}
+      />
+      <NullCheck
+        As={SectionContentEntrySummary}
+        variable={summary}
+        children={summary}
+      />
+      <NullCheck As={SectionContentEntryDetails} variable={details}>
+        {details?.map((detail, k) => (
+          <SectionContentEntryDetail key={k}>
+            {detail}
+          </SectionContentEntryDetail>
+        ))}
+      </NullCheck>
+      <NullCheck As={"pre"} variable={Object.keys(fields).length}>
+        {JSON.stringify(fields, null, 2)}
+      </NullCheck>
+    </NullCheck>
+  );
+}
+
+function PreviewPaneSectionEntries({
+  sectionType,
+  entries,
+}: {
+  sectionType: string;
+  entries?: ResumeSectionEntry[];
+}) {
+  return (
+    <div>
+      {entries?.map((entry, j) => (
+        <PreviewPaneSectionEntry
+          key={j}
+          sectionType={sectionType}
+          entryIndex={j}
+          {...entry}
+        />
+      ))}
+    </div>
+  );
+}
+
+function PreviewPaneSection({
+  section,
+  sectionIndex,
+}: {
+  section: ResumeSection;
+  sectionIndex: number;
+}) {
+  const { title, type, entries } = section;
+  return (
+    <Section>
+      <SectionTitle>{title}</SectionTitle>
+      <SectionContent type={type}>
+        <PreviewPaneSectionEntries sectionType={type} entries={entries} />
+      </SectionContent>
+    </Section>
+  );
+}
+
 export function PreviewPane() {
   const [ref, { width }] = useMeasure();
   const scale = width ? width / PRINT_WIDTH : 0;
-  const sections = useStore((state) => state.sections);
-  // const { sections } = useStore();
-
+  const { sections } = useStore((state) => state);
   return (
     <div
       ref={ref as Ref<HTMLDivElement>}
@@ -43,53 +152,15 @@ export function PreviewPane() {
         }}
       >
         <ContactInfo scale={scale} />
-        {sections.map(({ title, type }, i) => {
-          const fields = useStore((state) => state.sections[i]).fields;
-          return (
-            <Section key={i}>
-              <SectionTitle>{title}</SectionTitle>
-              <SectionContent type={type}>
-                {/* <pre>{JSON.stringify(type, null, 2)}</pre> */}
-                <pre suppressHydrationWarning>
-                  {JSON.stringify(fields, null, 2)}
-                </pre>
-                {/* {Object.keys(fields).map(
-                  (
-                    // { title, entity, startDate, endDate, details, summary },
-                    key,
-                    j
-                  ) => ( */}
-                <SectionContentEntry>
-                  {/* {typeof fields.title !== "undefined" ? (
-                    <SectionContentEntryTitle>
-                      {fields.title}
-                    </SectionContentEntryTitle>
-                  ) : null} */}
-                  <SectionContentEntrySubTitle>
-                    {/* {entity} */}
-                    {/* {type !== "grid" ? (
-                          <SectionContentEntryDateSpan
-                            startDate={startDate}
-                            endDate={endDate}
-                          />
-                        ) : null} */}
-                  </SectionContentEntrySubTitle>
-                  <SectionContentEntrySummary>
-                    {/* {JSON.stringify(fields[key as keyof typeof fields])} */}
-                    {/* {fields.summary ? fields.summary : null} */}
-                  </SectionContentEntrySummary>
-                  {/* <SectionContentEntryDetails>
-                        {details?.map((detail, k) => (
-                          <SectionContentEntryDetail key={k}>
-                            {detail}
-                          </SectionContentEntryDetail>
-                        ))}
-                      </SectionContentEntryDetails>  */}
-                </SectionContentEntry>
-              </SectionContent>
-            </Section>
-          );
-        })}
+        <NullCheck As={Fragment} variable={sections?.length > 0}>
+          {sections?.map((section, i) => (
+            <PreviewPaneSection
+              section={section}
+              key={`section-${i}-rooot-preview-pane`}
+              sectionIndex={i}
+            />
+          ))}
+        </NullCheck>
       </AspectRatio>
     </div>
   );
