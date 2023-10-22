@@ -9,15 +9,12 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+import { ResumeFormField } from "./resume-form-field";
 import { Button } from "@/components/ui/button";
 import {
-  ContactInformation,
   ContactInformationEntry,
-  FieldValueDataTypes,
   ResumeEntryGeneric,
-  ResumeSection,
   ResumeSectionEntry,
   sectionType as sectionTypeSchema,
   useStore,
@@ -25,14 +22,13 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { resumeState, type ResumeState, DefaultResume } from "@/app/store";
-import { Fragment, Key, forwardRef, useEffect } from "react";
-import { titleCase } from "@/lib/utils";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useEffect } from "react";
+// import {
+//   Accordion,
+//   AccordionContent,
+//   AccordionItem,
+//   AccordionTrigger,
+// } from "@/components/ui/accordion";
 import { Checkbox } from "../ui/checkbox";
 import {
   Select,
@@ -41,70 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@radix-ui/react-select";
-
-const ToDoComponent = ({ value }: { value: FieldValueDataTypes }) => {
-  return (
-    <Fragment>
-      <span className="text-xs">
-        {`// TODO: implement ${typeof value} controller`}
-      </span>
-      <Input value={value.toString()} disabled />
-    </Fragment>
-  );
-};
-
-const ResumeFormField = ({
-  form,
-  fieldName,
-  value,
-  path,
-}: {
-  form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
-  fieldName: string;
-  value: FieldValueDataTypes;
-  path: string;
-}) => {
-  const { update } = useStore();
-  return (
-    <FormField
-      name={fieldName as keyof ResumeState}
-      control={form.control}
-      render={({ field }) => {
-        field.onChange = (e) => {
-          // console.log("e.target.value", e.target.value);
-          update(path, value as FieldValueDataTypes);
-          form.setValue(path as keyof ResumeState, e.target.value);
-        };
-        return (
-          <FormItem className="space-y-2">
-            {fieldName !== "include" ? (
-              <div className="grid w-full gap-1.5 mb-2">
-                <Label htmlFor={field.name}>{titleCase(fieldName)}</Label>
-                <FormControl>
-                  {typeof value === "string" ? (
-                    fieldName === "summary" ? (
-                      <Textarea
-                        placeholder="Type your message here."
-                        value={value}
-                        onChange={field.onChange}
-                      />
-                    ) : (
-                      <Input value={value} onChange={field.onChange} />
-                    )
-                  ) : (
-                    <ToDoComponent value={value} />
-                  )}
-                </FormControl>
-              </div>
-            ) : null}
-          </FormItem>
-        );
-      }}
-    />
-  );
-};
 
 export function ResumeFormSectionEntry({
   entry,
@@ -118,53 +51,52 @@ export function ResumeFormSectionEntry({
   const { update } = useStore();
 
   useEffect(() => {
-    update(`${path}.include`, entry.include);
+    // update(`${path}.include`, entry.include);
   }, [entry.include, path, update]);
   return (
-    <AccordionItem value={path}>
-      <div className="flex items-center gap-4 justify-end">
+    <>
+      {/* <AccordionItem value={path}> */}
+      <div className="flex items-center gap-4 justify-start py-4">
         <Checkbox
           checked={entry.include}
           onCheckedChange={(e) =>
-            // @ts-expect-error
-            form.setValue(`${path}.include` as keyof ResumeState, e)
+          form.setValue(`${path}.include` as keyof ResumeState, e)
           }
           className=""
           // onCheckedChange={(e) => update(`${path}.include`, e)}
         />
-        <AccordionTrigger
-          count={Object.entries(entry).length - 1}
-          className="flex justify-between gap-7"
-        >
+        {/* <AccordionTrigger */}
+        {/* count={Object.entries(entry).length - 1} */}
+        <div className="flex justify-between gap-7">
           <Label className="text-left" htmlFor="include">
             <h3 className="text-base font-semibold overflow-hidden whitespace-normal">
-              {/* @ts-expect-error */}
-              {!!entry.myName ? entry.myName : entry.title}
+              {/* {!!entry.myName ? entry.myName : entry.title} */}
+              {entry.title}
             </h3>
             <h4 className="text-sm font-medium overflow-hidden">
-              {/* @ts-expect-error */}
-              {!!entry.jobTitle
-                ? /* @ts-expect-error */
-                  entry.jobTitle
-                : /* @ts-expect-error */
-                  entry.summary || entry.entity}
+              {/* {!!entry.jobTitle
+                ? entry.jobTitle
+                : entry.summary || entry.entity} */}
+              {entry.entity}
             </h4>
           </Label>
-          <div className="text-xs"></div>
-        </AccordionTrigger>
+          {/* <div className="text-xs"></div> */}
+        </div>
+        {/* </AccordionTrigger> */}
       </div>
-      <AccordionContent>
-        {Object.entries(entry).map(([key, value], j) => (
-          <ResumeFormField
-            key={`${path}.${key}.formFieldMap`}
-            fieldName={key as keyof typeof entry}
-            value={value}
-            form={form}
-            path={`${path}.${key}`}
-          />
-        ))}
-      </AccordionContent>
-    </AccordionItem>
+      {/* <AccordionContent> */}
+      {Object.entries(entry).map(([key, value], j) => (
+        <ResumeFormField
+          key={`${path}.${key}.formFieldMap`}
+          fieldName={key as keyof typeof entry}
+          value={value}
+          form={form}
+          path={`${path}.${key}`}
+        />
+      ))}
+      {/* </AccordionContent> */}
+      {/* </AccordionItem> */}
+    </>
   );
 }
 
@@ -185,73 +117,68 @@ function ResumeFormSection({
   path?: string;
   include: boolean;
 }) {
-  useStore.subscribe((state) => state.sections[0]);
   return (
     <Card>
-      <Accordion type="multiple">
-        <AccordionItem value={`${title}-section-accordion-${path}`}>
-          <CardHeader className="relative">
-            <div className="flex gap-3 justify-between items-center">
-              <Checkbox
-                checked={include}
-                onCheckedChange={(e) =>
-                  // @ts-expect-error
-                  form.setValue(`${path}.include` as keyof ResumeState, e)
-                }
-                className="bg-background"
-                // onCheckedChange={(e) => update(`${path}.include`, e)}
-              />
-              <AccordionTrigger
-                count={entries.length}
-                className="flex py-1 open:pb-2 my-0 justify-between cursor-pointer items-center"
-              >
-                <CardTitle className=" flex flex-row gap-x-20 text-lg items-start justify-between">
-                  {title}
-                </CardTitle>
-              </AccordionTrigger>
-            </div>
-          </CardHeader>
-          <AccordionContent className="relative">
-            <Separator className="border-[1px] mx-5" />
-            <CardContent>
-              <Accordion type="multiple">
-                {entries?.map((entry: ResumeEntryGeneric, j: number) => (
-                  <ResumeFormSectionEntry
-                    key={`${path}.entries.${j}.formSectionEntryMap`}
-                    path={`${path}.entries.${j}`}
-                    form={form}
-                    entry={entry}
-                  />
-                ))}
-              </Accordion>
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Select value={sectionType} onValueChange={(e) => console.log(e)}>
-                <SelectTrigger className="m-0 right-0 top-[.45rem] mx-[1.1rem]">
-                  <SelectValue className="capitalize" placeholder={"Layout"} />
-                </SelectTrigger>
-                <SelectContent>
-                  {sectionTypeSchema.options.map(
-                    (
-                      typeOption: z.infer<typeof sectionTypeSchema>,
-                      i: number
-                    ) => (
-                      <SelectItem
-                        key={`${path}.${title}.select.type.${i}.${typeOption}`}
-                        value={typeOption}
-                        className="capitalize"
-                      >
-                        {typeOption}
-                      </SelectItem>
-                    )
-                  )}
-                </SelectContent>
-              </Select>
-              <Button variant="default">Add Entry</Button>
-            </CardFooter>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      {/* <Accordion type="multiple"> */}
+      {/* <AccordionItem value={`${title}-section-accordion-${path}`}> */}
+      <CardHeader className="relative">
+        <div className="flex gap-3 justify-start items-center">
+          <Checkbox
+            checked={include}
+            // onCheckedChange={(e) =>
+            // form.setValue(`${path}.include` as keyof ResumeState, e)
+            // }
+            className="bg-background"
+            // onCheckedChange={(e) => update(`${path}.include`, e)}
+          />
+          {/* <AccordionTrigger
+            count={entries.length}
+            className="flex py-1 open:pb-2 my-0 justify-between cursor-pointer items-center"
+          > */}
+          <CardTitle className=" flex flex-row gap-x-20 text-lg items-start justify-between">
+            {title}
+          </CardTitle>
+          {/* </AccordionTrigger> */}
+        </div>
+      </CardHeader>
+      {/* <AccordionContent className="relative"> */}
+      <Separator className="border-[1px] mx-5" />
+      <CardContent>
+        {/* <Accordion type="multiple"> */}
+        {entries?.map((entry: ResumeEntryGeneric, j: number) => (
+          <ResumeFormSectionEntry
+            key={`${path}.entries.${j}.formSectionEntryMap`}
+            path={`${path}.entries.${j}`}
+            form={form}
+            entry={entry}
+          />
+        ))}
+        {/* </Accordion> */}
+      </CardContent>
+      <CardFooter className="flex justify-end">
+        <Select value={sectionType} onValueChange={(e) => console.log(e)}>
+          <SelectTrigger className="m-0 right-0 top-[.45rem] mx-[1.1rem]">
+            <SelectValue className="capitalize" placeholder={"Layout"} />
+          </SelectTrigger>
+          <SelectContent>
+            {sectionTypeSchema.options.map(
+              (typeOption: z.infer<typeof sectionTypeSchema>, i: number) => (
+                <SelectItem
+                  key={`${path}.${title}.select.type.${i}.${typeOption}`}
+                  value={typeOption}
+                  className="capitalize"
+                >
+                  {typeOption}
+                </SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
+        <Button variant="default">Add Entry</Button>
+      </CardFooter>
+      {/* </AccordionContent> */}
+      {/* </AccordionItem> */}
+      {/* </Accordion> */}
     </Card>
   );
 }

@@ -96,10 +96,10 @@ const useStoreBase = create<ResumeState & ResumeActions>()(
     (set, get) => ({
       ...DefaultResume,
       update: (path: string, value: FieldValueDataTypes) => {
-        console.log("path", path);
-        console.log("value", value);
+        // console.log("path", path);
+        // console.log("value", value);
         // get(O.get(O.optic<ResumeState>().path(path)));
-        // return set(O.set(O.optic<ResumeState>().path(path))(value));
+        return set(O.set(O.optic<ResumeState>().path(path))(value));
       },
     }),
     {
