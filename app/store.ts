@@ -1,9 +1,10 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 import * as O from "optics-ts";
 import * as z from "zod";
-import defaultResume from "./default-resume.json";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+
 import { createSelectors } from "@/lib/zustand";
+import defaultResume from "./default-resume.json";
 
 const title = z.string();
 const include = z.boolean().default(true);
@@ -96,16 +97,13 @@ const useStoreBase = create<ResumeState & ResumeActions>()(
     (set, get) => ({
       ...DefaultResume,
       update: (path: string, value: FieldValueDataTypes) => {
-        // console.log("path", path);
-        // console.log("value", value);
-        // get(O.get(O.optic<ResumeState>().path(path)));
         return set(O.set(O.optic<ResumeState>().path(path))(value));
       },
     }),
     {
       name: "resume-tailor-storage",
-    }
-  )
+    },
+  ),
 );
 
 const useStore = createSelectors(useStoreBase);
