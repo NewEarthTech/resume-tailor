@@ -1,4 +1,8 @@
-import { contactInformation, useStore } from "@/app/store";
+import {
+  contactInformation,
+  contactInformationEntry,
+  useStore,
+} from "@/app/store";
 import { Linkedin, Mail, MapPin, Smartphone } from "lucide-react";
 import React from "react";
 import { Section } from ".";
@@ -30,8 +34,8 @@ function ContactInfoField({ children }: { children: React.ReactNode }) {
 
 export function ContactInfo({ scale }: { scale: number }) {
   const { myName, email, city, state, country, phone, linkedin, github } =
-    useStore((state) => state.contactInformation) as z.infer<
-      typeof contactInformation
+    useStore((state) => state.contactInformation.entries[0]) as z.infer<
+      typeof contactInformationEntry
     >;
   const iconSize = scale * 16;
   return (

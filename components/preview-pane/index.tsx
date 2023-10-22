@@ -136,7 +136,7 @@ function PreviewPaneSection({
 export function PreviewPane() {
   const [ref, { width }] = useMeasure();
   const scale = width ? width / PRINT_WIDTH : 0;
-  const { sections } = useStore((state) => state);
+  const sections = useStore((state) => state.sections);
   return (
     <div
       ref={ref as Ref<HTMLDivElement>}
@@ -154,11 +154,13 @@ export function PreviewPane() {
         <ContactInfo scale={scale} />
         <NullCheck As={Fragment} variable={sections?.length > 0}>
           {sections?.map((section, i) => (
-            <PreviewPaneSection
-              section={section}
-              key={`section-${i}-rooot-preview-pane`}
-              sectionIndex={i}
-            />
+            <Fragment key={`${section.title}-${i}-fragment`}>
+              <PreviewPaneSection
+                section={section}
+                key={`section-${i}-rooot-preview-pane`}
+                sectionIndex={i}
+              />
+            </Fragment>
           ))}
         </NullCheck>
       </AspectRatio>

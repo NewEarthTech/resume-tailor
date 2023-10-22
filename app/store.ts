@@ -4,8 +4,16 @@ import * as O from "optics-ts";
 import * as z from "zod";
 import defaultResume from "./default-resume.json";
 
-const contactInformation = z.object({
+const title = z.string();
+const include = z.boolean().default(true);
+const type = z.enum(["row", "list", "grid", "block"]);
+
+export const contactInformationEntry = z.object({
+  include,
+  title,
   myName: z.string().optional(),
+  jobTitle: z.string().optional(),
+  entity: z.string().optional(),
   city: z.string().optional(),
   state: z.string().optional(),
   country: z.string().optional(),
@@ -15,9 +23,20 @@ const contactInformation = z.object({
   github: z.string().optional(),
 });
 
-const resumeSectionEntryFields = z.object({
-  title: z.string().optional(),
-  include: z.boolean().default(true),
+export type ContactInformationEntry = z.infer<typeof contactInformationEntry>;
+
+const contactInformation = z.object({
+  title,
+  type,
+  entries: z.array(contactInformationEntry),
+});
+
+export type ContactInformation = z.infer<typeof contactInformation>;
+
+const resumeSectionEntry = z.object({
+  include,
+  title,
+  type,
   entity: z.string().optional(),
   summary: z.string().optional(),
   startDate: z.string().optional(),
@@ -25,12 +44,13 @@ const resumeSectionEntryFields = z.object({
   details: z.string().array().optional(),
 });
 
-export type ResumeSectionEntry = z.infer<typeof resumeSectionEntryFields>;
+export type ResumeSectionEntry = z.infer<typeof resumeSectionEntry>;
 
 const resumeSection = z.object({
-  title: z.string(),
-  type: z.enum(["row", "list", "grid", "block"]),
-  entries: z.array(resumeSectionEntryFields).optional(),
+  include,
+  title,
+  type,
+  entries: z.array(resumeSectionEntry).optional(),
 });
 
 export type ResumeSection = z.infer<typeof resumeSection>;
@@ -53,11 +73,7 @@ const fieldValueDataTypes = z.union([
 type FieldValueDataTypes = z.infer<typeof fieldValueDataTypes>;
 
 const ResumeActions = z.object({
-  update: z.function().args(z.string(), z.string().or(z.boolean())),
-  updateSection: z.function().args(z.number(), z.string(), fieldValueDataTypes),
-  // updateEntry: z
-  //   .function()
-  //   .args(z.number(), z.number(), z.string(), fieldValueDataTypes),
+  update: z.function().args(z.string(), fieldValueDataTypes),
 });
 
 type ResumeActions = z.infer<typeof ResumeActions>;
@@ -68,28 +84,12 @@ const useStore = create<ResumeState & ResumeActions>()(
   persist(
     (set, get) => ({
       ...DefaultResume,
-      update: (path: string, value: FieldValueDataTypes) =>
-        set(O.set(O.optic<ResumeState>().path(path))(value)),
-      updateSection: (i: number, path: string, value: FieldValueDataTypes) =>
-        set(
-          O.set(O.optic<ResumeState>().prop("sections").at(i).path(path))(value)
-        ),
-      // updateEntry: (
-      // sectionIndex: number,
-      // entryIndex: number,
-      // path: string,
-      // value: FieldValueDataTypes
-      // ) =>
-      // set(
-      // O.set(
-      // O.optic<ResumeState>()
-      //   .prop("sections")
-      //   .at(sectionIndex)
-      //   .path("entries")
-      //   .at(entryIndex)
-      //   .path(path)
-      // )(value)
-      // ),
+      // update: (path: string, value: FieldValueDataTypes) =>
+      //   set(O.set(O.optic<ResumeState>().path(path))(value)),
+      update: (path: string, value: FieldValueDataTypes) => {
+        console.log("path", path);
+        console.log("value", value);
+      },
     }),
     {
       name: "resume-tailor-storage",
@@ -97,4 +97,10 @@ const useStore = create<ResumeState & ResumeActions>()(
   )
 );
 
-export { contactInformation, resumeSection, DefaultResume, useStore };
+export {
+  type FieldValueDataTypes,
+  contactInformation,
+  resumeSection,
+  DefaultResume,
+  useStore,
+};

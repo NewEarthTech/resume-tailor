@@ -2,14 +2,22 @@
   "resumeName": "My Resume",
   "resumeId": "al50d4das9kd5sjfavie",
   "contactInformation": {
-    "myName": "John Carmack",
-    "city": "Anytown",
-    "state": "MD",
-    "country": "USA",
-    "email": "email@example.com",
-    "phone": "+12345678901",
-    "linkedin": "john-carmack-glendale",
-    "github": "johncarmack1984"
+    "title": "Contact Information",
+    "type": "row",
+    "entries": [
+      {
+        "myName": "John Carmack",
+        "jobTitle": "Software Engineer",
+        "city": "Anytown",
+        "state": "MD",
+        "country": "USA",
+        "email": "email@example.com",
+        "phone": "+12345678901",
+        "linkedin": "john-carmack-glendale",
+        "github": "johncarmack1984",
+        "include": true
+      }
+    ]
   },
   "sections": [
     {

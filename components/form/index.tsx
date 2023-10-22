@@ -6,11 +6,18 @@ import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ResumeSection, ResumeSectionEntry, useStore } from "@/app/store";
+import {
+  ContactInformation,
+  ContactInformationEntry,
+  FieldValueDataTypes,
+  ResumeSection,
+  ResumeSectionEntry,
+  useStore,
+} from "@/app/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { resumeState, type ResumeState, DefaultResume } from "@/app/store";
-import { Fragment, forwardRef, useEffect } from "react";
+import { Fragment, Key, forwardRef, useEffect } from "react";
 import { titleCase } from "@/lib/utils";
 import {
   Accordion,
@@ -29,46 +36,48 @@ import {
 
 const ResumeFormField = ({
   form,
-  // section,
   fieldName,
   value,
-}: // i,
-{
-  // i: number;
+  path,
+}: {
   form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
-  // section: number;
   fieldName: string;
-  value: string | string[] | boolean;
+  value: FieldValueDataTypes;
+  path: string;
 }) => {
-  const { updateSection } = useStore();
-  // useEffect(() => {
-  // updateSection(section, `fields.${fieldName}`, value);
-  // }, [value]);
+  console.log(`${path}.${fieldName}`);
+  const { update } = useStore();
+  useEffect(() => {
+    // updateSection(section, `fields.${fieldName}`, value);
+    console.log("value", value);
+    // update(path, value as FieldValueDataTypes);
+  }, [value]);
   return (
     <FormField
       name={fieldName as keyof ResumeState}
       control={form.control}
       render={({ field }) => {
-        // field.onChange = (e) => {
-        //   form.setValue(
-        //     `sections.${i}.fields.${
-        //       fieldName as keyof ResumeSection["fields"]
-        //     }`,
-        //     e.target.value
-        //   );
-        // };
+        field.onChange = (e) => {
+          form.setValue(path as keyof ResumeState, e.target.value);
+        };
         return (
           <FormItem className="space-y-2">
-            {/* <Label htmlFor={field.name}>{titleCase(fieldName)}</Label> */}
+            <Label htmlFor={field.name}>{titleCase(fieldName)}</Label>
             <FormControl>
-              <Input
-                // value={
-                //   form.watch().sections[section].fields[
-                //     fieldName as keyof ResumeSection["fields"]
-                //   ]
-                // }
-                onChange={field.onChange}
-              />
+              {typeof value === "string" ? (
+                <Input value={value} onChange={field.onChange} />
+              ) : typeof value === "boolean" ? (
+                <>type: boolean</>
+              ) : typeof value === "object" ? (
+                <>type: object</>
+              ) : typeof value === "number" ? (
+                <>type: number</>
+              ) : (
+                <pre suppressHydrationWarning>
+                  type: {JSON.stringify(typeof value)}, value:{" "}
+                  {JSON.stringify(value, null, 2)}
+                </pre>
+              )}
             </FormControl>
           </FormItem>
         );
@@ -77,133 +86,120 @@ const ResumeFormField = ({
   );
 };
 
-const ResumeFormSectionEntryFields = forwardRef(
-  (
-    {
-      section,
-      form,
-      entry,
-    }: {
-      section?: number;
-      form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
-      entry: ResumeSectionEntry;
-      // fields: ResumeSection["fields"] | ResumeState["contactInformation"];
-    },
-    ref
-  ) => {
-    return (
-      <div>
-        {Object.entries(entry).map(([key, value], j) => (
-          <Fragment key={`section-${section}-entry-${j}`}>
-            <ResumeFormField
-              key={`section-${section}-entry-${j}`}
-              //   i={section}
-              //   section={section}
-              fieldName={key as keyof typeof entry}
-              value={value}
-              form={form}
-            />
-            <pre>{JSON.stringify(key, null, 2)}</pre>
-            <pre>{JSON.stringify(value, null, 2)}</pre>
-          </Fragment>
-        ))}
-      </div>
-    );
-  }
-);
+const ResumeFormSectionEntryFields = ({
+  form,
+  entry,
+  path,
+}: {
+  form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
+  entry: ResumeSectionEntry | ContactInformationEntry;
+  path: string;
+}) => {
+  console.log(`${path}.ResumeFormSectionEntryFields`);
+  return (
+    <div>
+      {Object.entries(entry).map(([key, value], j) => (
+        <Fragment key={`${path}.${key}.fragment`}>
+          <ResumeFormField
+            key={`${path}.${key}.field`}
+            fieldName={key as keyof typeof entry}
+            value={value}
+            form={form}
+            path={`${path}.${key}`}
+          />
+          <pre suppressHydrationWarning>{JSON.stringify(value, null, 2)}</pre>
+        </Fragment>
+      ))}
+    </div>
+  );
+};
 
 export function ResumeFormSectionEntry({
-  entry: { title, ...entry },
-  sectionIndex,
-  entryIndex,
+  entry,
   form,
+  path,
 }: {
-  entry: ResumeSectionEntry;
-  sectionIndex: number;
-  entryIndex: number;
+  entry: ResumeSectionEntry | ContactInformationEntry;
   form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
+  path: string;
 }) {
-  // const { updateEntry } = useStore();
-  const path = `sections.${sectionIndex}.entries.${entryIndex}`;
-  // const entry = useStore(
-  //   (state) => state?.sections[sectionIndex]?.entries[entryIndex]
-  // );
+  console.log(`${path}.ResumeFormSectionEntry`);
+  const { update } = useStore();
   useEffect(() => {
-    // update(`${path}.include`, entry.include);
-    // updateSection(sectionIndex, `entries.${entryIndex}.include`, entry.include)
-    // updateEntry(sectionIndex, entryIndex, "include", entry.include);
+    update(`${path}.include`, entry.include);
+    // console.log("path", path);
   }, [entry.include]);
-  // }, [form.watch().sections[sectionIndex].entries[entryIndex].include]);
-  useEffect(() => {
-    console.log(form.watch().sections[sectionIndex].entries?.length);
-  }, [form.watch().sections[sectionIndex].entries?.length]);
   return (
     <AccordionItem value={path}>
-      <div className="flex items-center gap-2">
-        <Checkbox
-        // checked={
-        //   form.watch().sections[sectionIndex].entries[entryIndex].include
-        // }
-        // onCheckedChange={(e) =>
-        //   form.setValue(
-        //     `sections.${sectionIndex}.entries[${entryIndex}].include`,
-        //     e
-        //   )
-        // }
-        />
-        <Label className="text-lg" htmlFor="include">
-          {title} - {entry.entity}
-        </Label>
+      <div>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            checked={entry.include}
+            // checked={
+            //   form.watch().sections[sectionIndex].entries[entryIndex].include
+            // }
+            // `sections.${sectionIndex}.entries[${entryIndex}].include`,
+            // onCheckedChange={(e) => form.setValue(`${path}.include`, e)}
+          />
+          <Label className="text-base" htmlFor="include">
+            {entry.title} - {entry.entity}
+          </Label>
+        </div>
+        <AccordionTrigger className="flex text-sm items-center gap-1"></AccordionTrigger>
+        <AccordionContent>
+          <ResumeFormSectionEntryFields form={form} entry={entry} path={path} />
+        </AccordionContent>
       </div>
-      <AccordionTrigger className="flex items-center gap-1">
-        Details...
-      </AccordionTrigger>
-      <AccordionContent>
-        <ResumeFormSectionEntryFields
-          section={sectionIndex}
-          form={form}
-          entry={entry}
-        />
-      </AccordionContent>
     </AccordionItem>
   );
 }
 
 function ResumeFormSection({
+  title,
+  type,
   sectionIndex,
-  section,
+  entries,
   form,
+  path,
 }: {
-  sectionIndex: number;
-  section: ResumeSection;
+  title: string;
+  type: string;
+  sectionIndex?: number;
+  entries: ResumeSectionEntry[] | [ContactInformationEntry];
   form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
+  path?: string;
 }) {
+  console.log(`${path}.ResumeFormSection`);
   return (
     <Card>
-      <CardHeader className="">
-        <CardTitle>{section?.title}</CardTitle>
+      <CardHeader className="relative">
+        <CardTitle className="flex flex-row gap-x-20 items-start justify-between">
+          {title}
+        </CardTitle>
         <Select>
-          <SelectTrigger className="">
-            <SelectValue placeholder="Theme" />
+          <SelectTrigger className="m-0 absolute right-0 top-[.45rem] mx-[1.1rem]">
+            <SelectValue placeholder="Layout" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
+            <SelectItem value={type}>{type}</SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>
       <CardContent>
-        <Accordion type="single" collapsible>
-          {section?.entries?.map((entry, j) => (
-            <ResumeFormSectionEntry
-              key={j}
-              sectionIndex={sectionIndex}
-              entryIndex={j}
-              form={form}
-              entry={entry}
-            />
-          ))}
+        <Accordion type="multiple">
+          {entries?.map(
+            (
+              entry: ResumeSectionEntry | ContactInformationEntry,
+              j: number
+            ) => (
+              <ResumeFormSectionEntry
+                key={j}
+                path={`${path}.entries.${j}`}
+                form={form}
+                entry={entry}
+              />
+            )
+          )}
         </Accordion>
       </CardContent>
     </Card>
@@ -219,8 +215,8 @@ export function ResumeForm() {
       resumeId: crypto.randomUUID(),
     },
   });
-
   const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
+  const contactInformation = form.watch().contactInformation;
 
   return (
     <Form {...form}>
@@ -228,10 +224,21 @@ export function ResumeForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 flex flex-col"
       >
+        <ResumeFormSection
+          title={contactInformation.title}
+          path={"contactInformation"}
+          type={contactInformation.type}
+          entries={contactInformation.entries as [ContactInformationEntry]}
+          form={form}
+        />
+
         {form.watch().sections.map((section, i) => (
           <ResumeFormSection
-            section={section}
+            title={section.title}
+            type={section.type}
+            entries={section.entries as ResumeSectionEntry[]}
             sectionIndex={i}
+            path={`sections.${i}`}
             form={form}
             key={`section-${i}-root`}
           />
