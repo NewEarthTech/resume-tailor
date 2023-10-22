@@ -1,35 +1,31 @@
 "use client";
 
-import * as z from "zod";
-import {
-  CardTitle,
-  CardHeader,
-  CardContent,
-  Card,
-  CardFooter,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Form } from "@/components/ui/form";
-import { ResumeFormField } from "./resume-form-field";
-import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 import {
   ContactInformationEntry,
+  DefaultResume,
   ResumeEntryGeneric,
   ResumeSectionEntry,
+  resumeState,
   sectionType as sectionTypeSchema,
   useStore,
+  type ResumeState,
 } from "@/app/store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Separator } from "@radix-ui/react-select";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { resumeState, type ResumeState, DefaultResume } from "@/app/store";
-import { useEffect } from "react";
-// import {
-//   Accordion,
-//   AccordionContent,
-//   AccordionItem,
-//   AccordionTrigger,
-// } from "@/components/ui/accordion";
-import { Checkbox } from "../ui/checkbox";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -37,7 +33,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@radix-ui/react-select";
+// import {
+//   Accordion,
+//   AccordionContent,
+//   AccordionItem,
+//   AccordionTrigger,
+// } from "@/components/ui/accordion";
+import { Checkbox } from "../ui/checkbox";
+import { ResumeFormField } from "./resume-form-field";
 
 export function ResumeFormSectionEntry({
   entry,
@@ -56,11 +59,14 @@ export function ResumeFormSectionEntry({
   return (
     <>
       {/* <AccordionItem value={path}> */}
-      <div className="flex items-center gap-4 justify-start py-4">
+      <div className="flex items-center justify-start gap-4 py-4">
         <Checkbox
           checked={entry.include}
           onCheckedChange={(e) =>
-          form.setValue(`${path}.include` as keyof ResumeState, e)
+            form.setValue(
+              `${path}.include` as keyof ResumeState,
+              e as keyof ResumeState["sections"][0],
+            )
           }
           className=""
           // onCheckedChange={(e) => update(`${path}.include`, e)}
@@ -69,11 +75,11 @@ export function ResumeFormSectionEntry({
         {/* count={Object.entries(entry).length - 1} */}
         <div className="flex justify-between gap-7">
           <Label className="text-left" htmlFor="include">
-            <h3 className="text-base font-semibold overflow-hidden whitespace-normal">
+            <h3 className="overflow-hidden whitespace-normal text-base font-semibold">
               {/* {!!entry.myName ? entry.myName : entry.title} */}
               {entry.title}
             </h3>
-            <h4 className="text-sm font-medium overflow-hidden">
+            <h4 className="overflow-hidden text-sm font-medium">
               {/* {!!entry.jobTitle
                 ? entry.jobTitle
                 : entry.summary || entry.entity} */}
@@ -122,7 +128,7 @@ function ResumeFormSection({
       {/* <Accordion type="multiple"> */}
       {/* <AccordionItem value={`${title}-section-accordion-${path}`}> */}
       <CardHeader className="relative">
-        <div className="flex gap-3 justify-start items-center">
+        <div className="flex items-center justify-start gap-3">
           <Checkbox
             checked={include}
             // onCheckedChange={(e) =>
@@ -135,14 +141,14 @@ function ResumeFormSection({
             count={entries.length}
             className="flex py-1 open:pb-2 my-0 justify-between cursor-pointer items-center"
           > */}
-          <CardTitle className=" flex flex-row gap-x-20 text-lg items-start justify-between">
+          <CardTitle className=" flex flex-row items-start justify-between gap-x-20 text-lg">
             {title}
           </CardTitle>
           {/* </AccordionTrigger> */}
         </div>
       </CardHeader>
       {/* <AccordionContent className="relative"> */}
-      <Separator className="border-[1px] mx-5" />
+      <Separator className="mx-5 border-[1px]" />
       <CardContent>
         {/* <Accordion type="multiple"> */}
         {entries?.map((entry: ResumeEntryGeneric, j: number) => (
@@ -157,7 +163,7 @@ function ResumeFormSection({
       </CardContent>
       <CardFooter className="flex justify-end">
         <Select value={sectionType} onValueChange={(e) => console.log(e)}>
-          <SelectTrigger className="m-0 right-0 top-[.45rem] mx-[1.1rem]">
+          <SelectTrigger className="right-0 top-[.45rem] m-0 mx-[1.1rem]">
             <SelectValue className="capitalize" placeholder={"Layout"} />
           </SelectTrigger>
           <SelectContent>
@@ -170,7 +176,7 @@ function ResumeFormSection({
                 >
                   {typeOption}
                 </SelectItem>
-              )
+              ),
             )}
           </SelectContent>
         </Select>
@@ -186,11 +192,11 @@ function ResumeFormSection({
 export function ResumeForm() {
   const form = useForm<z.infer<typeof resumeState>>({
     resolver: zodResolver(resumeState),
-    defaultValues: {
-      ...DefaultResume,
-      resumeName: `${new Date().toISOString().substring(0, 10)}-`,
-      resumeId: crypto.randomUUID(),
-    },
+    // defaultValues: {
+    //   ...DefaultResume,
+    //   resumeName: `${new Date().toISOString().substring(0, 10)}-`,
+    //   resumeId: crypto.randomUUID(),
+    // },
   });
   const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
   const contactInformation = form.watch().contactInformation;
@@ -199,7 +205,7 @@ export function ResumeForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 flex flex-col"
+        className="flex flex-col space-y-4"
       >
         <ResumeFormSection
           title={contactInformation.title}

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import * as O from "optics-ts";
 import * as z from "zod";
 import { create } from "zustand";
@@ -102,6 +103,10 @@ const useStoreBase = create<ResumeState & ResumeActions>()(
     }),
     {
       name: "resume-tailor-storage",
+      storage: createJSONStorage(() => localStorage),
+      version: 0,
+      merge: (persistedState, currentState) =>
+        _.merge(persistedState, currentState),
     },
   ),
 );
