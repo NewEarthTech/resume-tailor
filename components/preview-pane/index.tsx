@@ -1,12 +1,10 @@
 "use client";
 
 import React, {
-  Component,
   ElementType,
   Fragment,
   FunctionComponent,
   JSXElementConstructor,
-  ReactElement,
   Ref,
 } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";

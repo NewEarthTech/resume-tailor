@@ -45,7 +45,7 @@ const ResumeFormField = ({
   value: FieldValueDataTypes;
   path: string;
 }) => {
-  console.log(`${path}.${fieldName}`);
+  // console.log(`${path}.${fieldName}`);
   const { update } = useStore();
   useEffect(() => {
     // updateSection(section, `fields.${fieldName}`, value);
@@ -66,17 +66,14 @@ const ResumeFormField = ({
             <FormControl>
               {typeof value === "string" ? (
                 <Input value={value} onChange={field.onChange} />
-              ) : typeof value === "boolean" ? (
-                <>type: boolean</>
-              ) : typeof value === "object" ? (
-                <>type: object</>
-              ) : typeof value === "number" ? (
-                <>type: number</>
               ) : (
-                <pre suppressHydrationWarning>
-                  type: {JSON.stringify(typeof value)}, value:{" "}
-                  {JSON.stringify(value, null, 2)}
-                </pre>
+                <>
+                  type: {typeof value}
+                  <pre suppressHydrationWarning>
+                    type: {JSON.stringify(typeof value)}, value:{" "}
+                    {JSON.stringify(value, null, 2)}
+                  </pre>
+                </>
               )}
             </FormControl>
           </FormItem>
@@ -95,7 +92,7 @@ const ResumeFormSectionEntryFields = ({
   entry: ResumeSectionEntry | ContactInformationEntry;
   path: string;
 }) => {
-  console.log(`${path}.ResumeFormSectionEntryFields`);
+  // console.log(`${path}.ResumeFormSectionEntryFields`);
   return (
     <div>
       {Object.entries(entry).map(([key, value], j) => (
@@ -123,23 +120,18 @@ export function ResumeFormSectionEntry({
   form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
   path: string;
 }) {
-  console.log(`${path}.ResumeFormSectionEntry`);
+  // console.log(`${path}.ResumeFormSectionEntry`);
   const { update } = useStore();
   useEffect(() => {
     update(`${path}.include`, entry.include);
-    // console.log("path", path);
-  }, [entry.include]);
+  }, [form.watch()]);
   return (
     <AccordionItem value={path}>
       <div>
         <div className="flex items-center gap-2">
           <Checkbox
             checked={entry.include}
-            // checked={
-            //   form.watch().sections[sectionIndex].entries[entryIndex].include
-            // }
-            // `sections.${sectionIndex}.entries[${entryIndex}].include`,
-            // onCheckedChange={(e) => form.setValue(`${path}.include`, e)}
+            onCheckedChange={(e) => form.setValue(`${path}.include`, e)}
           />
           <Label className="text-base" htmlFor="include">
             {entry.title} - {entry.entity}
@@ -169,7 +161,7 @@ function ResumeFormSection({
   form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
   path?: string;
 }) {
-  console.log(`${path}.ResumeFormSection`);
+  // console.log(`${path}.ResumeFormSection`);
   return (
     <Card>
       <CardHeader className="relative">
