@@ -43,8 +43,7 @@ function NullCheck({
 
 function PreviewPaneSectionEntry({
   sectionType,
-  entryIndex,
-  title: entryTitle,
+  title,
   entity,
   summary,
   details,
@@ -53,14 +52,12 @@ function PreviewPaneSectionEntry({
   include,
   ...fields
 }: ResumeSectionEntry & {
-  entryIndex: number;
   sectionType: string;
 }) {
   return (
-    <NullCheck As={SectionContentEntry} variable={include} key={entryIndex}>
-      <NullCheck As={SectionContentEntryTitle} variable={entryTitle}>
-        {entryTitle}
-
+    <NullCheck As={SectionContentEntry} variable={include}>
+      <NullCheck As={SectionContentEntryTitle} variable={title}>
+        {title}
         {(startDate || endDate) && sectionType === "list" ? (
           <SectionContentEntryDateSpan
             startDate={startDate}
@@ -68,16 +65,12 @@ function PreviewPaneSectionEntry({
           />
         ) : null}
       </NullCheck>
-      <NullCheck
-        As={SectionContentEntrySubTitle}
-        variable={entity}
-        children={entity}
-      />
-      <NullCheck
-        As={SectionContentEntrySummary}
-        variable={summary}
-        children={summary}
-      />
+      <NullCheck As={SectionContentEntrySubTitle} variable={entity}>
+        {entity}
+      </NullCheck>
+      <NullCheck As={SectionContentEntrySummary} variable={summary}>
+        {summary}
+      </NullCheck>
       <NullCheck As={SectionContentEntryDetails} variable={details}>
         {details?.map((detail, k) => (
           <SectionContentEntryDetail key={k}>
@@ -92,40 +85,22 @@ function PreviewPaneSectionEntry({
   );
 }
 
-function PreviewPaneSectionEntries({
-  sectionType,
-  entries,
-}: {
-  sectionType: string;
-  entries?: ResumeSectionEntry[];
-}) {
-  return (
-    <div>
-      {entries?.map((entry, j) => (
-        <PreviewPaneSectionEntry
-          key={j}
-          sectionType={sectionType}
-          entryIndex={j}
-          {...entry}
-        />
-      ))}
-    </div>
-  );
-}
-
 function PreviewPaneSection({
   section,
-  sectionIndex,
+  path,
 }: {
   section: ResumeSection;
-  sectionIndex: number;
+  path: string;
 }) {
-  const { title, type, entries } = section;
+  const { title, sectionType, entries } = section;
   return (
     <Section>
       <SectionTitle>{title}</SectionTitle>
-      <SectionContent type={type}>
-        <PreviewPaneSectionEntries sectionType={type} entries={entries} />
+      <SectionContent sectionType={sectionType}>
+        {JSON.stringify(section.sectionType)}
+        {entries?.map((entry, j) => (
+          <PreviewPaneSectionEntry key={j} {...entry} />
+        ))}
       </SectionContent>
     </Section>
   );
@@ -134,7 +109,7 @@ function PreviewPaneSection({
 export function PreviewPane() {
   const [ref, { width }] = useMeasure();
   const scale = width ? width / PRINT_WIDTH : 0;
-  const sections = useStore((state) => state.sections);
+  const { sections } = useStore((state) => state);
   return (
     <div
       ref={ref as Ref<HTMLDivElement>}
@@ -152,13 +127,11 @@ export function PreviewPane() {
         <ContactInfo scale={scale} />
         <NullCheck As={Fragment} variable={sections?.length > 0}>
           {sections?.map((section, i) => (
-            <Fragment key={`${section.title}-${i}-fragment`}>
-              <PreviewPaneSection
-                section={section}
-                key={`section-${i}-rooot-preview-pane`}
-                sectionIndex={i}
-              />
-            </Fragment>
+            <PreviewPaneSection
+              section={section}
+              key={`section-${i}-rooot-preview-pane`}
+              path={`sections.${i}`}
+            />
           ))}
         </NullCheck>
       </AspectRatio>

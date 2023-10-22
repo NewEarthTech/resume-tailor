@@ -4,8 +4,10 @@
   "contactInformation": {
     "title": "Contact Information",
     "type": "row",
+    "include": true,
     "entries": [
       {
+        "include": true,
         "myName": "John Carmack",
         "jobTitle": "Software Engineer",
         "city": "Anytown",
@@ -14,8 +16,7 @@
         "email": "email@example.com",
         "phone": "+12345678901",
         "linkedin": "john-carmack-glendale",
-        "github": "johncarmack1984",
-        "include": true
+        "github": "johncarmack1984"
       }
     ]
   },
@@ -23,18 +24,21 @@
     {
       "title": "Summary",
       "type": "block",
+      "include": true,
       "entries": [
         {
-          "summary": "Enthusiastic software engineer with a passion for learning new technologies.",
-          "include": true
+          "include": true,
+          "summary": "Enthusiastic software engineer with a passion for learning new technologies."
         }
       ]
     },
     {
       "title": "Work Experience",
       "type": "list",
+      "include": true,
       "entries": [
         {
+          "include": true,
           "title": "Software Engineer",
           "entity": "Big Faang, Inc",
           "startDate": "2023-10-21T09:57:21.839Z",
@@ -44,42 +48,43 @@
             "I built a thing",
             "We showed it to other people",
             "It sold a lot of things"
-          ],
-          "include": true
+          ]
         }
       ]
     },
     {
       "title": "Education",
       "type": "list",
+      "include": true,
       "entries": [
         {
+          "include": true,
           "title": "Bachelor of Arts",
           "entity": "Howard University",
           "startDate": "2023-10-21T09:57:21.839Z",
-          "endDate": "2023-10-21T09:57:21.839Z",
-          "include": true
+          "endDate": "2023-10-21T09:57:21.839Z"
         }
       ]
     },
     {
       "title": "Skills",
       "type": "grid",
+      "include": true,
       "entries": [
         {
+          "include": true,
           "title": "JavaScript",
-          "startDate": "2023-10-21T09:57:21.839Z",
-          "include": true
+          "startDate": "2023-10-21T09:57:21.839Z"
         },
         {
+          "include": true,
           "title": "AWS",
-          "startDate": "2023-10-21T09:57:21.839Z",
-          "include": true
+          "startDate": "2023-10-21T09:57:21.839Z"
         },
         {
+          "include": true,
           "title": "TailwindCSS",
-          "startDate": "2023-10-21T09:57:21.839Z",
-          "include": true
+          "startDate": "2023-10-21T09:57:21.839Z"
         }
       ]
     }

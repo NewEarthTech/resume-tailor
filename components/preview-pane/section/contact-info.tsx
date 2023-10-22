@@ -10,9 +10,16 @@ import { z } from "zod";
 
 function MyName({ children }: { children: React.ReactNode }) {
   return (
-    <h1 className="text-[2em] font-serif tracking-wide text-center font-bold mb-1">
+    <h1 className="text-[2em] leading-[.8em] font-serif tracking-wide text-center font-bold mb-1">
       {children}
     </h1>
+  );
+}
+function JobTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-[1.5em] tracking-widest uppercase font-serif text-center font-bold mb-1.5">
+      {children}
+    </h2>
   );
 }
 
@@ -33,14 +40,24 @@ function ContactInfoField({ children }: { children: React.ReactNode }) {
 }
 
 export function ContactInfo({ scale }: { scale: number }) {
-  const { myName, email, city, state, country, phone, linkedin, github } =
-    useStore((state) => state.contactInformation.entries[0]) as z.infer<
-      typeof contactInformationEntry
-    >;
+  const {
+    myName,
+    jobTitle,
+    email,
+    city,
+    state,
+    country,
+    phone,
+    linkedin,
+    github,
+  } = useStore((state) => state.contactInformation.entries[0]) as z.infer<
+    typeof contactInformationEntry
+  >;
   const iconSize = scale * 16;
   return (
     <Section>
       <MyName>{myName}</MyName>
+      <JobTitle>{jobTitle}</JobTitle>
       <ContactInfoRow>
         {[
           { Icon: MapPin, text: ` ${city}, ${state}, ${country}` },
@@ -48,7 +65,7 @@ export function ContactInfo({ scale }: { scale: number }) {
           { Icon: Smartphone, text: phone },
           { Icon: Linkedin, text: linkedin },
         ].map(({ Icon, text }, i) => (
-          <ContactInfoField key={i}>
+          <ContactInfoField key={`contactInfo-icon-field-${i}`}>
             <Icon size={iconSize} /> {text as string}
           </ContactInfoField>
         ))}

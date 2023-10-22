@@ -72,13 +72,6 @@ function SectionContentEntryDateSpan({
   startDate?: Date | string;
   endDate?: Date | string;
 }) {
-  // if ("startDate" in entry && typeof entry["startDate"] === "string") {
-  // entry["startDate"] = new Date(entry["startDate"]);
-  // }
-  // if ("endDate" in entry && typeof entry["endDate"] === "string") {
-  // entry["endDate"] = new Date(entry["endDate"]);
-  // }
-
   return (
     <span>
       <SectionContentEntryDate date={startDate} />
@@ -94,7 +87,7 @@ function SectionContentEntry({ children }: { children: React.ReactNode }) {
 
 const sectionContentVariants = cva("", {
   variants: {
-    type: {
+    sectionType: {
       row: "",
       list: "",
       grid: "grid grid-cols-3 gap-4 place-content-between",
@@ -104,13 +97,17 @@ const sectionContentVariants = cva("", {
 });
 
 function SectionContent({
-  type,
+  sectionType,
   children,
 }: {
-  type?: ResumeSectionType["type"];
+  sectionType?: ResumeSectionType["sectionType"];
   children: React.ReactNode;
 }) {
-  return <div className={cn(sectionContentVariants({ type }))}>{children}</div>;
+  return (
+    <div className={cn(sectionContentVariants({ sectionType }))}>
+      {children}
+    </div>
+  );
 }
 
 function Section({ children }: { children: React.ReactNode }) {

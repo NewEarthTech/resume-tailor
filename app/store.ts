@@ -7,7 +7,9 @@ import { createSelectors } from "@/lib/zustand";
 
 const title = z.string();
 const include = z.boolean().default(true);
-const type = z.enum(["row", "list", "grid", "block"]);
+export const sectionType = z.enum(["row", "list", "grid", "block"]);
+
+export type SectionType = z.infer<typeof sectionType>;
 
 export const contactInformationEntry = z.object({
   include,
@@ -28,7 +30,8 @@ export type ContactInformationEntry = z.infer<typeof contactInformationEntry>;
 
 const contactInformation = z.object({
   title,
-  type,
+  sectionType,
+  include,
   entries: z.array(contactInformationEntry),
 });
 
@@ -37,20 +40,27 @@ export type ContactInformation = z.infer<typeof contactInformation>;
 const resumeSectionEntry = z.object({
   include,
   title,
-  type,
+  sectionType,
   entity: z.string().optional(),
-  summary: z.string().optional(),
+  summary: z.string().min(50).max(5000).optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   details: z.string().array().optional(),
 });
+
+const ResumeEntryGeneric = z.union([
+  contactInformationEntry,
+  resumeSectionEntry,
+]);
+
+export type ResumeEntryGeneric = z.infer<typeof ResumeEntryGeneric>;
 
 export type ResumeSectionEntry = z.infer<typeof resumeSectionEntry>;
 
 const resumeSection = z.object({
   include,
   title,
-  type,
+  sectionType,
   entries: z.array(resumeSectionEntry).optional(),
 });
 
@@ -85,15 +95,11 @@ const useStoreBase = create<ResumeState & ResumeActions>()(
   persist(
     (set, get) => ({
       ...DefaultResume,
-      // update: (path: string, value: FieldValueDataTypes) =>
-      //   set(O.set(O.optic<ResumeState>().path(path))(value)),
       update: (path: string, value: FieldValueDataTypes) => {
         console.log("path", path);
         console.log("value", value);
-        // set((state) => O.set(O.optic<ResumeState>().path(path))(value)(state));
-        // const optic = O.optic<ResumeState>().path(path);
-        // set((state) => optic.set(value)(state));
-        // get((state) => O.get(optic)(state)),
+        // get(O.get(O.optic<ResumeState>().path(path)));
+        // return set(O.set(O.optic<ResumeState>().path(path))(value));
       },
     }),
     {
