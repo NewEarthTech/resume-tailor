@@ -1,15 +1,18 @@
 import { Fragment } from "react";
-import { FieldValueDataTypes } from "@/app/store";
+import {
+  FieldValueDataTypes,
+  resumeState,
+  useStore,
+  type ResumeState,
+} from "@/app/store";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { titleCase } from "@/lib/utils";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormField, FormItem } from "@/components/ui/form";
-import { titleCase } from "@/lib/utils";
-import { useForm } from "react-hook-form";
-import { resumeState, type ResumeState } from "@/app/store";
-import * as z from "zod";
-import { FormControl } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { useStore } from "@/app/store";
 
 const ToDoComponent = ({ value }: { value: FieldValueDataTypes }) => {
   return (
@@ -33,8 +36,8 @@ const ResumeFormField = ({
   value: FieldValueDataTypes;
   path: string;
 }) => {
-    const { update } = useStore();
-    if (fieldName === "include") return null;
+  const { update } = useStore();
+  if (fieldName === "include") return null;
   return (
     <FormField
       name={fieldName as keyof ResumeState}
@@ -47,24 +50,24 @@ const ResumeFormField = ({
         };
         return (
           <FormItem className="space-y-2">
-              <div className="grid w-full gap-1.5 mb-2">
-                <Label htmlFor={field.name}>{titleCase(fieldName)}</Label>
-                <FormControl>
-                  {typeof value === "string" ? (
-                    fieldName === "summary" ? (
-                      <Textarea
-                        placeholder="Type your message here."
-                        value={value}
-                        onChange={field.onChange}
-                      />
-                    ) : (
-                      <Input value={value} onChange={field.onChange} />
-                    )
+            <div className="mb-2 grid w-full gap-1.5">
+              <Label htmlFor={field.name}>{titleCase(fieldName)}</Label>
+              <FormControl>
+                {typeof value === "string" ? (
+                  fieldName === "summary" ? (
+                    <Textarea
+                      placeholder="Type your message here."
+                      value={value}
+                      onChange={field.onChange}
+                    />
                   ) : (
-                    <ToDoComponent value={value} />
-                  )}
-                </FormControl>
-              </div>
+                    <Input value={value} onChange={field.onChange} />
+                  )
+                ) : (
+                  <ToDoComponent value={value} />
+                )}
+              </FormControl>
+            </div>
           </FormItem>
         );
       }}
