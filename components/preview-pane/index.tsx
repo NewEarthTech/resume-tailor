@@ -7,22 +7,22 @@ import React, {
   JSXElementConstructor,
   Ref,
 } from "react";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { useMeasure } from "@uidotdev/usehooks";
-import {
-  SectionTitle,
-  SectionContentEntryTitle,
-  SectionContentEntrySubTitle,
-  SectionContentEntryDateSpan,
-  SectionContentEntrySummary,
-  SectionContentEntryDetails,
-  SectionContentEntryDetail,
-  SectionContentEntry,
-  SectionContent,
-  Section,
-} from "./section";
 import { ResumeSection, ResumeSectionEntry, useStore } from "@/app/store";
+import { useMeasure } from "@uidotdev/usehooks";
 
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import {
+  Section,
+  SectionContent,
+  SectionContentEntry,
+  SectionContentEntryDateSpan,
+  SectionContentEntryDetail,
+  SectionContentEntryDetails,
+  SectionContentEntrySubTitle,
+  SectionContentEntrySummary,
+  SectionContentEntryTitle,
+  SectionTitle,
+} from "./section";
 import { ContactInfo } from "./section/contact-info";
 
 const PPI = 96;
@@ -113,11 +113,11 @@ export function PreviewPane() {
   return (
     <div
       ref={ref as Ref<HTMLDivElement>}
-      className="w-full bg-muted shadow-md border-border border"
+      className="sticky top-0 w-full border border-border bg-muted shadow-md"
     >
       <AspectRatio
         ratio={8.5 / 11}
-        className="bg-card w-full"
+        className="w-full bg-card"
         style={{
           fontSize: `${scale * 16}px`,
           padding: `${scale * PPI}px`,

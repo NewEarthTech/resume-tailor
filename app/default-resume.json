@@ -3,10 +3,11 @@
   "resumeId": "al50d4das9kd5sjfavie",
   "contactInformation": {
     "title": "Contact Information",
-    "type": "row",
+    "sectionType": "row",
     "include": true,
     "entries": [
       {
+        "title": "Contact Information",
         "include": true,
         "myName": "John Carmack",
         "jobTitle": "Software Engineer",
@@ -22,11 +23,12 @@
   },
   "sections": [
     {
-      "title": "Summary",
+      "title": "Professional Summary",
       "type": "block",
       "include": true,
       "entries": [
         {
+          "title": "Summary",
           "include": true,
           "summary": "Enthusiastic software engineer with a passion for learning new technologies."
         }
