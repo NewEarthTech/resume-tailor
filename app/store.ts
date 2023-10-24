@@ -47,8 +47,8 @@ const resumeSectionEntry = z.object({
   sectionType: sectionType.optional().default("list"),
   entity: z.string().optional(),
   summary: z.string().max(5000).optional(),
-  startDate: z.coerce.date().optional(),
-  endDate: z.coerce.date().optional(),
+  startDate: z.coerce.date().or(z.date()).optional(),
+  endDate: z.coerce.date().or(z.date()).optional(),
   details: z.string().array().optional(),
 });
 
@@ -83,6 +83,8 @@ const fieldValueDataTypes = z.union([
   z.string(),
   z.array(z.string()),
   z.boolean(),
+  z.date(),
+  z.coerce.date(),
 ]);
 
 type FieldValueDataTypes = z.infer<typeof fieldValueDataTypes>;

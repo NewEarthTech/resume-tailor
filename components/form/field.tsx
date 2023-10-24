@@ -6,6 +6,8 @@ import {
   type ResumeState,
 } from "@/app/store";
 import { cva } from "class-variance-authority";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -14,6 +16,10 @@ import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "../ui/button";
+import { Calendar } from "../ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { DatePicker } from "./datepicker";
 
 const ToDoComponent = ({ value }: { value: FieldValueDataTypes }) => {
   return (
@@ -24,6 +30,15 @@ const ToDoComponent = ({ value }: { value: FieldValueDataTypes }) => {
       <Input value={value.toString()} disabled />
     </Fragment>
   );
+};
+
+const FieldMap = {
+  string: Input,
+  number: Input,
+  boolean: Input,
+  date: DatePicker,
+  array: ToDoComponent,
+  object: ToDoComponent,
 };
 
 const exclude: {
@@ -65,6 +80,13 @@ const ResumeFormField = ({
                       placeholder="Type your message here."
                       value={value}
                       onChange={field.onChange}
+                    />
+                  ) : fieldName === ("startDate" as keyof ResumeState) ||
+                    fieldName === ("endDate" as keyof ResumeState) ? (
+                    <DatePicker
+                      value={new Date(value)}
+                      form={form}
+                      path={path as keyof ResumeState}
                     />
                   ) : (
                     <Input value={value} onChange={field.onChange} />

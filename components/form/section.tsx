@@ -57,7 +57,7 @@ export function ResumeFormSection({
     <Accordion type="single" collapsible>
       <AccordionItem
         value={`${path}.accordion`}
-        className="transition-all [&[data-state=open]]:rounded-sm [&[data-state=open]]:bg-popover [&[data-state=open]]:drop-shadow-sm"
+        className="transition-all [&[data-state=open]]:rounded-lg [&[data-state=open]]:bg-background"
       >
         <CardHeader className="relative flex flex-row items-center gap-3">
           <Checkbox
@@ -69,7 +69,7 @@ export function ResumeFormSection({
                 e as keyof ResumeState["sections"][number],
               );
             }}
-            className="bg-background"
+            className=""
           />
           <AccordionTrigger
             noIcon

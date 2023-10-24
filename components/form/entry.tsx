@@ -66,7 +66,8 @@ export function ResumeFormSectionEntry({
               <h4 className="overflow-hidden text-sm font-medium">
                 {!!entry.jobTitle
                   ? entry.jobTitle
-                  : entry.summary || entry.entity}
+                  : // @ts-expect-error
+                    entry.summary || entry.entity}
               </h4>
             </Label>
           </AccordionTrigger>
