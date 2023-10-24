@@ -110,11 +110,11 @@ export function PreviewPane() {
   return (
     <div
       ref={ref as Ref<HTMLDivElement>}
-      className="sticky top-0 w-full border border-border bg-muted shadow-md"
+      className="sticky top-0 w-full border border-border bg-muted shadow-none print:m-0 print:border-none print:p-0 print:drop-shadow-none"
     >
       <AspectRatio
         ratio={8.5 / 11}
-        className="w-full bg-card"
+        className="bg-card"
         style={{
           fontSize: `${scale * 16}px`,
           padding: `${scale * PPI}px`,

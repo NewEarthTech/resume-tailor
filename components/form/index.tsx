@@ -56,7 +56,7 @@ export function ResumeForm() {
             />
           );
         })}
-        <div className="flex justify-stretch gap-4">
+        <div className="mx-4 flex justify-stretch gap-4">
           <Button
             variant="destructive"
             type="reset"

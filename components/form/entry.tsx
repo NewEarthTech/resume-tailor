@@ -63,7 +63,7 @@ export function ResumeFormSectionEntry({
               <h3 className="overflow-hidden whitespace-normal text-base font-semibold">
                 {!!entry.myName ? entry.myName : entry.title}
               </h3>
-              <h4 className="overflow-hidden text-sm font-medium">
+              <h4 className="line-clamp-2 overflow-hidden text-sm font-medium">
                 {!!entry.jobTitle
                   ? entry.jobTitle
                   : // @ts-expect-error
