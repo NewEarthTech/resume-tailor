@@ -5,6 +5,7 @@ import {
   DefaultResume,
   resumeState,
   useStore,
+  type ResumeSectionEntry,
   type ResumeState,
 } from "@/app/store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,20 +24,6 @@ export function ResumeForm() {
       ...DefaultResume,
       resumeName: `${new Date().toISOString().substring(0, 10)}-`,
       resumeId: crypto.randomUUID(),
-    },
-    values: {
-      sections: Object.values(sections).map((section, i) => {
-        return {
-          entries: Object.values(section.entries || {}).map((entry) => {
-            return {
-              id: crypto.randomUUID(),
-              ...entry,
-            };
-          }),
-          ...section,
-        };
-      }),
-      ...state,
     },
   });
   const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
@@ -61,11 +48,11 @@ export function ResumeForm() {
             <ResumeFormSection
               path={`sections.${i}`}
               key={`sections.${i}.root`}
-              form={form}
               title={section.title}
               sectionType={section.sectionType}
               entries={section.entries || []}
               include={section.include}
+              form={form}
             />
           );
         })}

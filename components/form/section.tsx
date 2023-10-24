@@ -54,15 +54,14 @@ export function ResumeFormSection({
 }) {
   const { update } = useStore();
   return (
-    // <Accordion
-    //   type="single"
-    //   collapsible
-    //   defaultValue="contactInformation.accordionItem"
-    // >
-    <Card>
-      {/* <AccordionItem value={"acc"}> */}
-      <CardHeader className="relative">
-        <div className="flex items-center justify-start gap-3">
+    <Accordion
+      type="single"
+      collapsible
+      defaultValue="contactInformation.accordion"
+    >
+      {/* <Card> */}
+      <AccordionItem value={`${path}.accordion`}>
+        <CardHeader className="relative flex flex-row items-center gap-3">
           <Checkbox
             checked={include}
             onCheckedChange={(e) => {
@@ -74,67 +73,72 @@ export function ResumeFormSection({
             }}
             className="bg-background"
           />
-          {/* <AccordionTrigger
-            count={entries.length}
-            className="my-0 flex cursor-pointer items-center justify-between py-1 open:pb-2"
-          > */}
-          <CardTitle className=" flex flex-row items-start justify-between gap-x-20 text-lg">
-            {title}
-          </CardTitle>
-          {/* </AccordionTrigger> */}
-        </div>
-      </CardHeader>
-      {/* <AccordionContent className="relative"> */}
-      <Separator className="mx-5 border-[1px]" />
-      <CardContent>
-        {/* <Accordion
-          type="single"
-          collapsible
-          defaultValue="contactInformation.entries.0.accordionItem"
-        > */}
-        {entries?.map((entry: ResumeEntryGeneric, i: number) => (
-          <ResumeFormSectionEntry
-            key={`${path}.entries.${i}.formSectionEntryMap`}
-            path={`${path}.entries.${i}`}
-            form={form}
-            entry={entry}
-          />
-        ))}
-        {/* </Accordion> */}
-      </CardContent>
-      <CardFooter className="flex justify-end">
-        <Select
-          value={sectionType}
-          onValueChange={(e) => {
-            update(`${path}.type`, e);
-            form.setValue(
-              `${path}.type` as keyof ResumeState,
-              e as keyof ResumeState["sections"][0],
-            );
-          }}
-        >
-          <SelectTrigger className="right-0 top-[.45rem] m-0 mx-[1.1rem]">
-            <SelectValue className="capitalize" placeholder={"Layout"} />
-          </SelectTrigger>
-          <SelectContent>
-            {sectionTypeSchema.options.map(
-              (typeOption: z.infer<typeof sectionTypeSchema>, i: number) => (
-                <SelectItem
-                  key={`${path}.${title}.select.type.${i}.${typeOption}`}
-                  value={typeOption}
-                  className="capitalize"
-                >
-                  {typeOption}
-                </SelectItem>
-              ),
-            )}
-          </SelectContent>
-        </Select>
-        <Button variant="default">Add Entry</Button>
-      </CardFooter>
-      {/* </AccordionContent> */}
-      {/* </AccordionItem> */}
-    </Card>
-    // </Accordion>
+          <AccordionTrigger
+            // count={entries.length}
+            className="my-0 flex cursor-pointer flex-row items-center gap-x-1 justify-self-start py-1 open:pb-2"
+            // className="text-left"
+          >
+            <CardTitle className="text-lg">{title}</CardTitle>
+          </AccordionTrigger>
+          <Select
+            value={sectionType}
+            onValueChange={(e) => {
+              update(`${path}.sectionType`, e);
+              form.setValue(
+                `${path}.sectionType` as keyof ResumeState,
+                e as keyof ResumeState["sections"][0],
+              );
+            }}
+          >
+            <SelectTrigger className="m-0 ml-[1.1rem] w-32 capitalize">
+              <SelectValue className="capitalize" placeholder={"Layout"} />
+            </SelectTrigger>
+            <SelectContent>
+              {sectionTypeSchema.options.map(
+                (typeOption: z.infer<typeof sectionTypeSchema>, i: number) => (
+                  <SelectItem
+                    key={`${path}.${title}.select.type.${i}.${typeOption}`}
+                    value={typeOption}
+                    className="capitalize"
+                  >
+                    {typeOption}
+                  </SelectItem>
+                ),
+              )}
+            </SelectContent>
+          </Select>
+        </CardHeader>
+        <AccordionContent className="relative">
+          <Separator className="mx-5 border-[1px]" />
+          <CardContent>
+            <Accordion
+              type="single"
+              collapsible
+              defaultValue="contactInformation.entries.0.accordionItem"
+            >
+              {entries?.map((entry: ResumeEntryGeneric, i: number) => (
+                <ResumeFormSectionEntry
+                  key={`${path}.entries.${i}.formSectionEntryMap`}
+                  path={`${path}.entries.${i}`}
+                  form={form}
+                  entry={entry}
+                />
+              ))}
+            </Accordion>
+          </CardContent>
+          <CardFooter className="justify-end gap-4">
+            <Button asChild>
+              <AccordionTrigger className="[&[data-state=open]>svg]:-rotate-180">
+                Close Pane
+              </AccordionTrigger>
+            </Button>
+            <Button className="whitespace-nowrap" variant="default">
+              + Add Entry
+            </Button>
+          </CardFooter>
+        </AccordionContent>
+      </AccordionItem>
+      {/* </Card> */}
+    </Accordion>
   );
 }

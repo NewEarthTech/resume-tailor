@@ -5,10 +5,11 @@ import {
   useStore,
   type ResumeState,
 } from "@/app/store";
+import { cva } from "class-variance-authority";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { titleCase } from "@/lib/utils";
+import { cn, titleCase } from "@/lib/utils";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,6 +26,12 @@ const ToDoComponent = ({ value }: { value: FieldValueDataTypes }) => {
   );
 };
 
+const exclude: {
+  [key: string]: boolean;
+} = {
+  include: true,
+};
+
 const ResumeFormField = ({
   form,
   fieldName,
@@ -32,12 +39,12 @@ const ResumeFormField = ({
   path,
 }: {
   form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
-  fieldName: string;
+  fieldName: keyof ResumeState;
   value: FieldValueDataTypes;
   path: string;
 }) => {
   const { update } = useStore();
-  if (fieldName === "include") return null;
+  if (exclude[fieldName]) return null;
   return (
     <FormField
       name={fieldName as keyof ResumeState}
@@ -53,7 +60,7 @@ const ResumeFormField = ({
               <Label htmlFor={field.name}>{titleCase(fieldName)}</Label>
               <FormControl>
                 {typeof value === "string" ? (
-                  fieldName === "summary" ? (
+                  fieldName === ("summary" as keyof ResumeState) ? (
                     <Textarea
                       placeholder="Type your message here."
                       value={value}

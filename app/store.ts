@@ -32,7 +32,7 @@ export type ContactInformationEntry = z.infer<typeof contactInformationEntry>;
 
 const contactInformation = z.object({
   title,
-  sectionType,
+  sectionType: sectionType.optional().default("row"),
   include,
   entries: z.array(contactInformationEntry),
 });
@@ -42,9 +42,9 @@ export type ContactInformation = z.infer<typeof contactInformation>;
 const resumeSectionEntry = z.object({
   include,
   title,
-  sectionType,
+  sectionType: sectionType.optional().default("list"),
   entity: z.string().optional(),
-  summary: z.string().min(50).max(5000).optional(),
+  summary: z.string().max(5000).optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   details: z.string().array().optional(),
