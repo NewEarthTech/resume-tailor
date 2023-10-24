@@ -67,7 +67,6 @@ export function ResumeFormSectionEntry({
                 {!!entry.jobTitle
                   ? entry.jobTitle
                   : entry.summary || entry.entity}
-                {entry.entity}
               </h4>
             </Label>
           </AccordionTrigger>

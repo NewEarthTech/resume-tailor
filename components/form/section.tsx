@@ -54,13 +54,11 @@ export function ResumeFormSection({
 }) {
   const { update } = useStore();
   return (
-    <Accordion
-      type="single"
-      collapsible
-      defaultValue="contactInformation.accordion"
-    >
-      {/* <Card> */}
-      <AccordionItem value={`${path}.accordion`}>
+    <Accordion type="single" collapsible>
+      <AccordionItem
+        value={`${path}.accordion`}
+        className="transition-all [&[data-state=open]]:rounded-sm [&[data-state=open]]:bg-popover [&[data-state=open]]:drop-shadow-sm"
+      >
         <CardHeader className="relative flex flex-row items-center gap-3">
           <Checkbox
             checked={include}
@@ -74,11 +72,10 @@ export function ResumeFormSection({
             className="bg-background"
           />
           <AccordionTrigger
-            // count={entries.length}
+            noIcon
             className="my-0 flex cursor-pointer flex-row items-center gap-x-1 justify-self-start py-1 open:pb-2"
-            // className="text-left"
           >
-            <CardTitle className="text-lg">{title}</CardTitle>
+            <CardTitle className="text-left text-lg">{title}</CardTitle>
           </AccordionTrigger>
           <Select
             value={sectionType}
@@ -127,7 +124,7 @@ export function ResumeFormSection({
             </Accordion>
           </CardContent>
           <CardFooter className="justify-end gap-4">
-            <Button asChild>
+            <Button asChild variant="outline">
               <AccordionTrigger className="[&[data-state=open]>svg]:-rotate-180">
                 Close Pane
               </AccordionTrigger>
@@ -138,7 +135,6 @@ export function ResumeFormSection({
           </CardFooter>
         </AccordionContent>
       </AccordionItem>
-      {/* </Card> */}
     </Accordion>
   );
 }

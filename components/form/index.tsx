@@ -33,7 +33,7 @@ export function ResumeForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col space-y-4"
+        className="flex flex-col gap-2"
       >
         <ResumeFormSection
           title={contactInformation.title}
@@ -56,15 +56,16 @@ export function ResumeForm() {
             />
           );
         })}
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-stretch gap-4">
           <Button
             variant="destructive"
             type="reset"
+            className="w-full"
             onClick={(e) => form.clearErrors()}
           >
             Reset
           </Button>
-          <Button variant="default" type="submit">
+          <Button variant="default" className="w-full" type="submit">
             Submit
           </Button>
         </div>

@@ -39,14 +39,16 @@ const contactInformation = z.object({
 
 export type ContactInformation = z.infer<typeof contactInformation>;
 
+const stringToDate = z.string().datetime();
+
 const resumeSectionEntry = z.object({
   include,
   title,
   sectionType: sectionType.optional().default("list"),
   entity: z.string().optional(),
   summary: z.string().max(5000).optional(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
   details: z.string().array().optional(),
 });
 
@@ -94,21 +96,21 @@ type ResumeActions = z.infer<typeof ResumeActions>;
 const DefaultResume = defaultResume as unknown as ResumeState;
 
 const useStoreBase = create<ResumeState & ResumeActions>()(
-  persist(
-    (set, get) => ({
-      ...DefaultResume,
-      update: (path: string, value: FieldValueDataTypes) => {
-        return set(O.set(O.optic<ResumeState>().path(path))(value));
-      },
-    }),
-    {
-      name: "resume-tailor-storage",
-      storage: createJSONStorage(() => localStorage),
-      version: 0,
-      merge: (persistedState, currentState) =>
-        _.merge(persistedState, currentState),
+  // persist(
+  (set, get) => ({
+    ...DefaultResume,
+    update: (path: string, value: FieldValueDataTypes) => {
+      return set(O.set(O.optic<ResumeState>().path(path))(value));
     },
-  ),
+  }),
+  //   {
+  //     name: "resume-tailor-storage",
+  //     storage: createJSONStorage(() => localStorage),
+  //     version: 0,
+  //     merge: (persistedState, currentState) =>
+  //       _.merge(persistedState, currentState),
+  //   },
+  // ),
 );
 
 const useStore = createSelectors(useStoreBase);
