@@ -24,7 +24,7 @@
   "sections": [
     {
       "title": "Professional Summary",
-      "type": "block",
+      "sectionType": "block",
       "include": true,
       "entries": [
         {
@@ -36,7 +36,7 @@
     },
     {
       "title": "Work Experience",
-      "type": "list",
+      "sectionType": "list",
       "include": true,
       "entries": [
         {
@@ -56,7 +56,7 @@
     },
     {
       "title": "Education",
-      "type": "list",
+      "sectionType": "list",
       "include": true,
       "entries": [
         {
@@ -70,7 +70,7 @@
     },
     {
       "title": "Skills",
-      "type": "grid",
+      "sectionType": "grid",
       "include": true,
       "entries": [
         {

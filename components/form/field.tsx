@@ -44,13 +44,12 @@ const ResumeFormField = ({
       control={form.control}
       render={({ field }) => {
         field.onChange = (e) => {
-          console.log("e.target.value", e.target.value);
           update(path, e.target.value as FieldValueDataTypes);
           form.setValue(path as keyof ResumeState, e.target.value);
         };
         return (
-          <FormItem className="space-y-2">
-            <div className="mb-2 grid w-full gap-1.5">
+          <FormItem>
+            <div className="mb-4 grid w-full gap-1.5">
               <Label htmlFor={field.name}>{titleCase(fieldName)}</Label>
               <FormControl>
                 {typeof value === "string" ? (

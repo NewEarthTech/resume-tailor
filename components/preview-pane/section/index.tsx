@@ -1,11 +1,12 @@
-import { cn } from "@/lib/utils";
-import { cva } from "class-variance-authority";
-import type { ResumeSection as ResumeSectionType } from "@/app/store";
 import React, { useEffect, useState } from "react";
+import type { ResumeSection as ResumeSectionType } from "@/app/store";
+import { cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="font-semibold uppercase border-b-2 border-border text-[1.125em]">
+    <h2 className="border-b-2 border-border text-[1.125em] font-semibold uppercase">
       {children}
     </h2>
   );
@@ -13,7 +14,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 function SectionContentEntryTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="flex text-[1.1em] justify-between font-semibold">
+    <h3 className="flex justify-between text-[1.1em] font-semibold">
       {children}
     </h3>
   );
@@ -52,7 +53,7 @@ function SectionContentEntryDetails({
 }: {
   children: React.ReactNode;
 }) {
-  return <ul className="list-disc list-inside text-[0.9em]">{children}</ul>;
+  return <ul className="list-inside list-disc text-[0.9em]">{children}</ul>;
 }
 
 function SectionContentEntryDate({ date }: { date?: Date | string }) {
@@ -90,7 +91,7 @@ const sectionContentVariants = cva("", {
     sectionType: {
       row: "",
       list: "",
-      grid: "grid grid-cols-3 gap-4 place-content-between",
+      grid: "grid auto-cols-max grid-flow-col place-content-between gap-4",
       block: "",
     },
   },
@@ -100,7 +101,7 @@ function SectionContent({
   sectionType,
   children,
 }: {
-  sectionType?: ResumeSectionType["sectionType"];
+  sectionType: ResumeSectionType["sectionType"];
   children: React.ReactNode;
 }) {
   return (

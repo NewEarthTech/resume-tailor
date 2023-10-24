@@ -2,12 +2,11 @@
 
 import React, {
   ElementType,
-  Fragment,
   FunctionComponent,
   JSXElementConstructor,
   Ref,
 } from "react";
-import { ResumeSection, ResumeSectionEntry, useStore } from "@/app/store";
+import { useStore, type ResumeSectionEntry } from "@/app/store";
 import { useMeasure } from "@uidotdev/usehooks";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -50,9 +49,11 @@ function PreviewPaneSectionEntry({
   startDate,
   endDate,
   include,
+  j,
   ...fields
 }: ResumeSectionEntry & {
   sectionType: string;
+  j: number;
 }) {
   return (
     <NullCheck As={SectionContentEntry} variable={include}>
@@ -85,21 +86,17 @@ function PreviewPaneSectionEntry({
   );
 }
 
-function PreviewPaneSection({
-  section,
-  path,
-}: {
-  section: ResumeSection;
-  path: string;
-}) {
-  const { title, sectionType, entries } = section;
+function PreviewPaneSection({ i, path }: { i: number; path: string }) {
+  const { title, sectionType, entries, include } = useStore(
+    (store) => store.sections[i],
+  );
+  if (!include) return null;
   return (
     <Section>
       <SectionTitle>{title}</SectionTitle>
       <SectionContent sectionType={sectionType}>
-        {JSON.stringify(section.sectionType)}
-        {entries?.map((entry, j) => (
-          <PreviewPaneSectionEntry key={j} {...entry} />
+        {Object.values(entries || [])?.map((entry, j) => (
+          <PreviewPaneSectionEntry key={j} j={j} {...entry} />
         ))}
       </SectionContent>
     </Section>
@@ -107,9 +104,9 @@ function PreviewPaneSection({
 }
 
 export function PreviewPane() {
+  const sections = useStore((store) => store.sections);
   const [ref, { width }] = useMeasure();
   const scale = width ? width / PRINT_WIDTH : 0;
-  const { sections } = useStore((state) => state);
   return (
     <div
       ref={ref as Ref<HTMLDivElement>}
@@ -125,15 +122,14 @@ export function PreviewPane() {
         }}
       >
         <ContactInfo scale={scale} />
-        <NullCheck As={Fragment} variable={sections?.length > 0}>
-          {sections?.map((section, i) => (
+        {Object.values(sections)?.length > 0 &&
+          Object.values(sections)?.map((section, i) => (
             <PreviewPaneSection
-              section={section}
-              key={`section-${i}-rooot-preview-pane`}
+              key={`sections.${i}.PreviewPaneSection`}
+              i={i}
               path={`sections.${i}`}
             />
           ))}
-        </NullCheck>
       </AspectRatio>
     </div>
   );
