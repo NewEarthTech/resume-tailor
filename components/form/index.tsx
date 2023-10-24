@@ -16,12 +16,27 @@ import { Form } from "@/components/ui/form";
 import { ResumeFormSection } from "./section";
 
 export function ResumeForm() {
+  const { sections, ...state } = useStore();
   const form = useForm<z.infer<typeof resumeState>>({
     resolver: zodResolver(resumeState),
     defaultValues: {
       ...DefaultResume,
       resumeName: `${new Date().toISOString().substring(0, 10)}-`,
       resumeId: crypto.randomUUID(),
+    },
+    values: {
+      sections: Object.values(sections).map((section, i) => {
+        return {
+          entries: Object.values(section.entries || {}).map((entry) => {
+            return {
+              id: crypto.randomUUID(),
+              ...entry,
+            };
+          }),
+          ...section,
+        };
+      }),
+      ...state,
     },
   });
   const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
