@@ -21,15 +21,16 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
-    "@react-pdf/renderer": "^3.1.13",
-    "@uidotdev/usehooks": "^2.4.0",
+    "@react-pdf/renderer": "^3.1.14",
+    "@uidotdev/usehooks": "^2.4.1",
+    "@vercel/postgres": "^0.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.288.0",
-    "next": "13.5.6",
+    "lucide-react": "^0.290.0",
+    "next": "14.0.0",
     "optics-ts": "^2.4.1",
     "prettier-plugin-tailwindcss": "^0.5.6",
     "react": "^18",
@@ -39,7 +40,7 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4",
-    "zustand": "^4.4.3"
+    "zustand": "^4.4.4"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.200",
@@ -48,7 +49,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "eslint": "^8",
-    "eslint-config-next": "13.5.6",
+    "eslint-config-next": "14.0.0",
     "postcss": "^8",
     "tailwindcss": "^3",
     "typescript": "^5"
