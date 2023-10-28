@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { OrganizationSwitcher, SignedIn, UserButton } from "@clerk/nextjs";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -41,24 +47,13 @@ export function Menu({ className }: { className?: string }) {
           <Link href={href}>{label}</Link>
         </Button>
       ))}
-                  <SignedIn>
-              <div className="hidden sm:block">
-                <OrganizationSwitcher afterCreateOrganizationUrl="/dashboard" />
-              </div>
-              <div className="block sm:hidden">
-                <OrganizationSwitcher
-                  afterCreateOrganizationUrl="/dashboard"
-                  appearance={{
-                    elements: {
-                      organizationSwitcherTriggerIcon: `hidden`,
-                      organizationPreviewTextContainer: `hidden`,
-                      organizationSwitcherTrigger: `pr-0`,
-                    },
-                  }}
-                />
-              </div>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
+      <SignedIn>
+        <UserButton afterSignOutUrl="/" />
+      </SignedIn>
+      <SignedOut>
+        <SignUpButton />
+        <SignInButton />
+      </SignedOut>
     </nav>
   );
 }

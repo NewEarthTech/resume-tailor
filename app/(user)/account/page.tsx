@@ -12,5 +12,5 @@ export default async function Page() {
   const user = await currentUser();
   // Use `user` to render user details or create UI elements
 
-  return <pre>{JSON.stringify(user, null, 2)}</pre>;
+  return <>/account</>;
 }
