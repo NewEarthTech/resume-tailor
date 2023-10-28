@@ -43,7 +43,7 @@ export function ResumeForm() {
           include={contactInformation.include}
           form={form}
         />
-        {form.getValues().sections.map((section, i) => {
+        {/* {form.getValues().sections.map((section, i) => {
           return (
             <ResumeFormSection
               path={`sections.${i}`}
@@ -55,7 +55,7 @@ export function ResumeForm() {
               form={form}
             />
           );
-        })}
+        })} */}
         <div className="mx-4 flex justify-stretch gap-4">
           <Button
             variant="destructive"

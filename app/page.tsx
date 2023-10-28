@@ -1,5 +1,5 @@
-import { ResumeForm } from "@/components/form/index";
 import { PreviewPane } from "@/components/preview-pane";
+import { ResumeForm } from "@/components/resume-form/index";
 
 export default function ResumeTailor() {
   return (
