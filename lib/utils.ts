@@ -1,5 +1,6 @@
+import { clsx, type ClassValue } from "clsx";
 import { camelCase, startCase } from "lodash";
-import { type ClassValue, clsx } from "clsx";
+import ms from "ms";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -7,3 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const titleCase = (str: string) => startCase(camelCase(str));
+
+export const timeAgo = (timestamp: Date, timeOnly?: boolean): string => {
+  if (!timestamp) return "never";
+  return `${ms(Date.now() - new Date(timestamp).getTime())}${
+    timeOnly ? "" : " ago"
+  }`;
+};
