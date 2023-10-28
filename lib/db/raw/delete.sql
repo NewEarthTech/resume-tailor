@@ -13,4 +13,4 @@ DELETE FROM user_title;
 DELETE FROM user_link;
 DELETE FROM user_address;
 DELETE FROM user_email;
-DELETE FROM app_user;
+DELETE FROM users;

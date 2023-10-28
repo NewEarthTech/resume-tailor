@@ -17,7 +17,7 @@ WITH user_and_resume AS (
         ua.google_location,
         ul.link,
         ut.title
-    FROM app_user u
+    FROM users u
     INNER JOIN resume r ON u.id = r.user_id
     LEFT JOIN user_email ue ON r.user_email = ue.id
     LEFT JOIN user_address ua ON r.user_address = ua.id

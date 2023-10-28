@@ -1,5 +1,5 @@
--- Seed for app_user
-INSERT INTO app_user (name, email, password_hash) VALUES 
+-- Seed for users
+INSERT INTO users (name, email, password_hash) VALUES 
 ('John Doe', 'john@example.com', 'hashedpassword123'),
 ('Jane Smith', 'jane@example.com', 'hashedpassword456');
 

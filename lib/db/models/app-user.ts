@@ -3,7 +3,7 @@ import { integer, jsonb, pgTable, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-const AppUserTable = pgTable("app_user", {
+const UsersTable = pgTable("users", {
   id: serial("id").primaryKey(),
   name: text("name"),
   email: text("email").unique().notNull(),
@@ -12,37 +12,37 @@ const AppUserTable = pgTable("app_user", {
 
 const UserEmailTable = pgTable("user_email", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => AppUserTable.id),
+  user_id: integer("user_id").references(() => UsersTable.id),
   email: text("email").notNull(),
 });
 
 const UserAddressTable = pgTable("user_address", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => AppUserTable.id),
+  user_id: integer("user_id").references(() => UsersTable.id),
   google_location: jsonb("google_location"),
 });
 
 const UserLinkTable = pgTable("user_link", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => AppUserTable.id),
+  user_id: integer("user_id").references(() => UsersTable.id),
   link: text("link").notNull(),
 });
 
 const UserTitleTable = pgTable("user_title", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => AppUserTable.id),
+  user_id: integer("user_id").references(() => UsersTable.id),
   title: text("title").notNull(),
 });
 
 // Schema for inserting a user - can be used to validate API requests
-const insertUserSchema = createInsertSchema(AppUserTable);
+const insertUserSchema = createInsertSchema(UsersTable);
 
 // Schema for selecting a user - can be used to validate API responses
-const selectUserSchema = createSelectSchema(AppUserTable);
+const selectUserSchema = createSelectSchema(UsersTable);
 
 // Type Definitions
-type AppUser = InferSelectModel<typeof AppUserTable>;
-type NewAppUser = InferInsertModel<typeof AppUserTable>;
+type Users = InferSelectModel<typeof UsersTable>;
+type NewUsers = InferInsertModel<typeof UsersTable>;
 
 type UserEmail = InferSelectModel<typeof UserEmailTable>;
 type NewUserEmail = InferInsertModel<typeof UserEmailTable>;
@@ -57,15 +57,15 @@ type UserTitle = InferSelectModel<typeof UserTitleTable>;
 type NewUserTitle = InferInsertModel<typeof UserTitleTable>;
 
 export {
-  AppUserTable,
+  UsersTable,
   UserEmailTable,
   UserAddressTable,
   UserLinkTable,
   UserTitleTable,
   insertUserSchema,
   selectUserSchema,
-  type AppUser,
-  type NewAppUser,
+  type Users,
+  type NewUsers,
   type UserEmail,
   type NewUserEmail,
   type UserAddress,

@@ -1,5 +1,5 @@
 -- Create Tables
-CREATE TABLE app_user (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     email VARCHAR(255) UNIQUE,
@@ -8,31 +8,31 @@ CREATE TABLE app_user (
 
 CREATE TABLE user_email (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES app_user(id),
+    user_id INTEGER REFERENCES users(id),
     email VARCHAR(255)
 );
 
 CREATE TABLE user_address (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES app_user(id),
+    user_id INTEGER REFERENCES users(id),
     google_location JSONB
 );
 
 CREATE TABLE user_link (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES app_user(id),
+    user_id INTEGER REFERENCES users(id),
     link TEXT
 );
 
 CREATE TABLE user_title (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES app_user(id),
+    user_id INTEGER REFERENCES users(id),
     title VARCHAR(255)
 );
 
 CREATE TABLE resume (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES app_user(id),
+    user_id INTEGER REFERENCES users(id),
     custom_url VARCHAR(255),
     user_email INTEGER REFERENCES user_email(id),
     user_address INTEGER REFERENCES user_address(id),
