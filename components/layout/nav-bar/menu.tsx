@@ -12,21 +12,13 @@ import { Button } from "@/components/ui/button";
 
 const links = [
   {
-    href: "/",
+    href: "/dashboard",
     label: "Home",
   },
-  //   {
-  //     href: "#",
-  //     label: "About",
-  //   },
-  //   {
-  //     href: "#",
-  //     label: "Services",
-  //   },
-  //   {
-  //     href: "#",
-  //     label: "Contact",
-  //   },
+  {
+    href: "/resume",
+    label: "My Resumes",
+  },
 ];
 
 export function Menu({ className }: { className?: string }) {
@@ -51,8 +43,20 @@ export function Menu({ className }: { className?: string }) {
         <UserButton afterSignOutUrl="/" />
       </SignedIn>
       <SignedOut>
-        <SignUpButton />
-        <SignInButton />
+        <Button
+          className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 transition-all"
+          variant="link"
+          asChild
+        >
+          <SignUpButton />
+        </Button>
+        <Button
+          className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 transition-all"
+          variant="link"
+          asChild
+        >
+          <SignInButton />
+        </Button>
       </SignedOut>
     </nav>
   );

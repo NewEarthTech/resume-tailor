@@ -80,7 +80,7 @@ function PreviewPaneSectionEntry({
         ))}
       </NullCheck>
       <NullCheck As={"pre"} variable={Object.keys(fields).length}>
-        {JSON.stringify(fields, null, 2)}
+        {/* {JSON.stringify(fields, null, 2)} */}
       </NullCheck>
     </NullCheck>
   );

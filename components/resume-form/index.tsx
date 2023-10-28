@@ -71,7 +71,7 @@ export function ResumeForm() {
         </div>
         {Object.entries(form.formState.errors).length > 0 ? (
           <pre className="text-destructive">
-            {JSON.stringify(form.formState.errors, null, 2)}
+            {/* {JSON.stringify(form.formState.errors, null, 2)} */}
           </pre>
         ) : null}
       </form>
