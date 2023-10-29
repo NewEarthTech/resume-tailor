@@ -4,4 +4,4 @@ import { migrate } from "drizzle-orm/vercel-postgres/migrator";
 
 const db = drizzle(sql, { logger: true });
 
-async () => await migrate(db, { migrationsFolder: "./lib/db/migrations" });
+await migrate(db, { migrationsFolder: "@/db/migrations" });

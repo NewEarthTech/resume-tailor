@@ -12,7 +12,7 @@ import {
 
 const ResumeTable = pgTable("resume", {
   id: uuid("id").primaryKey().defaultRandom(),
-  user_id: uuid("user_id")
+  user_id: text("user_id")
     .references(() => UsersTable.id)
     .notNull(),
   custom_url: text("custom_url"),

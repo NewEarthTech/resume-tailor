@@ -4,33 +4,38 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 const UsersTable = pgTable("users", {
-  id: uuid("id").primaryKey(),
-  name: text("name"),
-  email: text("email").unique().notNull(),
-  password_hash: text("password_hash").notNull(),
+  id: text("id").primaryKey().notNull(),
 });
 
 const UserEmailTable = pgTable("user_email", {
-  id: serial("id").primaryKey(),
-  user_id: serial("user_id").references(() => UsersTable.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: text("user_id")
+    .references(() => UsersTable.id)
+    .notNull(),
   email: text("email").notNull(),
 });
 
 const UserAddressTable = pgTable("user_address", {
-  id: serial("id").primaryKey(),
-  user_id: serial("user_id").references(() => UsersTable.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: text("user_id")
+    .references(() => UsersTable.id)
+    .notNull(),
   google_location: jsonb("google_location"),
 });
 
 const UserLinkTable = pgTable("user_link", {
-  id: serial("id").primaryKey(),
-  user_id: serial("user_id").references(() => UsersTable.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: text("user_id")
+    .references(() => UsersTable.id)
+    .notNull(),
   link: text("link").notNull(),
 });
 
 const UserTitleTable = pgTable("user_title", {
-  id: serial("id").primaryKey(),
-  user_id: serial("user_id").references(() => UsersTable.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: text("user_id")
+    .references(() => UsersTable.id)
+    .notNull(),
   title: text("title").notNull(),
 });
 
