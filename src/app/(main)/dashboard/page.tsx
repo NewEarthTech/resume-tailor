@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { auth, currentUser } from "@clerk/nextjs";
+import { auth, currentUser, UserProfile } from "@clerk/nextjs";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -18,6 +18,7 @@ export default async function Page() {
   const initials = `${user?.firstName?.charAt(0)}${user?.lastName?.charAt(0)}`;
   return (
     <main className="w-full max-w-3xl">
+      <UserProfile />
       {user?.hasImage ? (
         <Avatar className="float-right h-64 w-64">
           <AvatarImage alt={name} src={user?.imageUrl} />
