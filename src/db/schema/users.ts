@@ -15,6 +15,14 @@ const UserEmailTable = pgTable("user_email", {
   email: text("email").notNull(),
 });
 
+const UserPhoneTable = pgTable("user_address", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: text("user_id")
+    .references(() => UsersTable.id)
+    .notNull(),
+  google_location: jsonb("google_location"),
+});
+
 const UserAddressTable = pgTable("user_address", {
   id: uuid("id").primaryKey().defaultRandom(),
   user_id: text("user_id")
@@ -52,6 +60,9 @@ type NewUsers = InferInsertModel<typeof UsersTable>;
 type UserEmail = InferSelectModel<typeof UserEmailTable>;
 type NewUserEmail = InferInsertModel<typeof UserEmailTable>;
 
+type UserPhone = InferSelectModel<typeof UserPhoneTable>;
+type NewUserPhone = InferInsertModel<typeof UserPhoneTable>;
+
 type UserAddress = InferSelectModel<typeof UserAddressTable>;
 type NewUserAddress = InferInsertModel<typeof UserAddressTable>;
 
@@ -64,6 +75,7 @@ type NewUserTitle = InferInsertModel<typeof UserTitleTable>;
 export {
   UsersTable,
   UserEmailTable,
+  UserPhoneTable,
   UserAddressTable,
   UserLinkTable,
   UserTitleTable,
@@ -73,6 +85,8 @@ export {
   type NewUsers,
   type UserEmail,
   type NewUserEmail,
+  type UserPhone,
+  type NewUserPhone,
   type UserAddress,
   type NewUserAddress,
   type UserLink,

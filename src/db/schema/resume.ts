@@ -6,6 +6,7 @@ import {
   UserAddressTable,
   UserEmailTable,
   UserLinkTable,
+  UserPhoneTable,
   UsersTable,
   UserTitleTable,
 } from "./users";
@@ -17,6 +18,7 @@ const ResumeTable = pgTable("resume", {
     .notNull(),
   custom_url: text("custom_url"),
   user_email: uuid("user_email").references(() => UserEmailTable.id),
+  user_phone: uuid("user_phone").references(() => UserPhoneTable.id),
   user_address: uuid("user_address").references(() => UserAddressTable.id),
   user_link: uuid("user_link").references(() => UserLinkTable.id),
   user_title: uuid("user_title").references(() => UserTitleTable.id),

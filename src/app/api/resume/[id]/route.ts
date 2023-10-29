@@ -20,25 +20,25 @@ export async function GET(
   );
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  const { userId } = auth();
+// export async function POST(
+//   request: NextRequest,
+//   { params }: { params: { id: string } },
+// ) {
+//   const { userId } = auth();
 
-  if (!userId) return NextResponse.redirect("/sign-in");
+//   if (!userId) return NextResponse.redirect("/sign-in");
 
-  const resume = await db
-    .select()
-    .from(ResumeTable)
-    .where(eq(ResumeTable.user_id, userId))
-    .where(eq(ResumeTable.id, params.id));
+//   const resume = await db
+//     .select()
+//     .from(ResumeTable)
+//     .where(eq(ResumeTable.user_id, userId))
+//     .where(eq(ResumeTable.id, params.id));
 
-  if (!resume) {
-    return new Response("Unauthorized", { status: 401 });
-  }
+//   if (!resume) {
+//     return new Response("Unauthorized", { status: 401 });
+//   }
 
-  const insert = insertResumeSchema.parse(request.body);
+//   const insert = insertResumeSchema.parse(request.body);
 
-  return NextResponse.json({ resume: await insertResume(insert) });
-}
+//   return NextResponse.json({ resume: await insertResume(insert) });
+// }

@@ -1,7 +1,8 @@
+import { deleteResume } from "@/db/actions/resume";
 import { Resume } from "@/db/schema/resume";
 import { type Row } from "@tanstack/react-table";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
-import { MoreHorizontal } from "lucide-react";
+import { Copy, Delete, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,15 +30,22 @@ export function ActionsMenu({ row }: { row: Row<Resume> }) {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem
+          className="flex cursor-pointer items-center gap-2"
           onClick={() => {
             copyToClipboard(`${process.env.base_url}/resume/${id}`);
           }}
         >
+          <Copy />
           Copy link URL
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>View customer</DropdownMenuItem>
-        <DropdownMenuItem>View payment details</DropdownMenuItem>
+        <DropdownMenuItem
+          className="flex cursor-pointer items-center gap-2"
+          onClick={() => deleteResume(id)}
+        >
+          <Delete />
+          Delete Resume
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

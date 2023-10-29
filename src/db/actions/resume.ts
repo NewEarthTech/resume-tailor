@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { Resume, ResumeTable } from "@/db/schema/resume";
 import { auth } from "@clerk/nextjs";
@@ -13,21 +15,46 @@ async function getResumes() {
 }
 
 async function insertResume() {
-  const { userId, user } = auth();
-  if (!userId) throw new Error("User not found");
-  const resume = db.insert(ResumeTable).values({
-    user_id: userId,
-  });
-  return Response.redirect(`/resume/${resume}`, 302);
+  try {
+    const { userId } = auth();
+    if (!userId) throw new Error("User not found");
+    const { insertedId } = (
+      await db
+        .insert(ResumeTable)
+        .values({
+          user_id: userId,
+        })
+        .returning({ insertedId: ResumeTable.id })
+    )[0];
+    if (!insertedId) throw new Error("Resume not inserted");
+    console.log("insertResume", insertedId);
+    redirect(`/resume/${insertedId}`);
+  } catch (error) {
+    console.error(error);
+    // return NextResponse.json({ error });
+  }
 }
 
-async function deleteResume({ id }: { id: string }) {
-  const { userId } = auth();
-  if (!userId) throw new Error("User not found");
-  const resume = db
-    .delete(ResumeTable)
-    .where(eq(ResumeTable.id, id))
-    .returning({ deletedId: ResumeTable.id });
+async function deleteResume(id: string) {
+  try {
+    const { userId } = auth();
+    if (!userId) throw new Error("User not found");
+    const { deletedId } = (
+      await db
+        .delete(ResumeTable)
+        .where(eq(ResumeTable.id, id))
+        .returning({ deletedId: ResumeTable.id })
+    )[0];
+    if (!deletedId) throw new Error("Resume not deleted");
+    console.log("deleteResume", deletedId);
+    revalidatePath(`/resume`);
+    revalidatePath(`/resume/${deletedId}`);
+    // return NextResponse.json({ deletedId });
+    // return Response.redirect(`${process.env.base_url}/resume`, 302);
+  } catch (error) {
+    console.error(error);
+    // return NextResponse.json({ error });
+  }
 }
 
 type GetResumesFunction = typeof getResumes;

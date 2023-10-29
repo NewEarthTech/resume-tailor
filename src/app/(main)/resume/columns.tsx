@@ -19,11 +19,11 @@ export const columns: ColumnDef<Resume>[] = [
       return (
         <Button
           key={id}
-          className="max-w-[60px] overflow-x-scroll rounded-md text-sm"
+          className="max-w-[60px] overflow-x-scroll whitespace-nowrap rounded-md text-sm"
           asChild
           variant="link"
         >
-          <Link href={`/resume/${id}`}>{id}</Link>
+          <Link href={`${process.env.base_url}/resume/${id}`}>{id}</Link>
         </Button>
       );
     },
@@ -59,6 +59,12 @@ export const columns: ColumnDef<Resume>[] = [
     accessorKey: "user_email",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
+    ),
+  },
+  {
+    accessorKey: "user_phone",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Phone" />
     ),
   },
   {
