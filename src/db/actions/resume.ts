@@ -28,7 +28,7 @@ async function insertResume() {
     )[0];
     if (!insertedId) throw new Error("Resume not inserted");
     console.log("insertResume", insertedId);
-    redirect(`/resume/${insertedId}`);
+    revalidatePath(`/resume`);
   } catch (error) {
     console.error(error);
     // return NextResponse.json({ error });
@@ -48,9 +48,6 @@ async function deleteResume(id: string) {
     if (!deletedId) throw new Error("Resume not deleted");
     console.log("deleteResume", deletedId);
     revalidatePath(`/resume`);
-    revalidatePath(`/resume/${deletedId}`);
-    // return NextResponse.json({ deletedId });
-    // return Response.redirect(`${process.env.base_url}/resume`, 302);
   } catch (error) {
     console.error(error);
     // return NextResponse.json({ error });
