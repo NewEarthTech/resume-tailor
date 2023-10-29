@@ -8,7 +8,10 @@ export const config = {
   matcher: [
     "/((?!.+\\.[\\w]+$|_next).*)",
     "/",
+    "/(sign-in)(.*)",
+    "/(sign-up)(.*)",
     "/(dashboard)(.*)",
+    "/(resume)(.*)",
     "/(api|trpc)(.*)",
   ],
 };

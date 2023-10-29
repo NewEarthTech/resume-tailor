@@ -21,6 +21,18 @@ const links = [
   },
 ];
 
+function NavButton({ children }: { children: React.ReactNode }) {
+  return (
+    <Button
+      className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 transition-all"
+      variant="link"
+      asChild
+    >
+      {children}
+    </Button>
+  );
+}
+
 export function Menu({ className }: { className?: string }) {
   return (
     <nav
@@ -29,34 +41,20 @@ export function Menu({ className }: { className?: string }) {
         className,
       )}
     >
-      {links.map(({ href, label }) => (
-        <Button
-          className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 transition-all"
-          key={href}
-          variant="link"
-          asChild
-        >
-          <Link href={href}>{label}</Link>
-        </Button>
-      ))}
       <SignedIn>
+        {links.map(({ href, label }, i) => (
+          <NavButton key={i}>
+            <Link href={href}>{label}</Link>
+          </NavButton>
+        ))}
         <UserButton afterSignOutUrl="/" />
       </SignedIn>
       <SignedOut>
-        <Button
-          className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 transition-all"
-          variant="link"
-          asChild
-        >
-          <SignUpButton />
-        </Button>
-        <Button
-          className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 transition-all"
-          variant="link"
-          asChild
-        >
-          <SignInButton />
-        </Button>
+        {[SignUpButton, SignInButton].map((Comp, i) => (
+          <NavButton key={i}>
+            <Comp />
+          </NavButton>
+        ))}
       </SignedOut>
     </nav>
   );
