@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           className={`${inter.className} flex min-h-screen flex-col items-center justify-center bg-background text-foreground`}
         >
           {children}
+          <Analytics />
         </body>
       </Providers>
     </html>
