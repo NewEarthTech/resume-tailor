@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                <div className="mr-6 inline">No results.</div>
+                <div className="m-5 ">No results.</div>
                 <form action={insertResume}>
                   <Button
                     variant="secondary"

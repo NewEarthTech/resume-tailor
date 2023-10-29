@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/toaster";
 import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,6 +26,7 @@ export default function RootLayout({
           className={`${inter.className} flex min-h-screen flex-col items-center justify-center bg-background text-foreground`}
         >
           {children}
+          <Toaster />
           <Analytics />
         </body>
       </Providers>

@@ -8,6 +8,8 @@ import { auth } from "@clerk/nextjs";
 import { sql } from "@vercel/postgres";
 import { eq } from "drizzle-orm";
 
+import { toast } from "@/components/ui/use-toast";
+
 async function getResumes() {
   const { userId } = auth();
 
@@ -27,11 +29,17 @@ async function insertResume() {
         .returning({ insertedId: ResumeTable.id })
     )[0];
     if (!insertedId) throw new Error("Resume not inserted");
-    console.log("insertResume", insertedId);
+    toast({
+      title: "Resume Created",
+      description: `Redirecting to /resume/${insertedId}...`,
+    });
     revalidatePath(`/resume`);
   } catch (error) {
-    console.error(error);
-    // return NextResponse.json({ error });
+    toast({
+      variant: "destructive",
+      title: "Resume Not Created",
+      description: `${JSON.stringify(error)}`,
+    });
   }
 }
 
@@ -47,10 +55,17 @@ async function deleteResume(id: string) {
     )[0];
     if (!deletedId) throw new Error("Resume not deleted");
     console.log("deleteResume", deletedId);
+    toast({
+      title: "Resume Deleted",
+      description: `So long, ${deletedId}...`,
+    });
     revalidatePath(`/resume`);
   } catch (error) {
-    console.error(error);
-    // return NextResponse.json({ error });
+    toast({
+      variant: "destructive",
+      title: "Resume Not Deleted",
+      description: `${JSON.stringify(error)}`,
+    });
   }
 }
 
@@ -66,15 +81,3 @@ export {
   deleteResume,
   type DeleteResumeFunction,
 };
-
-// onMouseDown={async function () {
-//   "use server";
-//   const user = await currentUser();
-//   const resume = sql`INSERT INTO resumes (user_id) VALUES (${user?.id})`;
-//   // const resume = await db
-//   // .insert(ResumeTable)
-//   // .values({ user_id: userId })
-//   // .returning({ insertedId: ResumeTable.id });
-//   //  `INSERT INTO resumes (user_id) VALUES (${userId})`;
-//   Response.redirect(`/resume/${resume}`, 302);
-// }}
