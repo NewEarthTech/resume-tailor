@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { NavBar } from "@/components/layout/nav-bar";
+import { NavBar } from "@/components/layout/header/nav-bar";
 
 export const metadata: Metadata = {
   title: "Resume Tailor",
@@ -13,7 +13,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-start gap-8">
+    <div className="flex w-full flex-col items-center justify-start">
       <NavBar />
       {children}
     </div>

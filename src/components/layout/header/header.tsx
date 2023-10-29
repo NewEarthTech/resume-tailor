@@ -9,8 +9,8 @@ export default function Header({ children }: { children: React.ReactNode }) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full px-6 py-4 transition-colors duration-300",
-        !!y ? "bg-background" : "bg-transparent",
+        "fixed top-0 z-50 w-full px-6 py-4 transition-colors duration-1000 ease-out",
+        !!y && y > 5 ? "bg-background" : "bg-transparent",
       )}
     >
       {children}
