@@ -2,7 +2,7 @@ import { deleteResume } from "@/db/actions/resume";
 import { Resume } from "@/db/schema/resume";
 import { type Row } from "@tanstack/react-table";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
-import { Copy, Delete, MoreHorizontal } from "lucide-react";
+import { Copy, Delete, Download, MoreHorizontal, Share } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast, useToast } from "@/components/ui/use-toast";
 
 export function ActionsMenu({ row }: { row: Row<Resume> }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -35,8 +36,20 @@ export function ActionsMenu({ row }: { row: Row<Resume> }) {
             copyToClipboard(`${process.env.base_url}/resume/${id}`);
           }}
         >
-          <Copy />
-          Copy link URL
+          <Download />
+          Download PDF
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="flex cursor-pointer items-center gap-2"
+          onClick={() => {
+            toast({
+              title: "Not yet implemented...",
+              description: "This feature is not yet implemented.",
+            });
+          }}
+        >
+          <Share />
+          Share Link
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
+  const { userId } = auth();
+  const href = userId ? "/resume" : "/sign-up";
   return (
     <section className="group relative flex h-[90dvh] flex-col justify-center overflow-hidden text-center ">
       <Image
@@ -17,7 +20,7 @@ export function Hero() {
         <h1 className="mb-2 text-4xl font-bold">Resume Tailor</h1>
         <p className="mb-12 text-xl">Craft your perfect resume in no time</p>
         <Button className="mx-auto py-7" variant="secondary" size="lg" asChild>
-          <Link href="/sign-up">Get Started</Link>
+          <Link href={href}>Get Started</Link>
         </Button>
       </div>
     </section>

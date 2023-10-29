@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { db } from "@/db";
 import { Resume, ResumeTable } from "@/db/schema/resume";
 import { auth } from "@clerk/nextjs";
@@ -12,14 +12,16 @@ import { toast } from "@/components/ui/use-toast";
 
 async function getResumes() {
   const { userId } = auth();
+  if (!userId) notFound();
 
   return await sql<Resume>`SELECT * FROM resume WHERE user_id = ${userId}`;
 }
 
 async function insertResume() {
+  const { userId } = auth();
+  if (!userId) notFound();
+
   try {
-    const { userId } = auth();
-    if (!userId) throw new Error("User not found");
     const { insertedId } = (
       await db
         .insert(ResumeTable)
@@ -28,12 +30,12 @@ async function insertResume() {
         })
         .returning({ insertedId: ResumeTable.id })
     )[0];
-    if (!insertedId) throw new Error("Resume not inserted");
     toast({
       title: "Resume Created",
       description: `Redirecting to /resume/${insertedId}...`,
     });
     revalidatePath(`/resume`);
+    redirect(`/resume/${insertedId}`);
   } catch (error) {
     toast({
       variant: "destructive",
@@ -44,17 +46,16 @@ async function insertResume() {
 }
 
 async function deleteResume(id: string) {
+  const { userId } = auth();
+  if (!userId) notFound();
+
   try {
-    const { userId } = auth();
-    if (!userId) throw new Error("User not found");
     const { deletedId } = (
       await db
         .delete(ResumeTable)
         .where(eq(ResumeTable.id, id))
         .returning({ deletedId: ResumeTable.id })
     )[0];
-    if (!deletedId) throw new Error("Resume not deleted");
-    console.log("deleteResume", deletedId);
     toast({
       title: "Resume Deleted",
       description: `So long, ${deletedId}...`,
