@@ -4,6 +4,8 @@ import type { Resume } from "@/db/schema/resume";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
+import { DataTableColumnHeader } from "@/components/content/data-table/column-header";
+
 export const columns: ColumnDef<Resume>[] = [
   {
     accessorKey: "id",
@@ -11,7 +13,9 @@ export const columns: ColumnDef<Resume>[] = [
   },
   {
     accessorKey: "user_title",
-    header: "Job Title",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Job Title" />
+    ),
   },
   {
     accessorKey: "custom_url",

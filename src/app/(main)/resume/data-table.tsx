@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { InsertResumeFunction } from "@/db/actions/resume";
 import {
   ColumnDef,
   flexRender,
@@ -8,6 +8,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { DataTablePagination } from "@/components/content/data-table/pagination";
+import { DataTableViewOptions } from "@/components/content/data-table/view-options";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -21,11 +23,13 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  insertResume: InsertResumeFunction;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  insertResume,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -35,6 +39,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="rounded-md border">
+      <DataTableViewOptions table={table} />
+
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -62,31 +68,38 @@ export function DataTable<TData, TValue>({
                 className="hover:bg-white/20"
                 data-state={row.getIsSelected() && "selected"}
               >
-                <Button className="contents" variant="link" asChild>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </Button>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
             ))
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                <div className="mr-6 inline">No results.</div>
+                <form action={insertResume}>
+                  <Button
+                    variant="secondary"
+                    className="my-4 text-sm"
+                    type="submit"
+                  >
+                    Create resume?
+                  </Button>
+                </form>
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+      <DataTablePagination table={table} />
     </div>
   );
 }
 
+// <Button className="contents" variant="link">
+// </Button>
 /*
                     <Link href={`/resume/${row.getValue("id")}`}>
                   </Link>

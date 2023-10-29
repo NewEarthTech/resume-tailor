@@ -18,7 +18,6 @@ export default async function Page() {
   const initials = `${user?.firstName?.charAt(0)}${user?.lastName?.charAt(0)}`;
   return (
     <main className="w-full max-w-3xl">
-      <UserProfile />
       {user?.hasImage ? (
         <Avatar className="float-right h-64 w-64">
           <AvatarImage alt={name} src={user?.imageUrl} />
@@ -27,7 +26,6 @@ export default async function Page() {
       ) : null}
       <h2 className="text-4xl font-bold tracking-wider">{name}</h2>
       <pre>ID: {JSON.stringify(user?.id, null, 2)}</pre>
-      {/* <pre>Email: {JSON.stringify(user?.primaryEmailAddressId, null, 2)}</pre> */}
       <div>
         Email:
         {
@@ -37,8 +35,6 @@ export default async function Page() {
         }
       </div>
       {/* <div>
-        Emails:
-        <br />
         {user?.emailAddresses.map((email) => (
           <pre key={email.id}>{JSON.stringify(email, null, 2)}</pre>
         ))}
@@ -51,11 +47,17 @@ export default async function Page() {
         }
       </div>
       {/* <div>
-        Phones:
         {user?.phoneNumbers.map((phone) => (
           <pre key={phone.id}>{JSON.stringify(phone, null, 2)}</pre>
         ))}
       </div> */}
+      {/* <UserProfile
+        appearance={{
+          elements: {
+            rootBox: "bg-background text-inherit",
+          },
+        }}
+      /> */}
     </main>
   );
 }

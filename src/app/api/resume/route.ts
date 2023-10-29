@@ -26,16 +26,16 @@ export async function GET(request: Request) {
   return NextResponse.json({ resume }, { status: 200 });
 }
 
-export async function POST(request: Request) {
-  const { userId } = auth();
+// export async function POST(_request: Request) {
+//   const { userId } = auth();
 
-  if (!userId) return NextResponse.redirect("/sign-in");
+//   if (!userId) return NextResponse.redirect("/sign-in");
 
-  const params: NewResume = selectResumeSchema.parse({
-    user_id: userId,
-  });
+//   const params: NewResume = selectResumeSchema.parse({
+//     user_id: userId,
+//   });
 
-  const resume = await insertResume(params);
+//   const resume = await insertResume(params);
 
-  return NextResponse.json({ resume });
-}
+//   return NextResponse.json({ resume });
+// }
