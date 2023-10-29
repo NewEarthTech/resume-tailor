@@ -6,13 +6,13 @@ import { DataTable } from "./data-table";
 
 export default async function ResumeIndex() {
   "use server";
-  const { rows }: { rows: Resume[] } =
-    await sql`SELECT * FROM resume WHERE user_id = 1`;
+  // const { rows }: { rows: Resume[] } =
+  const rows = await fetch("/api/resume").then((res) => res.json());
 
   return (
     <div className=" container mx-auto h-full w-full  py-10">
-      {/* {JSON.stringify(rows)} */}
-      {rows ? <DataTable columns={columns} data={rows} /> : null}
+      {JSON.stringify(rows)}
+      {/* {rows ? <DataTable columns={columns} data={rows} /> : null} */}
     </div>
   );
 }

@@ -14,8 +14,8 @@ export default function AuthLayout({
 }) {
   return (
     <div className="flex min-h-screen w-full flex-col items-start justify-start gap-8 p-5">
-      <Logo className="sticky top-0 -z-10" />
-      <main className="self-center">{children}</main>
+      <Logo />
+      <main className="">{children}</main>
     </div>
   );
 }

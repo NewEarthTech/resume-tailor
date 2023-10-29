@@ -63,16 +63,14 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
               >
                 <Button className="contents" variant="link" asChild>
-                  <Link href={`/resume/${row.getValue("id")}`}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </Link>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
                 </Button>
               </TableRow>
             ))
@@ -88,3 +86,8 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
+
+/*
+                    <Link href={`/resume/${row.getValue("id")}`}>
+                  </Link>
+*/
