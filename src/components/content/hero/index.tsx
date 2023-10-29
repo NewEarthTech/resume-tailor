@@ -11,8 +11,9 @@ export function Hero() {
         alt="A giant document is being discussed by two men wearing suits and holding tailor tools"
         src="/hero.webp"
         fill={true}
-        className="transition-transform duration-1000 ease-in-out group-hover:scale-105 md:object-[center_bottom]"
+        className="bg-black transition-transform duration-1000 ease-in-out group-hover:scale-105 md:object-[center_bottom]"
         objectFit="cover"
+        priority
       />
       <div className="relative flex h-full flex-col items-center justify-center text-white backdrop-brightness-50 transition-[backdrop-filter] duration-1000 ease-in-out group-hover:backdrop-brightness-[.65] dark:backdrop-brightness-75">
         <h1 className="mb-2 text-4xl font-bold">Resume Tailor</h1>
