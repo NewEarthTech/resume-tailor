@@ -36,7 +36,6 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
   return (
     <div className="rounded-md border">
       <DataTableViewOptions table={table} />
@@ -97,10 +96,3 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
-
-// <Button className="contents" variant="link">
-// </Button>
-/*
-                    <Link href={`/resume/${row.getValue("id")}`}>
-                  </Link>
-*/

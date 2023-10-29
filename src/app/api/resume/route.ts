@@ -9,10 +9,6 @@ import { eq, not } from "drizzle-orm";
 export async function GET(request: Request) {
   const { userId, sessionId } = auth();
 
-  console.log("request", request.headers);
-  console.log("userId", userId);
-  console.log("sessionId", sessionId);
-
   if (!sessionId) {
     return new Response("Unauthorized", { status: 401 });
   }

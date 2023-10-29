@@ -26,13 +26,13 @@ function SocialLink({
 
 export function Footer() {
   return (
-    <footer className="bg-foreground p-4 text-background">
-      <div className="container mx-auto flex flex-wrap items-center justify-between">
-        <div className="mb-4 w-full sm:mb-0 sm:w-auto">
+    <footer className="bg-foreground p-12 text-background">
+      <div className="container mx-auto flex flex-col flex-wrap items-center justify-between sm:flex-row">
+        <div className="mb-7 w-full text-center sm:w-full sm:text-left md:mb-9">
           <PencilRuler className="inline" />
           <span className="ml-2 text-xl font-semibold">Resume Tailor</span>
         </div>
-        <nav className="flex space-x-4">
+        <nav className="flex space-x-4 py-6 md:py-0">
           <Link className=" hover:text-blue-300" href="#">
             About
           </Link>
@@ -43,7 +43,7 @@ export function Footer() {
             Terms
           </Link>
         </nav>
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 py-7 md:p-0">
           {Object.entries({
             facebook: Facebook,
             twitter: Twitter,

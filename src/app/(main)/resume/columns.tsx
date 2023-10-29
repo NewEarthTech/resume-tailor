@@ -3,25 +3,45 @@
 import Link from "next/link";
 import type { Resume } from "@/db/schema/resume";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 
+import { ActionsMenu } from "@/components/content/data-table/actions-menu";
 import { DataTableColumnHeader } from "@/components/content/data-table/column-header";
 import { Button } from "@/components/ui/button";
 
 export const columns: ColumnDef<Resume>[] = [
   {
     accessorKey: "id",
-    header: "ID",
-    cell: ({ row }) => (
-      <Button
-        key={row.getValue("id")}
-        className="max-w-fit overflow-hidden text-sm"
-        asChild
-        variant="ghost"
-      >
-        <Link href={`/resume/${row.getValue("id")}`}>{row.getValue("id")}</Link>
-      </Button>
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ID" />
     ),
+    cell: ({ row }) => {
+      const id = row.getValue("id")?.toString();
+      return (
+        <Button
+          key={id}
+          className="max-w-[60px] overflow-x-scroll rounded-md text-sm"
+          asChild
+          variant="link"
+        >
+          <Link href={`/resume/${id}`}>{id}</Link>
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "custom_url",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="URL" />
+    ),
+    cell: ({ row }) => {
+      const url = row.getValue("custom_url")?.toString();
+      if (!url) return null;
+      return (
+        <Button key={url} className="text-sm" asChild variant="ghost">
+          <Link href={`${process.env.base_url}/resume/${url}`}>{url}</Link>
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "user_title",
@@ -30,23 +50,33 @@ export const columns: ColumnDef<Resume>[] = [
     ),
   },
   {
-    accessorKey: "custom_url",
-    header: "URL",
-  },
-  {
     accessorKey: "pdf_url",
-    header: "PDF",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="PDF" />
+    ),
   },
   {
     accessorKey: "user_email",
-    header: "Email",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Email" />
+    ),
   },
   {
     accessorKey: "user_address",
-    header: "Address",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Address" />
+    ),
   },
   {
     accessorKey: "user_link",
-    header: "Social Link",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Social Link" />
+    ),
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return <ActionsMenu row={row} />;
+    },
   },
 ];
