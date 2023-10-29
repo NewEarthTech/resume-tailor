@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button";
 
 export function Hero() {
   return (
-    <section className="group relative flex aspect-square flex-col justify-center overflow-hidden text-center xl:aspect-video">
+    <section className="group relative flex h-[90dvh] flex-col justify-center overflow-hidden text-center ">
       <Image
         alt="A giant document is being discussed by two men wearing suits and holding tailor tools"
         src="/hero.webp"
         fill={true}
-        className="object-[center_bottom] transition-transform duration-1000 ease-in-out group-hover:scale-105"
+        className="transition-transform duration-1000 ease-in-out group-hover:scale-105 md:object-[center_bottom]"
         objectFit="cover"
       />
       <div className="relative flex h-full flex-col items-center justify-center text-white backdrop-brightness-50 transition-[backdrop-filter] duration-1000 ease-in-out group-hover:backdrop-brightness-[.65] dark:backdrop-brightness-75">
