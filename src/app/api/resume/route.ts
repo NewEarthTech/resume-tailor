@@ -6,9 +6,10 @@ import { NewResume, ResumeTable, selectResumeSchema } from "@/db/schema/resume";
 import { auth, clerkClient, currentUser } from "@clerk/nextjs";
 import { eq, not } from "drizzle-orm";
 
-export async function GET() {
+export async function GET(request: Request) {
   const { userId, sessionId } = auth();
 
+  console.log("request", request.headers);
   console.log("userId", userId);
   console.log("sessionId", sessionId);
 
@@ -25,7 +26,7 @@ export async function GET() {
   return NextResponse.json({ resume }, { status: 200 });
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   const { userId } = auth();
 
   if (!userId) return NextResponse.redirect("/sign-in");
