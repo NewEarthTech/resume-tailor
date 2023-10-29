@@ -7,7 +7,9 @@ import { DataTable } from "./data-table";
 export default async function ResumeIndex() {
   "use server";
   // const { rows }: { rows: Resume[] } =
-  const rows = await fetch("/api/resume").then((res) => res.json());
+  const rows = await fetch(`http://localhost:3000/api/resume`).then((res) =>
+    res.json(),
+  );
 
   return (
     <div className=" container mx-auto h-full w-full  py-10">
