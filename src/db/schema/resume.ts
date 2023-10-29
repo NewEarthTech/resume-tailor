@@ -11,8 +11,10 @@ import {
 } from "./users";
 
 const ResumeTable = pgTable("resume", {
-  id: uuid("id").primaryKey(),
-  user_id: uuid("user_id").references(() => UsersTable.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: uuid("user_id")
+    .references(() => UsersTable.id)
+    .notNull(),
   custom_url: text("custom_url"),
   user_email: uuid("user_email").references(() => UserEmailTable.id),
   user_address: uuid("user_address").references(() => UserAddressTable.id),

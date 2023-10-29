@@ -1,6 +1,6 @@
+import type { Resume } from "@/db/schema/resume";
 import { sql } from "@vercel/postgres";
 
-import type { Resume } from "@/lib/db/schema/resume";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 

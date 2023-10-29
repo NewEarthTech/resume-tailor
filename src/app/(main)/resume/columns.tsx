@@ -1,9 +1,8 @@
 "use client";
 
+import type { Resume } from "@/db/schema/resume";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-
-import type { Resume } from "@/lib/db/schema/resume";
 
 export const columns: ColumnDef<Resume>[] = [
   {
