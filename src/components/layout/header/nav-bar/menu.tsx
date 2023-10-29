@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 const NavButton = ({ children }: { children: React.ReactNode }) => (
   <Button
     className="flex items-center justify-start gap-3 rounded-lg px-3 py-2 transition-all"
-    variant="link"
+    variant="navlink"
     asChild
   >
     {children}

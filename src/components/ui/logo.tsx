@@ -8,7 +8,7 @@ export function Logo({ className }: { className?: string }) {
   return (
     <Button
       className={cn("flex flex-row gap-3 text-lg font-bold", className)}
-      variant="ghost"
+      variant="navlink"
       asChild
     >
       <Link href="/">
