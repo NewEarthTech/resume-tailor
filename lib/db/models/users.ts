@@ -1,10 +1,10 @@
 import { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import { integer, jsonb, pgTable, serial, text } from "drizzle-orm/pg-core";
+import { jsonb, pgTable, serial, text, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 const UsersTable = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey(),
   name: text("name"),
   email: text("email").unique().notNull(),
   password_hash: text("password_hash").notNull(),
@@ -12,25 +12,25 @@ const UsersTable = pgTable("users", {
 
 const UserEmailTable = pgTable("user_email", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => UsersTable.id),
+  user_id: serial("user_id").references(() => UsersTable.id),
   email: text("email").notNull(),
 });
 
 const UserAddressTable = pgTable("user_address", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => UsersTable.id),
+  user_id: serial("user_id").references(() => UsersTable.id),
   google_location: jsonb("google_location"),
 });
 
 const UserLinkTable = pgTable("user_link", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => UsersTable.id),
+  user_id: serial("user_id").references(() => UsersTable.id),
   link: text("link").notNull(),
 });
 
 const UserTitleTable = pgTable("user_title", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => UsersTable.id),
+  user_id: serial("user_id").references(() => UsersTable.id),
   title: text("title").notNull(),
 });
 

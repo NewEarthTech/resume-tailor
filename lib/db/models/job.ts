@@ -1,19 +1,12 @@
 import { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import {
-  date,
-  index,
-  integer,
-  pgTable,
-  serial,
-  text,
-} from "drizzle-orm/pg-core";
+import { date, index, pgTable, text, uuid } from "drizzle-orm/pg-core";
 
 import { FieldTable, ResumeTable } from "./resume";
 
 export const JobTable = pgTable(
   "job",
   {
-    id: serial("id").primaryKey(),
+    id: uuid("id").primaryKey(),
     link: text("link").notNull(),
     apply_link: text("apply_link").notNull(),
     title: text("title").notNull(),
@@ -38,15 +31,15 @@ export const JobTable = pgTable(
 );
 
 export const JobFieldTable = pgTable("job_field", {
-  id: serial("id").primaryKey(),
-  job_id: integer("job_id").references(() => JobTable.id),
-  field_id: integer("field_id").references(() => FieldTable.id),
+  id: uuid("id").primaryKey(),
+  job_id: uuid("job_id").references(() => JobTable.id),
+  field_id: uuid("field_id").references(() => FieldTable.id),
 });
 
 export const JobResumeTable = pgTable("job_resume", {
-  id: serial("id").primaryKey(),
-  job_id: integer("job_id").references(() => JobTable.id),
-  resume_id: integer("resume_id").references(() => ResumeTable.id),
+  id: uuid("id").primaryKey(),
+  job_id: uuid("job_id").references(() => JobTable.id),
+  resume_id: uuid("resume_id").references(() => ResumeTable.id),
 });
 
 export type Job = InferSelectModel<typeof JobTable>;

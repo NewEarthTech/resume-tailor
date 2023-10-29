@@ -1,14 +1,5 @@
 import { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import {
-  boolean,
-  date,
-  index,
-  integer,
-  pgTable,
-  serial,
-  text,
-  uniqueIndex,
-} from "drizzle-orm/pg-core";
+import { boolean, date, index, pgTable, text, uuid } from "drizzle-orm/pg-core";
 
 import {
   UserAddressTable,
@@ -16,48 +7,48 @@ import {
   UserLinkTable,
   UsersTable,
   UserTitleTable,
-} from "./app-user";
+} from "./users";
 
 const ResumeTable = pgTable("resume", {
-  id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => UsersTable.id),
+  id: uuid("id").primaryKey(),
+  user_id: uuid("user_id").references(() => UsersTable.id),
   custom_url: text("custom_url"),
-  user_email: integer("user_email").references(() => UserEmailTable.id),
-  user_address: integer("user_address").references(() => UserAddressTable.id),
-  user_link: integer("user_link").references(() => UserLinkTable.id),
-  user_title: integer("user_title").references(() => UserTitleTable.id),
+  user_email: uuid("user_email").references(() => UserEmailTable.id),
+  user_address: uuid("user_address").references(() => UserAddressTable.id),
+  user_link: uuid("user_link").references(() => UserLinkTable.id),
+  user_title: uuid("user_title").references(() => UserTitleTable.id),
   pdf_url: text("pdf_url"),
 });
 
 const SectionTable = pgTable("section", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey(),
   title: text("title").notNull(),
   layout: text("layout", { enum: ["row", "grid", "block", "list"] }).notNull(),
 });
 
 const ResumeSectionTable = pgTable("resume_section", {
-  id: serial("id").primaryKey(),
-  resume_id: integer("resume_id").references(() => ResumeTable.id),
-  section_id: integer("section_id").references(() => SectionTable.id),
+  id: uuid("id").primaryKey(),
+  resume_id: uuid("resume_id").references(() => ResumeTable.id),
+  section_id: uuid("section_id").references(() => SectionTable.id),
 });
 
 const EntryTable = pgTable("entry", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey(),
   start_date: date("start_date").notNull(),
   end_date: date("end_date").notNull(),
   include: boolean("include").notNull(),
 });
 
 const SectionEntryTable = pgTable("section_entry", {
-  id: serial("id").primaryKey(),
-  section_id: integer("section_id").references(() => SectionTable.id),
-  entry_id: integer("entry_id").references(() => EntryTable.id),
+  id: uuid("id").primaryKey(),
+  section_id: uuid("section_id").references(() => SectionTable.id),
+  entry_id: uuid("entry_id").references(() => EntryTable.id),
 });
 
 const FieldTable = pgTable(
   "field",
   {
-    id: serial("id").primaryKey(),
+    id: uuid("id").primaryKey(),
     input_type: text("input_type", {
       enum: ["select", "textarea", "text", "date"],
     }).notNull(),
@@ -75,9 +66,9 @@ const FieldTable = pgTable(
 );
 
 const EntryFieldTable = pgTable("entry_field", {
-  id: serial("id").primaryKey(),
-  entry_id: integer("entry_id").references(() => EntryTable.id),
-  field_id: integer("field_id").references(() => FieldTable.id),
+  id: uuid("id").primaryKey(),
+  entry_id: uuid("entry_id").references(() => EntryTable.id),
+  field_id: uuid("field_id").references(() => FieldTable.id),
 });
 
 type Resume = InferSelectModel<typeof ResumeTable>;
