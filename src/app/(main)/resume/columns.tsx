@@ -9,6 +9,7 @@ import { Copy } from "lucide-react";
 import { ActionsMenu } from "@/components/content/data-table/actions-menu";
 import { DataTableColumnHeader } from "@/components/content/data-table/column-header";
 import { Button } from "@/components/ui/button";
+import { ToggleCopyIcon } from "@/components/ui/toggle-copy-icon";
 
 export const columns: ColumnDef<Resume>[] = [
   {
@@ -41,13 +42,15 @@ export const columns: ColumnDef<Resume>[] = [
               ./{url ? url : id}
             </Link>
           </Button>
-          <Button variant="ghost" className="h-5 w-5 p-0">
+          <ToggleCopyIcon textToCopy={href} variant="outline" className="" />
+
+          {/* <Button >
             <Copy
               onClick={() => {
                 copyToClipboard(`${process.env.base_url}/resume/${id}`);
               }}
             />
-          </Button>
+          </Button> */}
         </div>
       );
     },

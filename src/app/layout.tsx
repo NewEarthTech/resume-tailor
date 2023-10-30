@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import { GeistMono, GeistSans } from "geist/font";
 
 import "./globals.css";
 
@@ -24,7 +25,7 @@ export default function RootLayout({
       <Providers>
         <body
           // className={`${inter.className} flex min-h-screen flex-col items-center justify-center bg-background text-foreground`}
-          className={`${inter.className}`}
+          className={`${inter.className} ${GeistSans.variable} ${GeistMono.variable}`}
         >
           {children}
           <Toaster />

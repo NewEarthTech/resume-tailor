@@ -12,14 +12,14 @@ import { toast } from "@/components/ui/use-toast";
 
 async function getResumes() {
   const { userId } = auth();
-  if (!userId) notFound();
+  if (!userId) redirect(`/sign-in`);
 
   return await sql<Resume>`SELECT * FROM resume WHERE user_id = ${userId}`;
 }
 
 async function insertResume() {
   const { userId } = auth();
-  if (!userId) notFound();
+  if (!userId) redirect(`/sign-in`);
 
   try {
     const { insertedId } = (

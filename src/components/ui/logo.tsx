@@ -7,12 +7,15 @@ import { Button } from "./button";
 export function Logo({ className }: { className?: string }) {
   return (
     <Button
-      className={cn("flex flex-row gap-3 text-lg font-bold", className)}
+      className={cn(
+        "flex flex-row gap-3 text-xl font-bold sm:text-4xl",
+        className,
+      )}
       variant="navlink"
       asChild
     >
       <Link href="/">
-        <PencilRuler className="h-6 w-6" />
+        <PencilRuler className="sm:h-9 sm:w-9" />
         Resume Tailor
       </Link>
     </Button>
