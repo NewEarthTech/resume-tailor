@@ -6,7 +6,7 @@ const baseUrl = () =>
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["img.clerk.com"],
+    remotePatterns: [{ hostname: "img.clerk.com" }],
   },
   env: {
     base_url: baseUrl(),

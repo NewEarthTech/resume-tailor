@@ -3,8 +3,6 @@
 import Link from "next/link";
 import type { Resume } from "@/db/schema/resume";
 import { ColumnDef } from "@tanstack/react-table";
-import { useCopyToClipboard } from "@uidotdev/usehooks";
-import { Copy } from "lucide-react";
 
 import { ActionsMenu } from "@/components/content/data-table/actions-menu";
 import { DataTableColumnHeader } from "@/components/content/data-table/column-header";
@@ -24,7 +22,6 @@ export const columns: ColumnDef<Resume>[] = [
       <DataTableColumnHeader column={column} title="URL" />
     ),
     cell: ({ row }) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const url = row.original.custom_url;
       const id = row.getValue("id")?.toString();
       if (!url && !id) return null;

@@ -16,7 +16,6 @@ import {
 import { toast, useToast } from "@/components/ui/use-toast";
 
 export function ActionsMenu({ row }: { row: Row<Resume> }) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [copiedText, copyToClipboard] = useCopyToClipboard();
   const { id } = row.original;
 

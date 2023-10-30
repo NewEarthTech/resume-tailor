@@ -30,24 +30,13 @@ async function insertResume() {
         })
         .returning({ insertedId: ResumeTable.id })
     )[0];
-    toast({
-      title: "Resume Created",
-      description: `Redirecting to /resume/${insertedId}...`,
-    });
-    revalidatePath(`/resume`);
-    redirect(`/resume/${insertedId}`);
-  } catch (error) {
-    toast({
-      variant: "destructive",
-      title: "Resume Not Created",
-      description: `${JSON.stringify(error)}`,
-    });
-  }
+    return insertedId;
+  } catch (error) {}
 }
 
 async function deleteResume(id: string) {
   const { userId } = auth();
-  if (!userId) notFound();
+  if (!userId) redirect(`/sign-in`);
 
   try {
     const { deletedId } = (

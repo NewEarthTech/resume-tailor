@@ -13,7 +13,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen w-full flex-col items-start justify-start gap-8 p-5">
+    <div className="flex min-h-screen w-full flex-col items-center justify-start gap-8 p-5">
       <Logo />
       <main className="">{children}</main>
     </div>
