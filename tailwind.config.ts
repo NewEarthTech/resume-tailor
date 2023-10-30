@@ -11,8 +11,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        serif: ["var(--font-geist-sans)", "serif"],
+        sans: ["var(--font-geist-sans)", "serif"],
         mono: ["var(--font-geist-mono)", "monospace"],
       },
       colors: {
