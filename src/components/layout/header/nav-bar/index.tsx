@@ -16,7 +16,7 @@ export function NavBar({ className }: { className?: string }) {
           <Logo className="" />
           <form action={insertResume}>
             <Button
-              variant="secondary"
+              variant="default"
               className="my-4 hidden text-sm sm:[display:inherit]"
               type="submit"
             >

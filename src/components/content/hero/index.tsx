@@ -20,8 +20,8 @@ export function Hero() {
         <h1 className="mb-2 text-4xl font-bold">Resume Tailor</h1>
         <p className="mb-12 text-xl">Craft your perfect resume in no time</p>
         <Button
-          className="mx-auto py-7 font-mono uppercase tracking-widest"
-          variant="destructive"
+          className="mx-auto py-7 font-bold capitalize tracking-widest"
+          variant="default"
           size="lg"
           asChild
         >

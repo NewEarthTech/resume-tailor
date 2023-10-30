@@ -1,7 +1,7 @@
 import { Features } from "@/components/content/features";
 import { Hero } from "@/components/content/hero";
+import { Testimonials } from "@/components/content/testimonials";
 import { Footer } from "@/components/layout/footer";
-import { Testimonials } from "@/components/testimonials";
 
 export default async function Home() {
   return (
