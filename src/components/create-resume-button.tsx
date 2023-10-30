@@ -3,46 +3,47 @@ import { redirect } from "next/navigation";
 import { insertResume } from "@/db/actions/resume";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonProps } from "@/components/ui/button";
 import { toast } from "./ui/use-toast";
+
+export const handleInsert = async () => {
+  "use server";
+  let id;
+  try {
+    id = await insertResume();
+  } catch (error) {
+    console.error(error);
+
+    toast({
+      variant: "destructive",
+      title: "Resume Not Created",
+      description: `${JSON.stringify(error)}`,
+    });
+  }
+  toast({
+    title: "Resume Created",
+    description: `Redirecting to /resume/${id}...`,
+  });
+
+  revalidatePath(`/resume/${id}`);
+  revalidatePath(`/resume`);
+  redirect(`/resume/${id}`);
+};
 
 export async function CreateResumeButton({
   className,
-}: {
-  className?: string;
-}) {
-  const handleInsert = async () => {
-    "use server";
-    let id;
-    try {
-      id = await insertResume();
-    } catch (error) {
-      console.error(error);
-
-      toast({
-        variant: "destructive",
-        title: "Resume Not Created",
-        description: `${JSON.stringify(error)}`,
-      });
-    }
-    toast({
-      title: "Resume Created",
-      description: `Redirecting to /resume/${id}...`,
-    });
-
-    revalidatePath(`/resume/${id}`);
-    revalidatePath(`/resume`);
-    redirect(`/resume/${id}`);
-  };
-
+  variant = "default",
+  children,
+}: ButtonProps) {
   return (
     <form action={handleInsert}>
       <Button
-        variant="default"
+        variant={variant}
         className={cn("my-4 hidden text-sm sm:[display:inherit]", className)}
         type="submit"
       >
         Create resume
+        {children ? children : null}
       </Button>
     </form>
   );

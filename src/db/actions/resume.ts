@@ -10,13 +10,6 @@ import { eq } from "drizzle-orm";
 
 import { toast } from "@/components/ui/use-toast";
 
-async function getResumes() {
-  const { userId } = auth();
-  if (!userId) redirect(`/sign-in`);
-
-  return await sql<Resume>`SELECT * FROM resume WHERE user_id = ${userId}`;
-}
-
 async function insertResume() {
   const { userId } = auth();
   if (!userId) redirect(`/sign-in`);
@@ -34,22 +27,60 @@ async function insertResume() {
   } catch (error) {}
 }
 
-async function deleteResume(id: string) {
+async function getResumes() {
+  const { userId } = auth();
+  if (!userId) redirect(`/sign-in`);
+
+  return await sql<Resume>`SELECT * FROM resume WHERE user_id = ${userId}`;
+}
+
+async function getResume(id: string) {
+  const { userId } = auth();
+  if (!userId) redirect(`/sign-in`);
+
+  const resume = await sql<Resume>`SELECT * FROM resume WHERE id = ${id}`;
+  if (!resume) notFound();
+
+  return resume;
+}
+
+async function updateResume(id: string, resume: Resume) {
   const { userId } = auth();
   if (!userId) redirect(`/sign-in`);
 
   try {
-    const { deletedId } = (
+    await db
+      .update(ResumeTable)
+      .set({
+        ...resume,
+      })
+      .where(eq(ResumeTable.id, id));
+  } catch (error) {
+    toast({
+      variant: "destructive",
+      title: "Resume Not Updated",
+      description: `${JSON.stringify(error)}`,
+    });
+  }
+  toast({
+    title: "Resume Updated",
+    description: `Resume ${id} has been updated`,
+  });
+  revalidatePath(`/resume/${id}`);
+  revalidatePath(`/resume`);
+}
+
+async function deleteResume(id: string) {
+  const { userId } = auth();
+  if (!userId) redirect(`/sign-in`);
+  let deletedId;
+  try {
+    deletedId = (
       await db
         .delete(ResumeTable)
         .where(eq(ResumeTable.id, id))
         .returning({ deletedId: ResumeTable.id })
-    )[0];
-    toast({
-      title: "Resume Deleted",
-      description: `So long, ${deletedId}...`,
-    });
-    revalidatePath(`/resume`);
+    )[0].deletedId;
   } catch (error) {
     toast({
       variant: "destructive",
@@ -57,17 +88,29 @@ async function deleteResume(id: string) {
       description: `${JSON.stringify(error)}`,
     });
   }
+
+  toast({
+    title: "Resume Deleted",
+    description: `So long, ${deletedId}...`,
+  });
+  revalidatePath(`/resume`);
 }
 
-type GetResumesFunction = typeof getResumes;
 type InsertResumeFunction = typeof insertResume;
+type GetResumesFunction = typeof getResumes;
+type GetResumeFunction = typeof getResume;
+type UpdateResumeFunction = typeof updateResume;
 type DeleteResumeFunction = typeof deleteResume;
 
 export {
-  getResumes,
-  type GetResumesFunction,
   insertResume,
   type InsertResumeFunction,
+  getResumes,
+  type GetResumesFunction,
+  getResume,
+  type GetResumeFunction,
+  updateResume,
+  type UpdateResumeFunction,
   deleteResume,
   type DeleteResumeFunction,
 };
