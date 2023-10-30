@@ -12,12 +12,12 @@ import { Button } from "@/components/ui/button";
 import { ToggleCopyIcon } from "@/components/ui/toggle-copy-icon";
 
 export const columns: ColumnDef<Resume>[] = [
-  {
-    accessorKey: "user_title",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Job Title" />
-    ),
-  },
+  // {
+  //   accessorKey: "user_title",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Job Title" />
+  //   ),
+  // },
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -25,7 +25,6 @@ export const columns: ColumnDef<Resume>[] = [
     ),
     cell: ({ row }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [copiedText, copyToClipboard] = useCopyToClipboard();
       const url = row.original.custom_url;
       const id = row.getValue("id")?.toString();
       if (!url && !id) return null;
@@ -39,18 +38,10 @@ export const columns: ColumnDef<Resume>[] = [
             asChild
           >
             <Link href={href} target="_blank">
-              ./{url ? url : id}
+              {href}
             </Link>
           </Button>
           <ToggleCopyIcon textToCopy={href} variant="outline" className="" />
-
-          {/* <Button >
-            <Copy
-              onClick={() => {
-                copyToClipboard(`${process.env.base_url}/resume/${id}`);
-              }}
-            />
-          </Button> */}
         </div>
       );
     },
@@ -61,12 +52,12 @@ export const columns: ColumnDef<Resume>[] = [
   //     <DataTableColumnHeader column={column} title="PDF" />
   //   ),
   // },
-  {
-    accessorKey: "user_email",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
-    ),
-  },
+  // {
+  //   accessorKey: "user_email",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Email" />
+  //   ),
+  // },
   // {
   //   accessorKey: "user_phone",
   //   header: ({ column }) => (
