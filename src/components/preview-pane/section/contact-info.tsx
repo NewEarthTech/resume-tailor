@@ -41,33 +41,35 @@ function ContactInfoField({ children }: { children: React.ReactNode }) {
 }
 
 export function ContactInfo({ scale }: { scale: number }) {
-  const [
-    { include: includeSection },
-    {
-      myName,
-      jobTitle,
-      email,
-      city,
-      state,
-      country,
-      phone,
-      linkedin,
-      github,
-      include,
-    },
-  ] = useStore((state) => [
-    state.contactInformation,
-    state.contactInformation.entries[0],
-  ]) as [{ include: boolean }, z.infer<typeof contactInformationEntry>];
+  // const [
+  //   { include: includeSection },
+  //   {
+  //     myName,
+  //     jobTitle,
+  //     email,
+  //     city,
+  //     state,
+  //     country,
+  //     phone,
+  //     linkedin,
+  //     github,
+  //     include,
+  //   },
+  // ] = useStore((state) => [
+  //   state.contactInformation,
+  //   state.contactInformation.entries[0],
+  // ]) as [{ include: boolean }, z.infer<typeof contactInformationEntry>];
 
-  if (!includeSection || !include) return null;
+  // if (!includeSection || !include) return null;
+
+  const { myName } = useStore((state) => state.contactInformation.entries[0]);
 
   const iconSize = scale * 16;
   return (
     <Section>
       <MyName>{myName}</MyName>
-      <JobTitle>{jobTitle}</JobTitle>
-      <ContactInfoRow>
+      {/* <JobTitle>{jobTitle}</JobTitle> */}
+      {/* <ContactInfoRow>
         {[
           { Icon: MapPin, text: ` ${city}, ${state}, ${country}` },
           { Icon: Mail, text: email },
@@ -78,7 +80,7 @@ export function ContactInfo({ scale }: { scale: number }) {
             <Icon size={iconSize} /> {text as string}
           </ContactInfoField>
         ))}
-      </ContactInfoRow>
+      </ContactInfoRow> */}
     </Section>
   );
 }

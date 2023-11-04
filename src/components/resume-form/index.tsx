@@ -1,33 +1,38 @@
 "use client";
 
-import {
-  ContactInformationEntry,
-  DefaultResume,
-  resumeState,
-  useStore,
-  type ResumeSectionEntry,
-  type ResumeState,
-} from "@/store/store";
-import { zodResolver } from "@hookform/resolvers/zod";
+// import {
+// ContactInformationEntry,
+// DefaultResume,
+// resumeState,
+// useStore,
+// type ResumeSectionEntry,
+// type ResumeState,
+// } from "@/store/store";
+// import { zodResolver } from "@hookform/resolvers/zod";
+import { insertResumeSchema, NewResume } from "@/db/schema/resume";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { ResumeFormSection } from "./section";
+
+// import { ResumeFormSection } from "./section";
 
 export function ResumeForm() {
-  const { sections, ...state } = useStore();
-  const form = useForm<z.infer<typeof resumeState>>({
-    resolver: zodResolver(resumeState),
-    defaultValues: {
-      ...DefaultResume,
-      resumeName: `${new Date().toISOString().substring(0, 10)}-`,
-      resumeId: crypto.randomUUID(),
-    },
+  // const { sections, ...state } = useStore();
+  const form = useForm<z.infer<typeof insertResumeSchema>>({
+    // const form = useForm({
+    // resolver: zodResolver(resumeState),
+    // defaultValues: {
+    // ...DefaultResume,
+    // resumeName: `${new Date().toISOString().substring(0, 10)}-`,
+    // resumeId: crypto.randomUUID(),
+    // },
   });
-  const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
-  const contactInformation = form.watch().contactInformation;
+  // const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
+  const onSubmit: SubmitHandler<NewResume> = (values: any) =>
+    console.log(values);
+  // const contactInformation = form.watch().contactInformation;
 
   return (
     <Form {...form}>
@@ -35,14 +40,15 @@ export function ResumeForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-2"
       >
-        <ResumeFormSection
+        {JSON.stringify(form.getValues())}
+        {/* <ResumeFormSection
           title={contactInformation.title}
           path={"contactInformation"}
           sectionType={contactInformation.sectionType}
           entries={contactInformation.entries as [ContactInformationEntry]}
           include={contactInformation.include}
           form={form}
-        />
+        /> */}
         {/* {form.getValues().sections.map((section, i) => {
           return (
             <ResumeFormSection

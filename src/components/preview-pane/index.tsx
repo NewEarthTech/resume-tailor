@@ -122,14 +122,14 @@ export function PreviewPane() {
         }}
       >
         <ContactInfo scale={scale} />
-        {Object.values(sections)?.length > 0 &&
+        {/* {Object.values(sections)?.length > 0 &&
           Object.values(sections)?.map((section, i) => (
             <PreviewPaneSection
               key={`sections.${i}.PreviewPaneSection`}
               i={i}
               path={`sections.${i}`}
             />
-          ))}
+          ))} */}
       </AspectRatio>
     </div>
   );
