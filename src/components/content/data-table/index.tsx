@@ -1,6 +1,6 @@
 "use client";
 
-import { InsertResumeFunction } from "@/db/actions/resume";
+import { InsertResumeFunction } from "@/db/actions/resume/insert";
 import {
   ColumnDef,
   flexRender,

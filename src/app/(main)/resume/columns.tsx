@@ -1,13 +1,22 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Resume } from "@/db/schema/resume";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { ActionsMenu } from "@/components/content/data-table/actions-menu";
 import { DataTableColumnHeader } from "@/components/content/data-table/column-header";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleCopyIcon } from "@/components/ui/toggle-copy-icon";
+
+const ActionsMenu = dynamic(
+  () =>
+    import("../../../components/content/data-table/actions-menu").then(
+      (mod) => mod.ActionsMenu,
+    ),
+  { loading: () => <Skeleton className="h-full w-full" /> },
+);
 
 export const columns: ColumnDef<Resume>[] = [
   // {
@@ -76,7 +85,7 @@ export const columns: ColumnDef<Resume>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return <ActionsMenu row={row} />;
+      return row ? <ActionsMenu row={row} /> : null;
     },
   },
 ];

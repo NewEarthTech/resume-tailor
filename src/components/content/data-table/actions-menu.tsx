@@ -1,4 +1,4 @@
-import { deleteResume } from "@/db/actions/resume";
+import deleteResume from "@/db/actions/resume/delete";
 import { Resume } from "@/db/schema/resume";
 import { type Row } from "@tanstack/react-table";
 import { useCopyToClipboard } from "@uidotdev/usehooks";

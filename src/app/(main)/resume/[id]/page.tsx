@@ -1,19 +1,15 @@
-import { updateResume } from "@/db/actions/resume";
 import { sql } from "@vercel/postgres";
 
 import { PreviewPane } from "@/components/preview-pane";
 import { ResumeForm } from "@/components/resume-form";
 import { URLField } from "@/components/resume-form/field/url";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default async function ResumeTailor({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const { rows } = await sql`SELECT * FROM resume WHERE id = ${id}`;
+  const { rows } = await sql`SELECT * FROM resume WHERE id = ${id} LIMIT 1`;
   const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e);
   };
@@ -29,10 +25,7 @@ export default async function ResumeTailor({
       <div className="sticky top-0 z-10 space-y-6 overflow-y-scroll print:hidden md:col-span-5 md:max-h-[initial]">
         <ResumeForm />
       </div>
+      <pre>{JSON.stringify(rows, null, 2)}</pre>
     </div>
   );
-}
-
-{
-  /* <pre>{JSON.stringify(rows, null, 2)}</pre> */
 }

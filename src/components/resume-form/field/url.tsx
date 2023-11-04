@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { updateResume } from "@/db/actions/resume";
+import updateResume from "@/db/actions/resume/update";
 import { useAuth } from "@clerk/nextjs";
 import { Globe, GlobeIcon, Link2, TypeIcon } from "lucide-react";
 
