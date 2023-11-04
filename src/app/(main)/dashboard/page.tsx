@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { auth, currentUser, UserProfile } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
