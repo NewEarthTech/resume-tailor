@@ -2,7 +2,7 @@ import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
   afterAuth: () => {},
-  debug: true,
+  debug: false,
   publicRoutes: ["/", "/resume/(.*)"],
 });
 
