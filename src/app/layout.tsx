@@ -5,8 +5,9 @@ import { GeistMono, GeistSans } from "geist/font";
 
 import "./globals.css";
 
+import { ClerkProvider } from "@clerk/nextjs";
+
 import { Toaster } from "@/components/ui/toaster";
-import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Providers>
+      <ClerkProvider>
         <body
           // className={`${inter.className} flex min-h-screen flex-col items-center justify-center bg-background text-foreground`}
           className={`${inter.className} ${GeistSans.variable} ${GeistMono.variable}`}
@@ -31,7 +32,7 @@ export default function RootLayout({
           <Toaster />
           <Analytics />
         </body>
-      </Providers>
+      </ClerkProvider>
     </html>
   );
 }
