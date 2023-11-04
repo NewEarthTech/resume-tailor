@@ -6,7 +6,7 @@ import React, {
   JSXElementConstructor,
   Ref,
 } from "react";
-import { useStore, type ResumeSectionEntry } from "@/app/store";
+import { useStore, type ResumeSectionEntry } from "@/store/store";
 import { useMeasure } from "@uidotdev/usehooks";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";

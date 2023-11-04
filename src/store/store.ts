@@ -5,7 +5,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import { createSelectors } from "@/lib/zustand";
-import defaultResume from "./default-resume.json";
+import defaultResume from "../app/default-resume.json";
 
 const title = z.string();
 const include = z.boolean().default(true);

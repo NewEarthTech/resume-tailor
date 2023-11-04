@@ -6,7 +6,7 @@ import {
   ResumeState,
   resumeState,
   useStore,
-} from "@/app/store";
+} from "@/store/store";
 import { format, formatISO, lightFormat } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";

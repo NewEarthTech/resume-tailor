@@ -7,7 +7,7 @@ import {
   useStore,
   type ResumeSectionEntry,
   type ResumeState,
-} from "@/app/store";
+} from "@/store/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";

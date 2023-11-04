@@ -6,7 +6,7 @@ import {
   resumeState,
   sectionType as sectionTypeSchema,
   useStore,
-} from "@/app/store";
+} from "@/store/store";
 import { Separator } from "@radix-ui/react-select";
 import { useForm } from "react-hook-form";
 import * as z from "zod";

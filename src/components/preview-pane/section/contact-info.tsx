@@ -3,7 +3,7 @@ import {
   contactInformation,
   contactInformationEntry,
   useStore,
-} from "@/app/store";
+} from "@/store/store";
 import { Linkedin, Mail, MapPin, Smartphone } from "lucide-react";
 import { z } from "zod";
 

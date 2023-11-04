@@ -4,7 +4,7 @@ import {
   resumeState,
   useStore,
   type ResumeState,
-} from "@/app/store";
+} from "@/store/store";
 import { cva } from "class-variance-authority";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";

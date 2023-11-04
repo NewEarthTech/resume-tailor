@@ -5,7 +5,7 @@ import {
   resumeState,
   ResumeState,
   useStore,
-} from "@/app/store";
+} from "@/store/store";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
