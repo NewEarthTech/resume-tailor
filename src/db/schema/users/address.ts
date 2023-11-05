@@ -9,7 +9,7 @@ const UserAddressTable = pgTable("user_address", {
   user_id: text("user_id")
     .references(() => UsersTable.id)
     .notNull(),
-  google_location: jsonb("google_location"),
+  google_location: jsonb("google_location").notNull(),
 });
 
 const insertUserAddressSchema = createInsertSchema(UserAddressTable);
