@@ -24,10 +24,12 @@ export const handleInsert = async () => {
     description: `Redirecting to /resume/${id}...`,
   });
 
-  // revalidatePath(`/resume/${id}`);
+  revalidatePath(`/resume/${id}`);
   revalidatePath(`/resume`);
-  // redirect(`/resume/${id}`);
+  redirect(`/resume/${id}`);
 };
+
+export type HandleInsertFunction = typeof handleInsert;
 
 export async function CreateResumeButton({
   className,

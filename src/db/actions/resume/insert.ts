@@ -7,11 +7,13 @@ import { db } from "@/db";
 import { ResumeTable } from "@/db/schema/resume";
 import { auth } from "@clerk/nextjs";
 
+import { toast } from "@/components/ui/use-toast";
+
 export default async function insertResume() {
   const { userId } = auth();
   if (!userId) redirect(`/sign-in`);
 
-  return (
+  const insertedId = (
     await db
       .insert(ResumeTable)
       .values({
@@ -19,6 +21,10 @@ export default async function insertResume() {
       })
       .returning({ insertedId: ResumeTable.id })
   )[0].insertedId;
+  if (!insertedId) throw new Error(`Failed to insert resume`);
+  revalidatePath(`/resume`, "page");
+  revalidatePath(`/resume/${insertedId}`, "page");
+  return insertedId;
 }
 
 export type InsertResumeFunction = typeof insertResume;

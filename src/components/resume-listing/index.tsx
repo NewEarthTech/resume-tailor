@@ -1,6 +1,6 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useOptimistic } from "react";
 import { InsertResumeFunction } from "@/db/actions/resume/insert";
 import {
   ColumnDef,
@@ -9,6 +9,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { EmptyState } from "@/components/resume-listing/empty-state";
 import { DataTablePagination } from "@/components/resume-listing/pagination";
 import { DataTableViewOptions } from "@/components/resume-listing/view-options";
 import { Button } from "@/components/ui/button";
@@ -20,30 +21,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { HandleInsertFunction } from "../create-resume-button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   insertResume: InsertResumeFunction;
+  handleInsert: HandleInsertFunction;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   insertResume,
+  handleInsert,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+  const [optimisticTable, setOptimisticTable] = useOptimistic(table);
   return (
     <div className="rounded-md border">
-      <DataTableViewOptions table={table} />
+      <DataTableViewOptions table={optimisticTable} />
 
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
+          {optimisticTable.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
@@ -61,8 +66,8 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+          {optimisticTable.getRowModel().rows?.length ? (
+            optimisticTable.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 className="hover:bg-white/20"
@@ -76,28 +81,15 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                <div className="m-5 ">No results.</div>
-                <form
-                  action={() =>
-                    insertResume().then((res) => redirect(`/resume/${res}`))
-                  }
-                >
-                  <Button
-                    variant="secondary"
-                    className="my-4 text-sm"
-                    type="submit"
-                  >
-                    Create resume?
-                  </Button>
-                </form>
-              </TableCell>
-            </TableRow>
+            <EmptyState
+              columns={columns}
+              handleInsert={handleInsert}
+              insertResume={insertResume}
+            />
           )}
         </TableBody>
       </Table>
-      <DataTablePagination table={table} />
+      <DataTablePagination table={optimisticTable} />
     </div>
   );
 }
