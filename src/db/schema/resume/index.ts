@@ -1,17 +1,8 @@
-import { include, layout, title } from "@/db/types";
-import { arrayContains, InferInsertModel, InferSelectModel } from "drizzle-orm";
-import {
-  boolean,
-  date,
-  index,
-  pgTable,
-  text,
-  uuid,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { Section } from "@/components/preview-pane/section";
+import { layout } from "../types/index";
 import {
   UserAddressTable,
   UserEmailTable,
@@ -20,6 +11,7 @@ import {
   UsersTable,
   UserTitleTable,
 } from "../users";
+import { SectionTable } from "./section";
 
 const ResumeTable = pgTable(
   "resume",
@@ -43,72 +35,6 @@ const ResumeTable = pgTable(
   },
 );
 
-const SectionTable = pgTable("section", {
-  id: uuid("id").primaryKey(),
-  title: text("title").notNull(),
-  layout,
-});
-
-const ResumeSectionTable = pgTable("resume_section", {
-  id: uuid("id").primaryKey(),
-  resume_id: uuid("resume_id").references(() => ResumeTable.id),
-  section_id: uuid("section_id").references(() => SectionTable.id),
-});
-
-const EntryTable = pgTable("entry", {
-  id: uuid("id").primaryKey(),
-  start_date: date("start_date").notNull(),
-  end_date: date("end_date").notNull(),
-  include: boolean("include").notNull(),
-});
-
-const SectionEntryTable = pgTable("section_entry", {
-  id: uuid("id").primaryKey(),
-  section_id: uuid("section_id").references(() => SectionTable.id),
-  entry_id: uuid("entry_id").references(() => EntryTable.id),
-  include,
-  title,
-  layout: layout.default("list"),
-  entity: varchar("entity").unique(),
-  summary: text("summary"),
-  start_date: date("start_date"),
-  end_date: date("end_date"),
-});
-
-const SectionEntryDetailTable = pgTable("section_entry_detail", {
-  id: uuid("id").primaryKey(),
-  section_entry_id: uuid("section_entry_id").references(
-    () => SectionEntryTable.id,
-  ),
-  detail: text("detail").notNull(),
-});
-
-const FieldTable = pgTable(
-  "field",
-  {
-    id: uuid("id").primaryKey(),
-    input_type: text("input_type", {
-      enum: ["select", "textarea", "text", "date"],
-    }).notNull(),
-    name: text("name").notNull(),
-    label: text("label").notNull(),
-    value: text("value").notNull(),
-  },
-  (table) => {
-    return {
-      nameIdx: index("name_idx").on(table.name),
-      labelIdx: index("label_idx").on(table.label),
-      valueIdx: index("value_idx").on(table.value),
-    };
-  },
-);
-
-const EntryFieldTable = pgTable("entry_field", {
-  id: uuid("id").primaryKey(),
-  entry_id: uuid("entry_id").references(() => EntryTable.id),
-  field_id: uuid("field_id").references(() => FieldTable.id),
-});
-
 // Schema for inserting a resume - can be used to validate API requests
 const insertResumeSchema = createInsertSchema(ResumeTable);
 
@@ -119,52 +45,37 @@ const selectResumeSchema = createSelectSchema(ResumeTable);
 type Resume = InferSelectModel<typeof ResumeTable>;
 type NewResume = InferInsertModel<typeof ResumeTable>;
 
-type Section = InferSelectModel<typeof SectionTable>;
-type NewSection = InferInsertModel<typeof SectionTable>;
-
-type ResumeSection = InferSelectModel<typeof ResumeSectionTable>;
-type NewResumeSection = InferInsertModel<typeof ResumeSectionTable>;
-
-type Entry = InferSelectModel<typeof EntryTable>;
-type NewEntry = InferInsertModel<typeof EntryTable>;
-
-type SectionEntry = InferSelectModel<typeof SectionEntryTable>;
-type NewSectionEntry = InferInsertModel<typeof SectionEntryTable>;
-
-type SectionEntryDetail = InferSelectModel<typeof SectionEntryDetailTable>;
-type NewSectionEntryDetail = InferInsertModel<typeof SectionEntryDetailTable>;
-
-type Field = InferSelectModel<typeof FieldTable>;
-type NewField = InferInsertModel<typeof FieldTable>;
-
-type EntryField = InferSelectModel<typeof EntryFieldTable>;
-type NewEntryField = InferInsertModel<typeof EntryFieldTable>;
-
 export {
   ResumeTable,
-  ResumeSectionTable,
-  SectionTable,
-  SectionEntryTable,
-  EntryTable,
-  EntryFieldTable,
-  SectionEntryDetailTable,
-  FieldTable,
   insertResumeSchema,
   selectResumeSchema,
   type Resume,
   type NewResume,
-  type Section,
-  type NewSection,
+};
+
+const ResumeSectionTable = pgTable("resume_section", {
+  id: uuid("id").primaryKey(),
+  resume_id: uuid("resume_id").references(() => ResumeTable.id),
+  section_id: uuid("section_id").references(() => SectionTable.id),
+  layout,
+});
+
+// Schema for inserting a resume - can be used to validate API requests
+const insertResumeSectionSchema = createInsertSchema(ResumeSectionTable);
+
+// Schema for selecting a resumeSection - can be used to validate API responses
+const selectResumeSectionSchema = createSelectSchema(ResumeSectionTable);
+
+// Type Definitions
+type ResumeSection = InferSelectModel<typeof ResumeSectionTable>;
+type NewResumeSection = InferInsertModel<typeof ResumeSectionTable>;
+
+export {
+  ResumeSectionTable,
+  insertResumeSectionSchema,
+  selectResumeSectionSchema,
   type ResumeSection,
   type NewResumeSection,
-  type Entry,
-  type NewEntry,
-  type SectionEntry,
-  type NewSectionEntry,
-  type SectionEntryDetail,
-  type NewSectionEntryDetail,
-  type Field,
-  type NewField,
-  type EntryField,
-  type NewEntryField,
 };
+
+export * from "./section";

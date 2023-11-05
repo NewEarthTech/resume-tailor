@@ -1,13 +1,4 @@
-import {
-  boolean,
-  //   date,
-  //   foreignKey,
-  //   index,
-  //   pgTable,
-  text,
-  //   uuid,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { boolean, text, varchar } from "drizzle-orm/pg-core";
 
 const title = varchar("title");
 const include = boolean("include").default(true);
