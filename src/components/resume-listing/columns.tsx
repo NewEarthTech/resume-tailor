@@ -36,22 +36,28 @@ export const columns: ColumnDef<Resume>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  // {
-  //   accessorKey: "user_title",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Job Title" />
-  //   ),
-  // },
   {
-    accessorKey: "id",
+    accessorKey: "user_title",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Job Title" />
+    ),
+  },
+  {
+    accessorKey: "user_email",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Email" />
+    ),
+  },
+  {
+    accessorKey: "custom_url",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="URL" />
     ),
     cell: ({ row }) => {
-      const url = row.original.custom_url;
-      const id = row.getValue("id")?.toString();
+      const id = row.original.id;
+      const url = row.getValue("custom_url")?.toString();
       if (!url && !id) return null;
-      const href = `${process.env.base_url}/${url ? url : "resume/" + id}`;
+      const href = `/${url ? url : "resume/" + id}`;
       return (
         <div className="flex items-center">
           <Button
@@ -60,27 +66,13 @@ export const columns: ColumnDef<Resume>[] = [
             variant="link"
             asChild
           >
-            <Link href={href} target="_blank">
-              {href}
-            </Link>
+            <Link href={href}>{`${process.env.base_url}${href}`}</Link>
           </Button>
           <ToggleCopyIcon textToCopy={href} variant="outline" className="" />
         </div>
       );
     },
   },
-  // {
-  //   accessorKey: "pdf_url",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="PDF" />
-  //   ),
-  // },
-  // {
-  //   accessorKey: "user_email",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Email" />
-  //   ),
-  // },
   // {
   //   accessorKey: "user_phone",
   //   header: ({ column }) => (
