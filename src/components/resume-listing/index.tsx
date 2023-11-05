@@ -2,7 +2,7 @@ import getResumes from "@/db/actions/resume/get-many";
 import insertResume from "@/db/actions/resume/insert";
 import { Resume } from "@/db/schema/resume";
 
-import { handleInsert } from "@/components/create-resume-button";
+import { handleInsert } from "@/components/create-resume-handler";
 import { columns } from "@/components/resume-listing/columns";
 import { DataTable } from "./data-table";
 
