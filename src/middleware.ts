@@ -3,7 +3,7 @@ import { authMiddleware } from "@clerk/nextjs";
 export default authMiddleware({
   afterAuth: () => {},
   debug: false,
-  publicRoutes: ["/", "/resume/(.*)"],
+  publicRoutes: ["/", "/(.*)", "/resume/(.*)"],
 });
 
 export const config = {
@@ -14,5 +14,6 @@ export const config = {
     "/(sign-up)(.*)",
     "/(dashboard)(.*)",
     "/(resume)(.*)",
+    "/user(.*)",
   ],
 };

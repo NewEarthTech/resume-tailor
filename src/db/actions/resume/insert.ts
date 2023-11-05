@@ -15,15 +15,15 @@ export default async function insertResume() {
     user_id: userId,
   });
 
-  const insertedId = (
-    await db
-      .insert(ResumeTable)
-      .values(resume)
-      .returning({ insertedId: ResumeTable.id })
-  )[0].insertedId;
-  if (!insertedId) return notFound();
-  revalidatePath(`/resume/${insertedId}`, "page");
-  return insertedId;
+  // const insertedId = (
+  //   await db
+  //     .insert(ResumeTable)
+  //     .values(resume)
+  //     .returning({ insertedId: ResumeTable.id })
+  // )[0].insertedId;
+  // if (!insertedId) return notFound();
+  // revalidatePath(`/resume/${insertedId}`, "page");
+  // return insertedId;
 }
 
 export type InsertResumeFunction = typeof insertResume;
