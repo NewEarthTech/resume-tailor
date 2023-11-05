@@ -1,6 +1,6 @@
 import { MenuIcon, PencilRuler } from "lucide-react";
 
-import { CreateResumeButton } from "@/components/create-resume-button";
+import { CreateResumeButton } from "@/components/content/create-resume-button";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";

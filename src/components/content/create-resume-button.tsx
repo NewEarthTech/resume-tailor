@@ -4,7 +4,7 @@ import insertResume from "@/db/actions/resume/insert";
 
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
-import { toast } from "./ui/use-toast";
+import { toast } from "../ui/use-toast";
 
 export const handleInsert = async () => {
   "use server";

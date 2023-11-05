@@ -27,14 +27,8 @@ import { Form } from "@/components/ui/form";
 export function ResumeForm({ resume }: { resume: Resume }) {
   // const { sections, ...state } = useStore();
   const form = useForm<z.infer<typeof selectResumeSchema>>({
-    // const form = useForm({
     resolver: zodResolver(insertResumeSchema),
-    defaultValues: {
-      ...resume,
-      // ...DefaultResume,
-      // resumeName: `${new Date().toISOString().substring(0, 10)}-`,
-      // resumeId: crypto.randomUUID(),
-    },
+    values: resume,
   });
   // const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
   const onSubmit: SubmitHandler<NewResume> = (values: any) =>
