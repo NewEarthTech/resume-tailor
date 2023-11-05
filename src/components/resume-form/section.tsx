@@ -4,7 +4,7 @@ import {
   ResumeSectionEntry,
   ResumeState,
   resumeState,
-  sectionType as sectionTypeSchema,
+  layout as sectionTypeSchema,
   useStore,
 } from "@/store/store";
 import { Separator } from "@radix-ui/react-select";

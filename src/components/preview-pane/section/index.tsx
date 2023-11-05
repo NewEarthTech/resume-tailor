@@ -88,7 +88,7 @@ function SectionContentEntry({ children }: { children: React.ReactNode }) {
 
 const sectionContentVariants = cva("", {
   variants: {
-    sectionType: {
+    layout: {
       row: "",
       list: "",
       grid: "grid auto-cols-max grid-flow-col place-content-between gap-4",
@@ -98,16 +98,14 @@ const sectionContentVariants = cva("", {
 });
 
 function SectionContent({
-  sectionType,
+  layout,
   children,
 }: {
-  sectionType: ResumeSectionType["sectionType"];
+  layout: ResumeSectionType["layout"];
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn(sectionContentVariants({ sectionType }))}>
-      {children}
-    </div>
+    <div className={cn(sectionContentVariants({ layout }))}>{children}</div>
   );
 }
 

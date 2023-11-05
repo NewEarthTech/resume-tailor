@@ -9,9 +9,9 @@ import defaultResume from "../app/default-resume.json";
 
 const title = z.string();
 const include = z.boolean().default(true);
-export const sectionType = z.enum(["row", "list", "grid", "block"]);
+export const layout = z.enum(["row", "list", "grid", "block"]);
 
-export type SectionType = z.infer<typeof sectionType>;
+export type layout = z.infer<typeof layout>;
 
 export const contactInformationEntry = z.object({
   include,
@@ -32,7 +32,7 @@ export type ContactInformationEntry = z.infer<typeof contactInformationEntry>;
 
 const contactInformation = z.object({
   title,
-  sectionType: sectionType.optional().default("row"),
+  layout: layout.optional().default("row"),
   include,
   entries: z.array(contactInformationEntry),
 });
@@ -44,7 +44,7 @@ const stringToDate = z.string().datetime();
 const resumeSectionEntry = z.object({
   include,
   title,
-  sectionType: sectionType.optional().default("list"),
+  layout: layout.optional().default("list"),
   entity: z.string().optional(),
   summary: z.string().max(5000).optional(),
   startDate: z.coerce.date().or(z.date()).optional(),
@@ -64,7 +64,7 @@ export type ResumeSectionEntry = z.infer<typeof resumeSectionEntry>;
 const resumeSection = z.object({
   include,
   title,
-  sectionType,
+  layout,
   entries: z.array(resumeSectionEntry).optional(),
 });
 

@@ -6,7 +6,10 @@ import React, {
   JSXElementConstructor,
   Ref,
 } from "react";
-import { useStore, type ResumeSectionEntry } from "@/store/store";
+// import { useStore, type ResumeSectionEntry } from "@/store/store";
+// import { type NewSectionEntry, type SectionEntry } from "@/db/schema/resume";
+import { type SectionEntry } from "@/db/schema/resume";
+import { useStore } from "@/store/store";
 import { useMeasure } from "@uidotdev/usehooks";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -41,28 +44,28 @@ function NullCheck({
 }
 
 function PreviewPaneSectionEntry({
-  sectionType,
+  layout,
   title,
   entity,
   summary,
-  details,
-  startDate,
-  endDate,
+  // details,
+  start_date,
+  end_date,
   include,
   j,
   ...fields
-}: ResumeSectionEntry & {
-  sectionType: string;
+}: SectionEntry & {
+  layout: string;
   j: number;
 }) {
   return (
     <NullCheck As={SectionContentEntry} variable={include}>
       <NullCheck As={SectionContentEntryTitle} variable={title}>
         {title}
-        {(startDate || endDate) && sectionType === "list" ? (
+        {(start_date || end_date) && layout === "list" ? (
           <SectionContentEntryDateSpan
-            startDate={startDate}
-            endDate={endDate}
+            startDate={String(start_date)}
+            endDate={String(end_date)}
           />
         ) : null}
       </NullCheck>
@@ -72,13 +75,13 @@ function PreviewPaneSectionEntry({
       <NullCheck As={SectionContentEntrySummary} variable={summary}>
         {summary}
       </NullCheck>
-      <NullCheck As={SectionContentEntryDetails} variable={details}>
+      {/* <NullCheck As={SectionContentEntryDetails} variable={details}>
         {details?.map((detail, k) => (
           <SectionContentEntryDetail key={k}>
             {detail}
           </SectionContentEntryDetail>
         ))}
-      </NullCheck>
+      </NullCheck> */}
       <NullCheck As={"pre"} variable={Object.keys(fields).length}>
         {/* {JSON.stringify(fields, null, 2)} */}
       </NullCheck>
@@ -87,18 +90,18 @@ function PreviewPaneSectionEntry({
 }
 
 function PreviewPaneSection({ i, path }: { i: number; path: string }) {
-  const { title, sectionType, entries, include } = useStore(
+  const { title, layout, entries, include } = useStore(
     (store) => store.sections[i],
   );
   if (!include) return null;
   return (
     <Section>
       <SectionTitle>{title}</SectionTitle>
-      <SectionContent sectionType={sectionType}>
+      {/* <SectionContent layout={layout}>
         {Object.values(entries || [])?.map((entry, j) => (
           <PreviewPaneSectionEntry key={j} j={j} {...entry} />
         ))}
-      </SectionContent>
+      </SectionContent> */}
     </Section>
   );
 }

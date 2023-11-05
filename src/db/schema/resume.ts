@@ -1,4 +1,5 @@
-import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { include, layout, title } from "@/db/types";
+import { arrayContains, InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
   boolean,
   date,
@@ -6,10 +7,13 @@ import {
   index,
   pgTable,
   text,
+  timestamp,
   uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
+import { Section } from "@/components/preview-pane/section";
 import {
   UserAddressTable,
   UserEmailTable,
@@ -44,7 +48,7 @@ const ResumeTable = pgTable(
 const SectionTable = pgTable("section", {
   id: uuid("id").primaryKey(),
   title: text("title").notNull(),
-  layout: text("layout", { enum: ["row", "grid", "block", "list"] }).notNull(),
+  layout,
 });
 
 const ResumeSectionTable = pgTable("resume_section", {
@@ -64,6 +68,21 @@ const SectionEntryTable = pgTable("section_entry", {
   id: uuid("id").primaryKey(),
   section_id: uuid("section_id").references(() => SectionTable.id),
   entry_id: uuid("entry_id").references(() => EntryTable.id),
+  include,
+  title,
+  layout: layout.default("list"),
+  entity: varchar("entity").unique(),
+  summary: text("summary"),
+  start_date: date("start_date"),
+  end_date: date("end_date"),
+});
+
+const SectionEntryDetailTable = pgTable("section_entry_detail", {
+  id: uuid("id").primaryKey(),
+  section_entry_id: uuid("section_entry_id").references(
+    () => SectionEntryTable.id,
+  ),
+  detail: text("detail").notNull(),
 });
 
 const FieldTable = pgTable(
@@ -114,6 +133,9 @@ type NewEntry = InferInsertModel<typeof EntryTable>;
 type SectionEntry = InferSelectModel<typeof SectionEntryTable>;
 type NewSectionEntry = InferInsertModel<typeof SectionEntryTable>;
 
+type SectionEntryDetail = InferSelectModel<typeof SectionEntryDetailTable>;
+type NewSectionEntryDetail = InferInsertModel<typeof SectionEntryDetailTable>;
+
 type Field = InferSelectModel<typeof FieldTable>;
 type NewField = InferInsertModel<typeof FieldTable>;
 
@@ -127,6 +149,7 @@ export {
   SectionEntryTable,
   EntryTable,
   EntryFieldTable,
+  SectionEntryDetailTable,
   FieldTable,
   insertResumeSchema,
   selectResumeSchema,
@@ -140,6 +163,8 @@ export {
   type NewEntry,
   type SectionEntry,
   type NewSectionEntry,
+  type SectionEntryDetail,
+  type NewSectionEntryDetail,
   type Field,
   type NewField,
   type EntryField,
