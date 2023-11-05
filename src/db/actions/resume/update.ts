@@ -15,28 +15,23 @@ export default async function updateResume(resume: Resume) {
   const parsed = insertResumeSchema.parse(resume);
 
   try {
-    const obj = (
-      await db
-        .update(ResumeTable)
-        .set({
-          ...parsed,
-        })
-        .where(eq(ResumeTable.id, resume.id))
-        .returning({
-          updatedId: ResumeTable.id,
-          updatedUrl: ResumeTable.custom_url,
-        })
-    )[0];
-    revalidatePath(`/resume/${obj.updatedId}`);
-    revalidatePath(`/resume`);
-    resume.custom_url ? revalidatePath(`/${obj.updatedUrl}`) : null;
+    await db
+      .update(ResumeTable)
+      .set({
+        ...parsed,
+      })
+      .where(eq(ResumeTable.id, resume.id));
   } catch (error) {
     return { error: JSON.stringify(error) };
   } finally {
-    parsed.custom_url &&
-      redirect(`/${parsed.custom_url}`, RedirectType["replace"]);
+    revalidatePath(`/resume/${parsed.id}`, "page");
+    revalidatePath(`/resume`, "page");
 
-    return true;
+    if (parsed.custom_url) {
+      revalidatePath(`/${parsed.custom_url}`);
+      redirect(`/${parsed.custom_url}`, RedirectType["replace"]);
+    }
+    return parsed;
   }
 }
 

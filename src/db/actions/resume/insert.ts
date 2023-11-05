@@ -24,8 +24,7 @@ export default async function insertResume() {
   } catch (error) {
     return { error: JSON.stringify(error) };
   } finally {
-    redirect(`/resume/${insertedId}`);
-    return true;
+    return insertedId;
   }
 }
 

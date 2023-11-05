@@ -11,10 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleCopyIcon } from "@/components/ui/toggle-copy-icon";
 
 const ActionsMenu = dynamic(
-  () =>
-    import("../../../components/content/data-table/actions-menu").then(
-      (mod) => mod.ActionsMenu,
-    ),
+  () => import("./actions-menu").then((mod) => mod.ActionsMenu),
   { loading: () => <Skeleton className="h-full w-full" /> },
 );
 
