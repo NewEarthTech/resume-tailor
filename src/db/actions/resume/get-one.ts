@@ -23,6 +23,7 @@ export default async function getResume(id: string) {
         user_email: UserEmailTable.email,
         user_phone: UserPhoneTable.phone,
         user_address: ResumeTable.user_address,
+        user_name: ResumeTable.user_name,
         user_link: UserLinkTable.link,
         user_title: UserTitleTable.title,
         pdf_url: ResumeTable.pdf_url,
@@ -31,10 +32,10 @@ export default async function getResume(id: string) {
       .from(ResumeTable)
       .where(eq(ResumeTable.id, id))
       .leftJoin(UsersTable, eq(ResumeTable.user_id, UsersTable.id))
-      .leftJoin(UserEmailTable, eq(UserEmailTable.id, ResumeTable.user_email))
-      .leftJoin(UserPhoneTable, eq(UserPhoneTable.id, ResumeTable.user_phone))
-      .leftJoin(UserLinkTable, eq(UserLinkTable.id, ResumeTable.user_link))
-      .leftJoin(UserTitleTable, eq(UserTitleTable.id, ResumeTable.user_title))
+      .leftJoin(UserEmailTable, eq(ResumeTable.user_email, UserEmailTable.id))
+      .leftJoin(UserPhoneTable, eq(ResumeTable.user_phone, UserPhoneTable.id))
+      .leftJoin(UserLinkTable, eq(ResumeTable.user_link, UserLinkTable.id))
+      .leftJoin(UserTitleTable, eq(ResumeTable.user_title, UserTitleTable.id))
       .leftJoin(
         ResumeSectionTable,
         eq(ResumeSectionTable.resume_id, ResumeTable.id),

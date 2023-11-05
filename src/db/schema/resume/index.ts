@@ -7,33 +7,27 @@ import {
   UserAddressTable,
   UserEmailTable,
   UserLinkTable,
+  UserNameTable,
   UserPhoneTable,
   UsersTable,
   UserTitleTable,
 } from "../users";
 import { SectionTable } from "./section";
 
-const ResumeTable = pgTable(
-  "resume",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    user_id: text("user_id")
-      .references(() => UsersTable.id)
-      .notNull(),
-    custom_url: text("custom_url"),
-    user_email: uuid("user_email").references(() => UserEmailTable.id),
-    user_phone: uuid("user_phone").references(() => UserPhoneTable.id),
-    user_address: uuid("user_address").references(() => UserAddressTable.id),
-    user_link: text("user_link").references(() => UserLinkTable.id),
-    user_title: uuid("user_title").references(() => UserTitleTable.id),
-    pdf_url: text("pdf_url"),
-  },
-  (table) => {
-    return {
-      custom_url: table.id,
-    };
-  },
-);
+const ResumeTable = pgTable("resume", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: text("user_id")
+    .references(() => UsersTable.id)
+    .notNull(),
+  custom_url: text("custom_url"),
+  user_email: uuid("user_email").references(() => UserEmailTable.id),
+  user_phone: uuid("user_phone").references(() => UserPhoneTable.id),
+  user_address: uuid("user_address").references(() => UserAddressTable.id),
+  user_name: uuid("user_name").references(() => UserNameTable.id),
+  user_link: uuid("user_link").references(() => UserLinkTable.id),
+  user_title: uuid("user_title").references(() => UserTitleTable.id),
+  pdf_url: text("pdf_url"),
+});
 
 // Schema for inserting a resume - can be used to validate API requests
 const insertResumeSchema = createInsertSchema(ResumeTable);

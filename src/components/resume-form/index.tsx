@@ -32,12 +32,13 @@ export function ResumeForm({
 
   const onSubmit: SubmitHandler<NewResume> = (values: any) => {
     setOptimisticResume(values);
-    updateResume(values).then((res: true | { error: string }) =>
-      toast({
-        title: "Resume Updated",
-        description: `Response: ${JSON.stringify(res)}`,
-      }),
-    );
+    updateResume(values);
+    //.then((res: true | { error: string }) =>
+    //   toast({
+    //     title: "Resume Updated",
+    //     description: `Response: ${JSON.stringify(res)}`,
+    //   }),
+    // );
   };
 
   return (

@@ -2,7 +2,7 @@ import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import { jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { UsersTable } from "./user";
+import { UsersTable } from ".";
 
 const UserTitleTable = pgTable("user_title", {
   id: uuid("id").primaryKey().defaultRandom(),

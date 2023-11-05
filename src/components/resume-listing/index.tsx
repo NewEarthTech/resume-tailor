@@ -1,5 +1,6 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import { InsertResumeFunction } from "@/db/actions/resume/insert";
 import {
   ColumnDef,
@@ -8,8 +9,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { DataTablePagination } from "@/components/content/data-table/pagination";
-import { DataTableViewOptions } from "@/components/content/data-table/view-options";
+import { DataTablePagination } from "@/components/resume-listing/pagination";
+import { DataTableViewOptions } from "@/components/resume-listing/view-options";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -78,7 +79,11 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
                 <div className="m-5 ">No results.</div>
-                <form action={insertResume}>
+                <form
+                  action={() =>
+                    insertResume().then((res) => redirect(`/resume/${res}`))
+                  }
+                >
                   <Button
                     variant="secondary"
                     className="my-4 text-sm"

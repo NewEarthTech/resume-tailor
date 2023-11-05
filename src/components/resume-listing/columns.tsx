@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { Resume } from "@/db/schema/resume";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { DataTableColumnHeader } from "@/components/content/data-table/column-header";
+import { DataTableColumnHeader } from "@/components/resume-listing/column-header";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleCopyIcon } from "@/components/ui/toggle-copy-icon";

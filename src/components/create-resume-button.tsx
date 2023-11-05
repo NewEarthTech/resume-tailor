@@ -4,7 +4,7 @@ import insertResume from "@/db/actions/resume/insert";
 
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "@/components/ui/button";
-import { toast } from "../ui/use-toast";
+import { toast } from "./ui/use-toast";
 
 export const handleInsert = async () => {
   "use server";
@@ -13,7 +13,6 @@ export const handleInsert = async () => {
     id = await insertResume();
   } catch (error) {
     console.error(error);
-
     toast({
       variant: "destructive",
       title: "Resume Not Created",
@@ -25,9 +24,9 @@ export const handleInsert = async () => {
     description: `Redirecting to /resume/${id}...`,
   });
 
-  revalidatePath(`/resume/${id}`);
+  // revalidatePath(`/resume/${id}`);
   revalidatePath(`/resume`);
-  redirect(`/resume/${id}`);
+  // redirect(`/resume/${id}`);
 };
 
 export async function CreateResumeButton({
