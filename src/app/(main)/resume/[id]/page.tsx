@@ -15,27 +15,9 @@ export async function generateStaticParams() {
     })
     .from(ResumeTable);
 
-  console.log(resumes);
-
-  return [
-    {
-      id: "c75a6810-7eee-4933-8dde-5057a7571b14",
-      custom_url: "this-is-the-way",
-    },
-  ].map((resume) => ({
+  return resumes.map((resume) => ({
     id: resume.id,
   }));
-
-  // return {
-  //   paths: [
-  //     {
-  //       params: {
-  //         id: "c75a6810-7eee-4933-8dde-5057a7571b14",
-  //       },
-  //     },
-  //   ],
-  //   fallback: false,
-  // };
 }
 
 export default async function ResumeTailor({
