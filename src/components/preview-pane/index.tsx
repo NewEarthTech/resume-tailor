@@ -8,21 +8,21 @@ import React, {
 } from "react";
 // import { useStore, type ResumeSectionEntry } from "@/store/store";
 // import { type NewSectionEntry, type SectionEntry } from "@/db/schema/resume";
-import { type SectionEntry } from "@/db/schema/resume";
-import { useStore } from "@/store/store";
+// import { type SectionEntry } from "@/db/schema/resume";
+// import { useStore } from "@/store/store";
 import { useMeasure } from "@uidotdev/usehooks";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Section,
-  SectionContent,
-  SectionContentEntry,
-  SectionContentEntryDateSpan,
-  SectionContentEntryDetail,
-  SectionContentEntryDetails,
-  SectionContentEntrySubTitle,
-  SectionContentEntrySummary,
-  SectionContentEntryTitle,
+  // SectionContent,
+  // SectionContentEntry,
+  // SectionContentEntryDateSpan,
+  // SectionContentEntryDetail,
+  // SectionContentEntryDetails,
+  // SectionContentEntrySubTitle,
+  // SectionContentEntrySummary,
+  // SectionContentEntryTitle,
   SectionTitle,
 } from "./section";
 import { ContactInfo } from "./section/contact-info";
@@ -43,51 +43,51 @@ function NullCheck({
   return !!variable ? <As {...attrs}>{children}</As> : null;
 }
 
-function PreviewPaneSectionEntry({
-  layout,
-  title,
-  entity,
-  summary,
-  // details,
-  start_date,
-  end_date,
-  include,
-  j,
-  ...fields
-}: SectionEntry & {
-  layout: string;
-  j: number;
-}) {
-  return (
-    <NullCheck As={SectionContentEntry} variable={include}>
-      <NullCheck As={SectionContentEntryTitle} variable={title}>
-        {title}
-        {(start_date || end_date) && layout === "list" ? (
-          <SectionContentEntryDateSpan
-            startDate={String(start_date)}
-            endDate={String(end_date)}
-          />
-        ) : null}
-      </NullCheck>
-      <NullCheck As={SectionContentEntrySubTitle} variable={entity}>
-        {entity}
-      </NullCheck>
-      <NullCheck As={SectionContentEntrySummary} variable={summary}>
-        {summary}
-      </NullCheck>
-      {/* <NullCheck As={SectionContentEntryDetails} variable={details}>
-        {details?.map((detail, k) => (
-          <SectionContentEntryDetail key={k}>
-            {detail}
-          </SectionContentEntryDetail>
-        ))}
-      </NullCheck> */}
-      <NullCheck As={"pre"} variable={Object.keys(fields).length}>
-        {/* {JSON.stringify(fields, null, 2)} */}
-      </NullCheck>
-    </NullCheck>
-  );
-}
+// function PreviewPaneSectionEntry({
+//   layout,
+//   title,
+//   entity,
+//   summary,
+//   // details,
+//   start_date,
+//   end_date,
+//   include,
+//   j,
+//   ...fields
+// }: SectionEntry & {
+//   layout: string;
+//   j: number;
+// }) {
+//   return (
+//     <NullCheck As={SectionContentEntry} variable={include}>
+//       <NullCheck As={SectionContentEntryTitle} variable={title}>
+//         {title}
+//         {(start_date || end_date) && layout === "list" ? (
+//           <SectionContentEntryDateSpan
+//             startDate={String(start_date)}
+//             endDate={String(end_date)}
+//           />
+//         ) : null}
+//       </NullCheck>
+//       <NullCheck As={SectionContentEntrySubTitle} variable={entity}>
+//         {entity}
+//       </NullCheck>
+//       <NullCheck As={SectionContentEntrySummary} variable={summary}>
+//         {summary}
+//       </NullCheck>
+//       {/* <NullCheck As={SectionContentEntryDetails} variable={details}>
+//         {details?.map((detail, k) => (
+//           <SectionContentEntryDetail key={k}>
+//             {detail}
+//           </SectionContentEntryDetail>
+//         ))}
+//       </NullCheck> */}
+//       <NullCheck As={"pre"} variable={Object.keys(fields).length}>
+//         {/* {JSON.stringify(fields, null, 2)} */}
+//       </NullCheck>
+//     </NullCheck>
+//   );
+// }
 
 function PreviewPaneSection({ i, path }: { i: number; path: string }) {
   // const { title, layout, entries, include } = useStore(
