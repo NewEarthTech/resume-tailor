@@ -1,3 +1,4 @@
+import { Resume } from "@/db/schema/resume";
 import _ from "lodash";
 import * as O from "optics-ts";
 import * as z from "zod";
@@ -95,14 +96,26 @@ const ResumeActions = z.object({
 
 type ResumeActions = z.infer<typeof ResumeActions>;
 
-const DefaultResume = defaultResume as unknown as ResumeState;
+// const DefaultResume = defaultResume as unknown as Resume;
+const DefaultResume = {
+  id: "287b0163-cfcf-4374-bf10-c3c2f748d0f9",
+  user_id: "user_2XPEtZkx3Usnmk8zWhj79UE26PJ",
+  custom_url: null,
+  user_email: null,
+  user_phone: null,
+  user_address: null,
+  user_link: null,
+  user_title: null,
+  pdf_url: null,
+};
 
-const useStoreBase = create<ResumeState & ResumeActions>()(
+// const useStoreBase = create<ResumeState & ResumeActions>()(
+const useStoreBase = create<Resume & ResumeActions>()(
   // persist(
   (set, get) => ({
     ...DefaultResume,
     update: (path: string, value: FieldValueDataTypes) => {
-      return set(O.set(O.optic<ResumeState>().path(path))(value));
+      return set(O.set(O.optic<Resume>().path(path))(value));
     },
   }),
   //   {
@@ -121,6 +134,6 @@ export {
   type FieldValueDataTypes,
   contactInformation,
   resumeSection,
-  DefaultResume,
+  // DefaultResume,
   useStore,
 };

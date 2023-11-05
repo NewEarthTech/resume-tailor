@@ -6,7 +6,7 @@ import {
   jsonSchema,
 } from "drizzle-zod";
 
-import { FieldTable, ResumeTable } from "./resume";
+import { FieldTable, ResumeTable } from "../resume";
 
 const JobTable = pgTable(
   "job",

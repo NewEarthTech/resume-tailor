@@ -90,9 +90,11 @@ function PreviewPaneSectionEntry({
 }
 
 function PreviewPaneSection({ i, path }: { i: number; path: string }) {
-  const { title, layout, entries, include } = useStore(
-    (store) => store.sections[i],
-  );
+  // const { title, layout, entries, include } = useStore(
+  //   (store) => store.sections[i],
+  // );
+  const title = "Section Title";
+  const include = true;
   if (!include) return null;
   return (
     <Section>
@@ -107,7 +109,7 @@ function PreviewPaneSection({ i, path }: { i: number; path: string }) {
 }
 
 export function PreviewPane() {
-  const sections = useStore((store) => store.sections);
+  // const sections = useStore((store) => store.sections);
   const [ref, { width }] = useMeasure();
   const scale = width ? width / PRINT_WIDTH : 0;
   return (

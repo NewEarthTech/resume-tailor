@@ -62,12 +62,12 @@ export function ContactInfo({ scale }: { scale: number }) {
 
   // if (!includeSection || !include) return null;
 
-  const { myName } = useStore((state) => state.contactInformation.entries[0]);
+  // const { myName } = useStore((state) => state.contactInformation.entries[0]);
 
   const iconSize = scale * 16;
   return (
     <Section>
-      <MyName>{myName}</MyName>
+      {/* <MyName>{myName}</MyName> */}
       {/* <JobTitle>{jobTitle}</JobTitle> */}
       {/* <ContactInfoRow>
         {[

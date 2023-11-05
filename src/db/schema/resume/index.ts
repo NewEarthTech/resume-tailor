@@ -3,11 +3,9 @@ import { arrayContains, InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
   boolean,
   date,
-  foreignKey,
   index,
   pgTable,
   text,
-  timestamp,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -21,7 +19,7 @@ import {
   UserPhoneTable,
   UsersTable,
   UserTitleTable,
-} from "./users";
+} from "../users";
 
 const ResumeTable = pgTable(
   "resume",
