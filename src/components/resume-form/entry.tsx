@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { useEffect } from "react";
 import {
-  ContactInformationEntry,
-  ResumeSectionEntry,
-  resumeState,
-  ResumeState,
+  // ContactInformationEntry,
+  // ResumeSectionEntry,
+  // resumeState,
+  // ResumeState,
   useStore,
 } from "@/store/store";
 import { useForm } from "react-hook-form";

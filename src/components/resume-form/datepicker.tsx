@@ -2,9 +2,14 @@
 
 import * as React from "react";
 import {
+  Resume,
+  selectResumeSchema,
+  // type ResumeType,
+} from "@/db/schema/resume";
+import {
   FieldValueDataTypes,
-  ResumeState,
-  resumeState,
+  // ResumeState,
+  // resumeState,
   useStore,
 } from "@/store/store";
 import { format, formatISO, lightFormat } from "date-fns";
@@ -28,11 +33,11 @@ export function DatePicker({
   className,
 }: {
   value: Date | string | undefined;
-  form: ReturnType<typeof useForm<z.infer<typeof resumeState>>>;
-  path: keyof ResumeState;
+  form: ReturnType<typeof useForm<z.infer<typeof selectResumeSchema>>>;
+  path: keyof Resume;
   className?: string;
 }) {
-  const { update } = useStore();
+  // const { update } = useStore();
 
   return (
     <Popover>
@@ -53,8 +58,8 @@ export function DatePicker({
           mode="single"
           selected={value ? new Date(value) : new Date()}
           onSelect={(e) => {
-            update(path, e?.toISOString() as FieldValueDataTypes);
-            form.setValue(path as keyof ResumeState, e?.toISOString() || "");
+            // update(path, e?.toISOString() as FieldValueDataTypes);
+            form.setValue(path as keyof Resume, e?.toISOString() || "");
           }}
           initialFocus
         />

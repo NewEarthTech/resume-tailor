@@ -1,14 +1,7 @@
 "use client";
 
-// import {
-// ContactInformationEntry,
-// DefaultResume,
-// resumeState,
-// useStore,
-// type ResumeSectionEntry,
-// type ResumeState,
-// } from "@/store/store";
-import getResume from "@/db/actions/resume/get-one";
+import { useOptimistic } from "react";
+import { UpdateResumeFunction } from "@/db/actions/resume/update";
 import {
   insertResumeSchema,
   NewResume,
@@ -21,19 +14,31 @@ import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { toast } from "../ui/use-toast";
+import { URLField } from "./url";
 
-// import { ResumeFormSection } from "./section";
-
-export function ResumeForm({ resume }: { resume: Resume }) {
-  // const { sections, ...state } = useStore();
+export function ResumeForm({
+  resume,
+  updateResume,
+}: {
+  resume: Resume;
+  updateResume: UpdateResumeFunction;
+}) {
+  const [optimisticResume, setOptimisticResume] = useOptimistic<Resume>(resume);
   const form = useForm<z.infer<typeof selectResumeSchema>>({
     resolver: zodResolver(insertResumeSchema),
-    values: resume,
+    values: optimisticResume,
   });
-  // const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
-  const onSubmit: SubmitHandler<NewResume> = (values: any) =>
-    console.log(values);
-  // const contactInformation = form.watch().contactInformation;
+
+  const onSubmit: SubmitHandler<NewResume> = (values: any) => {
+    setOptimisticResume(values);
+    updateResume(values).then((res: true | { error: string }) =>
+      toast({
+        title: "Resume Updated",
+        description: `Response: ${JSON.stringify(res)}`,
+      }),
+    );
+  };
 
   return (
     <Form {...form}>
@@ -41,28 +46,9 @@ export function ResumeForm({ resume }: { resume: Resume }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-2"
       >
+        <URLField updateResume={updateResume} resume={resume} />
         <pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
-        {/* <ResumeFormSection
-          title={contactInformation.title}
-          path={"contactInformation"}
-          sectionType={contactInformation.sectionType}
-          entries={contactInformation.entries as [ContactInformationEntry]}
-          include={contactInformation.include}
-          form={form}
-        /> */}
-        {/* {form.getValues().sections.map((section, i) => {
-          return (
-            <ResumeFormSection
-              path={`sections.${i}`}
-              key={`sections.${i}.root`}
-              title={section.title}
-              sectionType={section.sectionType}
-              entries={section.entries || []}
-              include={section.include}
-              form={form}
-            />
-          );
-        })} */}
+
         <div className="mx-4 flex justify-stretch gap-4">
           <Button
             variant="destructive"
@@ -76,15 +62,38 @@ export function ResumeForm({ resume }: { resume: Resume }) {
             Submit
           </Button>
         </div>
-        {/* {Object.entries(form.formState.errors).length > 0 ? (
+        {Object.entries(form.formState.errors).length > 0 ? (
           <pre className="text-destructive">
+            {JSON.stringify(form.formState.errors, null, 2)}
           </pre>
-        ) : null} */}
+        ) : null}
       </form>
     </Form>
   );
 }
 
 {
-  /* {JSON.stringify(form.formState.errors, null, 2)} */
+  /* <ResumeFormSection
+          title={contactInformation.title}
+          path={"contactInformation"}
+          sectionType={contactInformation.sectionType}
+          entries={contactInformation.entries as [ContactInformationEntry]}
+          include={contactInformation.include}
+          form={form}
+        /> */
+}
+{
+  /* {form.getValues().sections.map((section, i) => {
+          return (
+            <ResumeFormSection
+              path={`sections.${i}`}
+              key={`sections.${i}.root`}
+              title={section.title}
+              sectionType={section.sectionType}
+              entries={section.entries || []}
+              include={section.include}
+              form={form}
+            />
+          );
+        })} */
 }

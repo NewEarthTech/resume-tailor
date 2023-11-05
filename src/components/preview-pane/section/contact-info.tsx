@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  contactInformation,
-  contactInformationEntry,
+  // contactInformation,
+  // contactInformationEntry,
   useStore,
 } from "@/store/store";
 import { Linkedin, Mail, MapPin, Smartphone } from "lucide-react";

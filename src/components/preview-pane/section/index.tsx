@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import type { ResumeSection as ResumeSectionType } from "@/store/store";
+import type { ResumeSection as ResumeSectionType } from "@/db/schema/resume";
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
