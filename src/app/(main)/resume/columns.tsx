@@ -34,7 +34,7 @@ export const columns: ColumnDef<Resume>[] = [
       const url = row.original.custom_url;
       const id = row.getValue("id")?.toString();
       if (!url && !id) return null;
-      const href = `${process.env.base_url}/resume/${url ? url : id}`;
+      const href = `${process.env.base_url}/${url ? url : "resume/" + id}`;
       return (
         <div className="flex items-center">
           <Button
