@@ -2,32 +2,30 @@
 
 import { UUID } from "crypto";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { db } from "@/db";
-import { ResumeTable } from "@/db/schema/resume";
+import { insertResumeSchema, ResumeTable } from "@/db/schema/resume";
 import { auth } from "@clerk/nextjs";
-
-import { toast } from "@/components/ui/use-toast";
 
 export default async function insertResume() {
   const { userId } = auth();
   if (!userId) redirect(`/sign-in`);
 
+  console.log("userId", userId);
+
+  const resume = insertResumeSchema.parse({
+    user_id: userId,
+  });
+
   const insertedId = (
     await db
       .insert(ResumeTable)
-      .values({
-        user_id: userId,
-      })
+      .values(resume)
       .returning({ insertedId: ResumeTable.id })
   )[0].insertedId;
-  if (!insertedId) throw new Error(`Failed to insert resume`);
-  revalidatePath(`/resume`, "page");
+  if (!insertedId) return notFound();
   revalidatePath(`/resume/${insertedId}`, "page");
   return insertedId;
 }
 
 export type InsertResumeFunction = typeof insertResume;
-
-// revalidatePath(`/resume/${insertedId}`, "page");
-// return new Error(JSON.stringify(error));

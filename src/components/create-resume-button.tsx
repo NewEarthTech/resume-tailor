@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import insertResume from "@/db/actions/resume/insert";
 
 import { cn } from "@/lib/utils";
@@ -9,24 +9,19 @@ import { toast } from "./ui/use-toast";
 export const handleInsert = async () => {
   "use server";
   let id;
-  try {
-    id = await insertResume();
-  } catch (error) {
-    console.error(error);
-    toast({
-      variant: "destructive",
-      title: "Resume Not Created",
-      description: `${JSON.stringify(error)}`,
+  id = await insertResume()
+    .then((id) => {
+      revalidatePath(`/resume`, "page");
+      return id;
+    })
+    .catch((error) => {
+      toast({
+        variant: "destructive",
+        title: "Resume Not Created",
+        description: `${JSON.stringify(error)}`,
+      });
     });
-  }
-  toast({
-    title: "Resume Created",
-    description: `Redirecting to /resume/${id}...`,
-  });
-
-  revalidatePath(`/resume/${id}`);
-  revalidatePath(`/resume`);
-  redirect(`/resume/${id}`);
+  redirect(`/resume/${id}`, RedirectType["push"]);
 };
 
 export type HandleInsertFunction = typeof handleInsert;

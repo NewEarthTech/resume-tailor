@@ -1,6 +1,6 @@
 "use client";
 
-import { useOptimistic } from "react";
+import { startTransition, useOptimistic } from "react";
 import { UpdateResumeFunction } from "@/db/actions/resume/update";
 import {
   insertResumeSchema,
@@ -31,8 +31,10 @@ export function ResumeForm({
   });
 
   const onSubmit: SubmitHandler<NewResume> = (values: any) => {
-    setOptimisticResume(values);
-    updateResume(values);
+    startTransition(() => {
+      setOptimisticResume(values);
+      updateResume(values);
+    });
     //.then((res: true | { error: string }) =>
     //   toast({
     //     title: "Resume Updated",
