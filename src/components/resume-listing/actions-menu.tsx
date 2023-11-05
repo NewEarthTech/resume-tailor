@@ -39,9 +39,7 @@ export function ActionsMenu({ row }: { row: Row<Resume> }) {
           description: "This feature is not yet implemented.",
         }),
     },
-    {
-      action: null,
-    },
+    {},
     {
       label: "Delete Resume",
       Icon: Delete,
@@ -82,12 +80,12 @@ export function ActionsMenu({ row }: { row: Row<Resume> }) {
         })}
       </div>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild className="block xl:hidden">
-          <Button variant="ghost" className="h-8 w-8 p-0">
+        <Button variant="ghost" asChild className="h-8 w-8 p-0">
+          <DropdownMenuTrigger className="block xl:hidden">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
+          </DropdownMenuTrigger>
+        </Button>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           {actions.map(({ label, Icon, action }, i) => {
