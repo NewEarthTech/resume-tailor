@@ -1,7 +1,17 @@
+CREATE TABLE IF NOT EXISTS "users" (
+	"id" text PRIMARY KEY NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "user_name" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" text NOT NULL,
+	"name" text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_address" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" text NOT NULL,
-	"google_location" jsonb
+	"phone" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_display_name" (
@@ -26,10 +36,6 @@ CREATE TABLE IF NOT EXISTS "user_title" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" text NOT NULL,
 	"title" text NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "users" (
-	"id" text PRIMARY KEY NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "job_field" (
@@ -70,12 +76,12 @@ CREATE TABLE IF NOT EXISTS "resume" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" text NOT NULL,
 	"custom_url" text,
+	"pdf_url" text,
 	"user_email" uuid,
 	"user_phone" uuid,
 	"user_address" uuid,
 	"user_link" uuid,
-	"user_title" uuid,
-	"pdf_url" text
+	"user_title" uuid
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "section_entry" (
@@ -128,6 +134,12 @@ CREATE INDEX IF NOT EXISTS "place_idx" ON "job" ("place");--> statement-breakpoi
 CREATE INDEX IF NOT EXISTS "name_idx" ON "field" ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "label_idx" ON "field" ("label");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "value_idx" ON "field" ("value");--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "user_name" ADD CONSTRAINT "user_name_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "user_address" ADD CONSTRAINT "user_address_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
