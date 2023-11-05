@@ -1,5 +1,4 @@
-import { db } from "@/db";
-import { sql } from "drizzle-orm";
+import getResume from "@/db/actions/resume/get-one";
 
 import { PreviewPane } from "@/components/preview-pane";
 import { ResumeForm } from "@/components/resume-form";
@@ -10,9 +9,7 @@ export default async function ResumeTailor({
 }: {
   params: { id: string };
 }) {
-  const resume = (
-    await db.execute(sql`SELECT * FROM resume WHERE id = ${id} LIMIT 1`)
-  ).rows[0];
+  const resume = await getResume(id);
 
   const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e);
@@ -28,7 +25,7 @@ export default async function ResumeTailor({
           <PreviewPane />
         </div>
         <div className="sticky top-0 z-10 space-y-6 overflow-y-scroll print:hidden md:col-span-5 md:max-h-[initial]">
-          <ResumeForm />
+          <ResumeForm resume={resume} />
         </div>
       </div>
       <pre>{JSON.stringify(resume, null, 2)}</pre>

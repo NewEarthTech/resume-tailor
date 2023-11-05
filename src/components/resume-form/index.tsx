@@ -8,8 +8,14 @@
 // type ResumeSectionEntry,
 // type ResumeState,
 // } from "@/store/store";
-// import { zodResolver } from "@hookform/resolvers/zod";
-import { insertResumeSchema, NewResume } from "@/db/schema/resume";
+import getResume from "@/db/actions/resume/get-one";
+import {
+  insertResumeSchema,
+  NewResume,
+  Resume,
+  selectResumeSchema,
+} from "@/db/schema/resume";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -18,16 +24,17 @@ import { Form } from "@/components/ui/form";
 
 // import { ResumeFormSection } from "./section";
 
-export function ResumeForm() {
+export function ResumeForm({ resume }: { resume: Resume }) {
   // const { sections, ...state } = useStore();
-  const form = useForm<z.infer<typeof insertResumeSchema>>({
+  const form = useForm<z.infer<typeof selectResumeSchema>>({
     // const form = useForm({
-    // resolver: zodResolver(resumeState),
-    // defaultValues: {
-    // ...DefaultResume,
-    // resumeName: `${new Date().toISOString().substring(0, 10)}-`,
-    // resumeId: crypto.randomUUID(),
-    // },
+    resolver: zodResolver(insertResumeSchema),
+    defaultValues: {
+      ...resume,
+      // ...DefaultResume,
+      // resumeName: `${new Date().toISOString().substring(0, 10)}-`,
+      // resumeId: crypto.randomUUID(),
+    },
   });
   // const onSubmit: SubmitHandler<ResumeState> = (values) => console.log(values);
   const onSubmit: SubmitHandler<NewResume> = (values: any) =>
@@ -40,7 +47,7 @@ export function ResumeForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-2"
       >
-        {JSON.stringify(form.getValues())}
+        <pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
         {/* <ResumeFormSection
           title={contactInformation.title}
           path={"contactInformation"}
@@ -75,12 +82,15 @@ export function ResumeForm() {
             Submit
           </Button>
         </div>
-        {Object.entries(form.formState.errors).length > 0 ? (
+        {/* {Object.entries(form.formState.errors).length > 0 ? (
           <pre className="text-destructive">
-            {/* {JSON.stringify(form.formState.errors, null, 2)} */}
           </pre>
-        ) : null}
+        ) : null} */}
       </form>
     </Form>
   );
+}
+
+{
+  /* {JSON.stringify(form.formState.errors, null, 2)} */
 }

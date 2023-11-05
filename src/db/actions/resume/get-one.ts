@@ -1,15 +1,19 @@
 "use server";
 
 import { notFound, redirect } from "next/navigation";
-import { Resume } from "@/db/schema/resume";
-import { auth } from "@clerk/nextjs";
-import { sql } from "@vercel/postgres";
+import { db } from "@/db";
+import { ResumeTable } from "@/db/schema/resume";
+import { eq } from "drizzle-orm";
 
 export default async function getResume(id: string) {
-  const { userId } = auth();
-  if (!userId) redirect(`/sign-in`);
+  // const resume = (
+  //   await db.execute(sql`SELECT * FROM resume WHERE id = ${id} LIMIT 1`)
+  // ).rows[0];
 
-  const resume = await sql<Resume>`SELECT * FROM resume WHERE id = ${id}`;
+  const resume = (
+    await db.select().from(ResumeTable).where(eq(ResumeTable.id, id)).limit(1)
+  )[0];
+
   if (!resume) notFound();
 
   return resume;
