@@ -1,38 +1,43 @@
 "use server";
 
+import { UUID } from "crypto";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import { db } from "@/db";
-import { Resume, ResumeTable } from "@/db/schema/resume";
+import { insertResumeSchema, Resume, ResumeTable } from "@/db/schema/resume";
 import { auth } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 
-import { toast } from "@/components/ui/use-toast";
-
-export default async function updateResume(id: string, resume: Resume) {
+export default async function updateResume(resume: Resume) {
   const { userId } = auth();
   if (!userId) redirect(`/sign-in`);
 
+  const parsed = insertResumeSchema.parse(resume);
+
   try {
-    await db
-      .update(ResumeTable)
-      .set({
-        ...resume,
-      })
-      .where(eq(ResumeTable.id, id));
+    const obj = (
+      await db
+        .update(ResumeTable)
+        .set({
+          ...parsed,
+        })
+        .where(eq(ResumeTable.id, resume.id))
+        .returning({
+          updatedId: ResumeTable.id,
+          updatedUrl: ResumeTable.custom_url,
+        })
+    )[0];
+    revalidatePath(`/resume/${obj.updatedId}`);
+    revalidatePath(`/resume`);
+    resume.custom_url ? revalidatePath(`/${obj.updatedUrl}`) : null;
   } catch (error) {
-    toast({
-      variant: "destructive",
-      title: "Resume Not Updated",
-      description: `${JSON.stringify(error)}`,
-    });
+    return { error: JSON.stringify(error) };
+  } finally {
+    parsed.custom_url &&
+      redirect(`/${parsed.custom_url}`, RedirectType["replace"]);
+
+    return true;
   }
-  toast({
-    title: "Resume Updated",
-    description: `Resume ${id} has been updated`,
-  });
-  revalidatePath(`/resume/${id}`);
-  revalidatePath(`/resume`);
 }
 
 export type UpdateResumeFunction = typeof updateResume;

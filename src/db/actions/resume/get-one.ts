@@ -12,13 +12,9 @@ import {
 } from "@/db/schema";
 import { ResumeSectionTable, ResumeTable } from "@/db/schema/resume";
 import { eq } from "drizzle-orm";
-import { QueryBuilder } from "drizzle-orm/pg-core";
-
-// const query = qb.select().from(UsersTable).where(eq(Users.name, "Dan"));
-// const { sql, params } = query.toSQL();
 
 export default async function getResume(id: string) {
-  const resume = (
+  return (
     await db
       .select({
         id: ResumeTable.id,
@@ -43,12 +39,7 @@ export default async function getResume(id: string) {
         ResumeSectionTable,
         eq(ResumeSectionTable.resume_id, ResumeTable.id),
       )
-  )[0]; // ) //   eq(UserAddressTable.id, ResumeTable.user_address), //   UserAddressTable, // .leftJoin(
-  // ) //   eq(UserAddressTable.user_id, ResumeTable.user_address), //   UserAddressTable, // ) //   eq(UserPhoneTable.user_id, ResumeTable.user_phone), //   UserPhoneTable, // .leftJoin(UserEmailTable, eq(UserEmailTable.id, ResumeTable.user_email)) // .leftJoin( // .leftJoin( // await db.select().from(resumeView).where(eq(resumeView.id, id)).limit(1)
-
-  if (!resume) notFound();
-
-  return resume;
+  )[0];
 }
 
 export type GetResumeFunction = typeof getResume;
