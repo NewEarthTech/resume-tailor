@@ -59,31 +59,11 @@ CREATE TABLE IF NOT EXISTS "job" (
 	"insights" text
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "entry_field" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"entry_id" uuid,
-	"field_id" uuid
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "entry" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"start_date" date NOT NULL,
-	"end_date" date NOT NULL,
-	"include" boolean NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "field" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"input_type" text NOT NULL,
-	"name" text NOT NULL,
-	"label" text NOT NULL,
-	"value" text NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "resume_section" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"resume_id" uuid,
-	"section_id" uuid
+	"section_id" uuid,
+	"layout" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "resume" (
@@ -98,30 +78,46 @@ CREATE TABLE IF NOT EXISTS "resume" (
 	"pdf_url" text
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "section_entry" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"section_id" uuid,
+	"entry_id" uuid
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "section" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"title" text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "section_entry_detail" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"section_entry_id" uuid,
 	"detail" text NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "section_entry" (
+CREATE TABLE IF NOT EXISTS "entry_field" (
 	"id" uuid PRIMARY KEY NOT NULL,
-	"section_id" uuid,
 	"entry_id" uuid,
+	"field_id" uuid
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "entry" (
+	"id" uuid PRIMARY KEY NOT NULL,
 	"include" boolean DEFAULT true,
 	"title" varchar,
-	"layout" text DEFAULT 'list' NOT NULL,
 	"entity" varchar,
 	"summary" text,
 	"start_date" date,
 	"end_date" date,
-	CONSTRAINT "section_entry_entity_unique" UNIQUE("entity")
+	CONSTRAINT "entry_entity_unique" UNIQUE("entity")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "section" (
+CREATE TABLE IF NOT EXISTS "field" (
 	"id" uuid PRIMARY KEY NOT NULL,
-	"title" text NOT NULL,
-	"layout" text NOT NULL
+	"input_type" text NOT NULL,
+	"name" text NOT NULL,
+	"label" text NOT NULL,
+	"value" text NOT NULL
 );
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "title_idx" ON "job" ("title");--> statement-breakpoint
@@ -187,18 +183,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "entry_field" ADD CONSTRAINT "entry_field_entry_id_entry_id_fk" FOREIGN KEY ("entry_id") REFERENCES "entry"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "entry_field" ADD CONSTRAINT "entry_field_field_id_field_id_fk" FOREIGN KEY ("field_id") REFERENCES "field"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "resume_section" ADD CONSTRAINT "resume_section_resume_id_resume_id_fk" FOREIGN KEY ("resume_id") REFERENCES "resume"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -247,12 +231,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "section_entry_detail" ADD CONSTRAINT "section_entry_detail_section_entry_id_section_entry_id_fk" FOREIGN KEY ("section_entry_id") REFERENCES "section_entry"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "section_entry" ADD CONSTRAINT "section_entry_section_id_section_id_fk" FOREIGN KEY ("section_id") REFERENCES "section"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -260,6 +238,24 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "section_entry" ADD CONSTRAINT "section_entry_entry_id_entry_id_fk" FOREIGN KEY ("entry_id") REFERENCES "entry"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "section_entry_detail" ADD CONSTRAINT "section_entry_detail_section_entry_id_entry_id_fk" FOREIGN KEY ("section_entry_id") REFERENCES "entry"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entry_field" ADD CONSTRAINT "entry_field_entry_id_entry_id_fk" FOREIGN KEY ("entry_id") REFERENCES "entry"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entry_field" ADD CONSTRAINT "entry_field_field_id_field_id_fk" FOREIGN KEY ("field_id") REFERENCES "field"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

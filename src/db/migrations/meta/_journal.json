@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1698582647335,
-      "tag": "0000_long_lila_cheney",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1698611315315,
-      "tag": "0001_ordinary_anthem",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1699154875379,
-      "tag": "0002_brainy_giant_girl",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1699155529849,
-      "tag": "0003_easy_sprite",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1699161126543,
-      "tag": "0004_sudden_doctor_strange",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1699161175329,
-      "tag": "0005_material_plazm",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1699161378551,
-      "tag": "0006_wonderful_smiling_tiger",
+      "when": 1699162663581,
+      "tag": "0000_absurd_cammi",
       "breakpoints": true
     }
   ]
