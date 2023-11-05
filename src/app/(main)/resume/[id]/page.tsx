@@ -1,11 +1,42 @@
 "use server";
 
+import { db } from "@/db";
 import getResume from "@/db/actions/resume/get-one";
 import updateResume from "@/db/actions/resume/update";
+import { ResumeTable } from "@/db/schema";
 
 import { PreviewPane } from "@/components/preview-pane";
 import { ResumeForm } from "@/components/resume-form";
-import { URLField } from "@/components/resume-form/url";
+
+export async function generateStaticParams() {
+  const resumes = await db
+    .select({
+      id: ResumeTable.id,
+    })
+    .from(ResumeTable);
+
+  console.log(resumes);
+
+  return [
+    {
+      id: "c75a6810-7eee-4933-8dde-5057a7571b14",
+      custom_url: "this-is-the-way",
+    },
+  ].map((resume) => ({
+    id: resume.id,
+  }));
+
+  // return {
+  //   paths: [
+  //     {
+  //       params: {
+  //         id: "c75a6810-7eee-4933-8dde-5057a7571b14",
+  //       },
+  //     },
+  //   ],
+  //   fallback: false,
+  // };
+}
 
 export default async function ResumeTailor({
   params: { id },

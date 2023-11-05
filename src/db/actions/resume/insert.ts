@@ -11,8 +11,6 @@ export default async function insertResume() {
   const { userId } = auth();
   if (!userId) redirect(`/sign-in`);
 
-  console.log("userId", userId);
-
   const resume = insertResumeSchema.parse({
     user_id: userId,
   });

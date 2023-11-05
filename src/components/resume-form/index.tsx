@@ -49,7 +49,7 @@ export function ResumeForm({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-2"
       >
-        <URLField updateResume={updateResume} resume={resume} />
+        <URLField resume={resume} />
         <pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
 
         <div className="mx-4 flex justify-stretch gap-4">
